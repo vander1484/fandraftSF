@@ -291,6 +291,66 @@ button{max-width:100%;white-space:normal}
 
 .player-source-box{display:grid;gap:10px;margin:12px 0;padding:13px;border-radius:18px;background:linear-gradient(135deg,#fff,#f3edf6);border:1px solid var(--line)}
 .player-source-box h3{margin:2px 0 0;color:var(--pl-purple);font-size:1.1rem}.source-panel{display:none}.source-panel.active{display:block}.secondary-link-btn{display:inline-flex;align-items:center;justify-content:center;border-radius:999px;padding:10px 14px;font-weight:950;text-decoration:none;background:#efe7f2;color:var(--pl-purple);border:1px solid var(--line)}
+
+/* UI/UX polish pass: stable contrast and readability across the hero background */
+.topbar{
+  position:relative;
+  z-index:5;
+  display:grid;
+  grid-template-columns:minmax(320px,1fr) minmax(360px,auto);
+  align-items:start;
+}
+.brand h1,.brand p{
+  text-shadow:0 3px 18px rgba(19,0,22,.52),0 1px 2px rgba(19,0,22,.38);
+}
+.brand p{
+  color:rgba(255,255,255,.94);
+  max-width:460px;
+}
+.nav{
+  justify-self:end;
+  align-items:center;
+  justify-content:flex-end;
+  max-width:min(760px,100%);
+  padding:8px;
+  border-radius:999px;
+  background:linear-gradient(135deg,rgba(55,0,60,.92),rgba(95,0,105,.78));
+  border:1px solid rgba(255,255,255,.34);
+  box-shadow:0 18px 46px rgba(55,0,60,.27),inset 0 1px 0 rgba(255,255,255,.18);
+}
+.mode-btn{
+  color:rgba(255,255,255,.96);
+  text-shadow:0 1px 8px rgba(19,0,22,.42);
+}
+.mode-btn:hover{
+  background:rgba(255,255,255,.16);
+}
+.mode-btn.active{
+  background:#fff;
+  color:var(--pl-purple);
+  text-shadow:none;
+  outline:2px solid rgba(19,0,22,.86);
+  outline-offset:-2px;
+}
+.screen{
+  position:relative;
+  z-index:2;
+}
+.auction-card,.leader-card,.squads-section,.admin-panel,.blind-card,.announce-card{
+  overflow:hidden;
+}
+.player-info h2,.blind-card h3,.team-name,.insight-main strong{
+  overflow-wrap:anywhere;
+}
+@media(max-width:1050px){
+  .topbar{grid-template-columns:1fr;gap:14px}
+  .nav{justify-self:start;max-width:100%;border-radius:26px}
+}
+@media(max-width:720px){
+  .nav{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));width:100%}
+  .mode-btn{width:100%;white-space:normal}
+}
+
 </style>
 </head>
 <body>
@@ -434,7 +494,7 @@ function premierLeaguePhotoUrl(code){return code?`https://resources.premierleagu
 function premierLeagueBadgeUrl(teamCode){const clean=String(teamCode||"").replace(/\D/g,"");return clean?`https://resources.premierleague.com/premierleague/badges/100/t${clean}.png`:""}
 function playerPhotoUrl(player){return player?.photoUrl||player?.photo_url||player?.imageUrl||player?.image_url||player?.headshotUrl||player?.pictureUrl||(player?.code?premierLeaguePhotoUrl(player.code):"")}
 function clubBadgeUrl(player){return player?.badgeUrl||player?.badge_url||(player?.teamCode?premierLeagueBadgeUrl(player.teamCode):"")||(player?.team_code?premierLeagueBadgeUrl(player.team_code):"")||(player?.clubCode?premierLeagueBadgeUrl(player.clubCode):"")}
-function livePlayerFallbackHtml(player){return `<div class="live-player-fallback"><span id="playerInitials">${player?initials(player.name):"?"}</span></div>`}
+function livePlayerFallbackHtml(player){return `<div class="live-player-fallback"><span class="player-initials-fallback">${player?initials(player.name):"?"}</span></div>`}
 function managerAvatarHtml(team,extra=""){return team?.avatarUrl?`<span class="manager-avatar ${extra}"><img src="${escapeHtml(team.avatarUrl)}" alt=""></span>`:`<span class="manager-avatar ${extra}">${initials(team?.managerName||team?.name||"?")}</span>`}
 function managerLabel(team){return team?.managerName?`Manager: ${team.managerName}`:"Manager not set"}
 function renderSelectors(){const selectedPlayerId=els.playerSelect?.value||state.currentPlayerId||"";const selectedBidderId=els.bidderSelect?.value||state.leadingBidderId||state.teams[0]?.id||"";const available=getAvailablePlayers(state);els.playerSelect.innerHTML=available.map(p=>`<option value="${p.id}">${escapeHtml(p.name)} | ${escapeHtml(p.club)} | ${p.position} | ${p.points} pts</option>`).join("")||`<option value="">No available players</option>`;if(available.some(p=>p.id===selectedPlayerId))els.playerSelect.value=selectedPlayerId;els.bidderSelect.innerHTML=state.teams.map(t=>`<option value="${t.id}">${escapeHtml(t.name)}${t.managerName?` (${escapeHtml(t.managerName)})`:""}</option>`).join("");if(state.teams.some(t=>t.id===selectedBidderId))els.bidderSelect.value=selectedBidderId}
