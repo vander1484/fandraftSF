@@ -44,7 +44,6 @@ def main():
         code = el.get("code")
         team_code = team.get("code")
         status = el.get("status") or "a"
-
         news_parts = []
         if status != "a":
             news_parts.append(f"Status: {status.upper()}")
@@ -60,6 +59,8 @@ def main():
             "name": name,
             "fullName": full_name,
             "club": team.get("name") or team.get("short_name") or "Unknown club",
+            "clubShort": team.get("short_name") or "",
+            "teamCode": team_code,
             "position": position,
             "points": int(number(el.get("total_points"), 0)),
             "guidePrice": number(el.get("now_cost"), 0) / 10,
