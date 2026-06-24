@@ -424,6 +424,24 @@ body.display-mode .display-only-watermark{display:block}
 .countdown-stack{display:flex;gap:16px;justify-content:center;align-items:center;flex-wrap:wrap}.countdown-step{width:120px;height:120px;border-radius:34px;background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.22);display:grid;place-items:center;font-size:4.4rem;font-weight:1000;color:#fff;box-shadow:0 18px 46px rgba(0,0,0,.24);animation:countCard 3.3s ease-in-out infinite}.countdown-step:nth-child(2){animation-delay:.22s}.countdown-step:nth-child(3){animation-delay:.44s}.winner-card.empty-state{background:rgba(255,255,255,.12);text-align:center}.theatre-warning{display:inline-flex;align-items:center;margin-top:14px;padding:10px 13px;border-radius:999px;background:rgba(233,0,82,.18);border:1px solid rgba(255,255,255,.24);font-weight:1000;color:#fff}@keyframes countCard{0%,100%{transform:translateY(0) scale(.92);opacity:.55}30%,48%{transform:translateY(-8px) scale(1.1);opacity:1}}
 @media(prefers-reduced-motion:reduce){.announce-stage.theatre:before,.announce-player-card,.sealed-card:after,.countdown-number,.countdown-progress span,.winner-card,.winning-price,.podium.reveal .podium-row,.confetti-layer span,.countdown-step{animation:none!important}}
 
+
+/* Display-window stability patch: prevent the rotating panel from flashing on sync refreshes */
+body.display-mode .insight-slide{animation:none!important}
+body.display-mode .live-insight-column{min-height:calc(100vh - 28px);overflow:hidden}
+body.display-mode .live-insight-column .insight-carousel{height:calc(100vh - 124px);max-height:calc(100vh - 124px);overflow:auto;padding-right:6px;scrollbar-width:thin}
+body.display-mode .live-insight-column .spotlight-summary{gap:6px;margin-bottom:7px}
+body.display-mode .live-insight-column .summary-card{padding:7px 9px;border-radius:14px}
+body.display-mode .live-insight-column .summary-card strong{font-size:1.05rem}
+body.display-mode .live-insight-column .summary-card span{font-size:.62rem}
+body.display-mode .live-insight-column .insight-table{gap:6px}
+body.display-mode .live-insight-column .insight-row{padding:7px 8px;border-radius:14px;box-shadow:none}
+body.display-mode .live-insight-column .insight-main strong{font-size:.84rem}
+body.display-mode .live-insight-column .insight-main small{font-size:.68rem}
+body.display-mode .live-insight-column .insight-chip{font-size:.58rem;padding:2px 5px}
+body.display-mode .live-insight-column .money-left,body.display-mode .live-insight-column .deal-price,body.display-mode .live-insight-column .points-metric{font-size:.82rem}
+body.display-mode .live-insight-column .money-left strong,body.display-mode .live-insight-column .deal-price strong,body.display-mode .live-insight-column .points-metric strong{font-size:.95rem}
+body.display-mode .live-insight-column .money-left span,body.display-mode .live-insight-column .deal-price span,body.display-mode .live-insight-column .points-metric span{font-size:.55rem}
+
 </style>
 </head>
 <body>
@@ -550,28 +568,37 @@ const samplePlayers=[
 {name:"Jarrod Bowen",club:"West Ham United",position:"MID",points:182,guidePrice:8,lastSeasonPrice:37,note:"Consistent minutes and goal involvement."}
 ];
 const defaultTeams=["Kev's Kestrels","The Gegenpress","No Kane No Gain","Expected Toulouse","Ctrl Alt De Ligt","Tea & Busquets"];
-let state=loadState();let els={};const IS_DISPLAY_MODE=new URLSearchParams(location.search).get("display")==="live";let insightSlideIndex=0;let insightCarouselTimer=null;let insightSpotlightOpen=false;let presentationOpen=false;let saleSequenceTimer=null;let auctionSearchDraft="";
+let state=loadState();let els={};const IS_DISPLAY_MODE=new URLSearchParams(location.search).get("display")==="live";let insightSlideIndex=0;let insightCarouselTimer=null;let insightSpotlightOpen=false;let presentationOpen=false;let saleSequenceTimer=null;let auctionSearchDraft="";let lastDisplaySyncJson="";
 document.addEventListener("DOMContentLoaded",()=>{bindElements();bindEvents();if(IS_DISPLAY_MODE){applyDisplayMode();startDisplayStateSync()}startInsightCarousel();renderAll();});
-if(channel){channel.onmessage=e=>{if(e.data==="state-update"){syncDisplayStateFromStorage();}else if(e.data&&e.data.type==="state-full"&&e.data.payload){state=reconcileState(e.data.payload);localStorage.setItem(STORAGE_KEY,JSON.stringify(state));renderAll();}else if(e.data&&e.data.type==="sold-event"){handleSoldDisplayEvent(e.data.payload)}}}
+if(channel){channel.onmessage=e=>{if(e.data==="state-update"){syncDisplayStateFromStorage();}else if(e.data&&e.data.type==="state-full"&&e.data.payload){applyDisplaySyncedState(e.data.payload);try{localStorage.setItem(STORAGE_KEY,JSON.stringify(state))}catch(err){}}else if(e.data&&e.data.type==="sold-event"){handleSoldDisplayEvent(e.data.payload)}}}
 window.addEventListener("storage",e=>{if(e.key===STORAGE_KEY||e.key===LIVE_SYNC_KEY){syncDisplayStateFromStorage();}else if(e.key===SOLD_EVENT_KEY&&e.newValue){try{handleSoldDisplayEvent(JSON.parse(e.newValue))}catch(err){}}});
-function syncDisplayStateFromStorage(){
-  try{
-    const liveSync=JSON.parse(localStorage.getItem(LIVE_SYNC_KEY)||"null");
-    if(liveSync&&liveSync.state){state=reconcileState(liveSync.state);renderAll();return}
-  }catch(e){}
-  state=loadState();
+function applyDisplaySyncedState(nextState,force=false){
+  if(!nextState)return;
+  const reconciled=reconcileState(nextState);
+  let nextJson="";
+  try{nextJson=JSON.stringify(reconciled)}catch(e){nextJson=String(Date.now())}
+  if(!force&&nextJson===lastDisplaySyncJson)return;
+  lastDisplaySyncJson=nextJson;
+  state=reconciled;
   renderAll();
 }
+function syncDisplayStateFromStorage(force=false){
+  try{
+    const liveSync=JSON.parse(localStorage.getItem(LIVE_SYNC_KEY)||"null");
+    if(liveSync&&liveSync.state){applyDisplaySyncedState(liveSync.state,force);return}
+  }catch(e){}
+  applyDisplaySyncedState(loadState(),force);
+}
 function startDisplayStateSync(){
-  syncDisplayStateFromStorage();
-  window.addEventListener("focus",syncDisplayStateFromStorage);
-  window.addEventListener("pageshow",syncDisplayStateFromStorage);
-  document.addEventListener("visibilitychange",()=>{if(!document.hidden)syncDisplayStateFromStorage()});
-  setInterval(syncDisplayStateFromStorage,1000);
+  syncDisplayStateFromStorage(true);
+  window.addEventListener("focus",()=>syncDisplayStateFromStorage(true));
+  window.addEventListener("pageshow",()=>syncDisplayStateFromStorage(true));
+  document.addEventListener("visibilitychange",()=>{if(!document.hidden)syncDisplayStateFromStorage(true)});
+  setInterval(()=>syncDisplayStateFromStorage(false),2500);
   try{
     if(window.opener&&window.opener.localStorage){
       const openerState=window.opener.localStorage.getItem(STORAGE_KEY);
-      if(openerState){state=reconcileState(JSON.parse(openerState));renderAll()}
+      if(openerState)applyDisplaySyncedState(JSON.parse(openerState),true)
     }
   }catch(e){}
 }
