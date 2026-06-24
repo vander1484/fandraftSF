@@ -811,6 +811,152 @@ body.display-mode .team-card .team-subtitle:after{content:""}
 @media(max-width:900px){body.display-mode .display-squad-carousel-page{grid-template-columns:1fr}.display-carousel-team-card:nth-child(n+2){display:none}body.display-mode .display-squad-carousel-viewport{min-height:430px}}
 @media(max-width:620px){body.display-mode .display-carousel-team-card{max-height:none}body.display-mode .display-squad-carousel-viewport{min-height:430px}}
 
+
+
+/* Display-only readability fix: compact current lot and readable squad carousel */
+body.display-mode .live-layout{
+  min-height:calc(100vh - 108px);
+  height:calc(100vh - 108px);
+  grid-template-columns:minmax(0,2.55fr) minmax(360px,.95fr);
+  align-items:stretch;
+  gap:14px;
+}
+body.display-mode .live-main-column{
+  display:grid;
+  grid-template-rows:minmax(230px,32vh) minmax(0,1fr);
+  min-height:0;
+  gap:14px;
+}
+body.display-mode .auction-card{
+  min-height:0;
+  height:auto;
+  padding:16px 18px;
+  justify-content:start;
+}
+body.display-mode .auction-card .card-header{margin-bottom:6px}
+body.display-mode .player-stage{
+  grid-template-columns:150px minmax(0,1fr);
+  gap:18px;
+  margin:6px 0 10px;
+}
+body.display-mode .shirt-card{
+  width:150px;
+  height:150px;
+  border-radius:26px;
+}
+body.display-mode .shirt-card.has-photo .live-player-art img{max-height:136px}
+body.display-mode .player-info h2{
+  font-size:clamp(3rem,5.3vw,5.6rem);
+  line-height:.82;
+  max-width:100%;
+}
+body.display-mode .club-line{font-size:1rem;margin-bottom:4px}
+body.display-mode .meta-row{margin:6px 0}.meta-row span{line-height:1.05}
+body.display-mode .notes{font-size:.95rem}
+body.display-mode .key-bids{grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+body.display-mode .key-bids>div{padding:10px 14px;border-radius:18px}
+body.display-mode .key-bids strong{font-size:clamp(2.2rem,3.6vw,4.1rem);line-height:.9}
+body.display-mode .squads-section{
+  margin-top:0;
+  min-height:0;
+  height:100%;
+  padding:18px;
+  display:grid;
+  grid-template-rows:auto minmax(0,1fr);
+  overflow:hidden;
+}
+body.display-mode .squads-section .section-title-row{
+  margin-bottom:12px;
+}
+body.display-mode .squads-section .display-actions{display:none!important}
+body.display-mode #squadGrid.squad-grid{
+  display:block;
+  min-height:0;
+  height:100%;
+  width:100%;
+  overflow:hidden;
+}
+body.display-mode .display-squad-carousel-viewport{
+  display:block;
+  width:100%;
+  height:calc(100% - 34px);
+  min-height:0;
+  overflow:hidden;
+  border-radius:22px;
+}
+body.display-mode .display-squad-carousel-page{
+  width:100%;
+  height:100%;
+  display:grid;
+  grid-template-columns:repeat(3,minmax(0,1fr));
+  gap:14px;
+  align-items:stretch;
+}
+body.display-mode .display-carousel-team-card{
+  min-width:0;
+  min-height:0;
+  max-height:none;
+  height:100%;
+  padding:13px;
+  border-radius:21px;
+  overflow:hidden;
+}
+body.display-mode .display-carousel-team-card .team-top{
+  display:grid;
+  grid-template-columns:minmax(0,1fr) auto;
+  align-items:start;
+}
+body.display-mode .display-carousel-team-card .manager-avatar-large{width:52px;height:52px;flex-basis:52px}
+body.display-mode .display-carousel-team-card .team-name{font-size:1.16rem;line-height:1.02;-webkit-line-clamp:2}
+body.display-mode .display-carousel-team-card .team-subtitle{font-size:.82rem;line-height:1.15}
+body.display-mode .display-carousel-team-card .manager-line{font-size:.78rem}
+body.display-mode .display-carousel-team-card .budget-badge{font-size:1rem;padding:8px 10px}
+body.display-mode .display-carousel-team-card .team-rule-row{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:7px 0;font-size:.74rem;line-height:1.15}
+body.display-mode .display-carousel-team-card .rule-badges{gap:5px;margin:7px 0}
+body.display-mode .display-carousel-team-card .rule-badge{font-size:.7rem;padding:4px 7px}
+body.display-mode .display-carousel-slots{
+  display:grid;
+  gap:5px;
+  overflow:hidden;
+  align-content:start;
+  min-height:0;
+}
+body.display-mode .display-compact-slot{
+  grid-template-columns:36px minmax(0,1fr) 52px;
+  padding:6px 7px;
+  font-size:.78rem;
+  border-radius:12px;
+}
+body.display-mode .display-compact-slot .pos{font-size:.68rem;padding:4px}
+body.display-mode .display-compact-slot small{font-size:.69rem}
+body.display-mode .display-compact-slot .price{font-size:.76rem}
+body.display-mode .display-squad-needs-row{
+  margin-top:auto;
+  padding:7px 8px;
+  gap:4px;
+  border-radius:14px;
+}
+body.display-mode .display-needs-label{font-size:.63rem}
+body.display-mode .display-need-chip{font-size:.65rem;padding:3px 6px}
+body.display-mode .display-squad-carousel-status{
+  height:28px;
+  margin-top:6px;
+}
+body.display-mode .live-insight-column{
+  height:calc(100vh - 108px);
+  max-height:calc(100vh - 108px);
+}
+body.display-mode .live-insight-column .insight-carousel{max-height:none;overflow:hidden}
+@media(max-width:1400px){
+  body.display-mode .display-squad-carousel-page{grid-template-columns:repeat(2,minmax(0,1fr))}
+  body.display-mode .display-carousel-team-card:nth-child(n+3){display:flex}
+}
+@media(max-width:1100px){
+  body.display-mode .live-layout{grid-template-columns:1fr;height:auto;min-height:0}
+  body.display-mode .live-main-column{grid-template-rows:auto auto}
+  body.display-mode .display-squad-carousel-viewport{height:520px}
+}
+
 </style>
 </head>
 <body>
@@ -1171,7 +1317,7 @@ function displaySquadCarouselCardHtml(team){
   }).join("");
   const needsRow=`<div class="display-squad-needs-row"><span class="display-needs-label">Still needs</span><div class="display-needs-chips">${needs}</div></div>`;
   const emptyMessage=signed.length?"":`<div class="carousel-empty display-compact-empty">Awaiting first signing. Required build: GK 2, DEF 5, MID 5, FWD 3.</div>`;
-  return `<article class="team-card display-carousel-team-card" data-team-id="${escapeAttr(team.id)}" tabindex="0" role="button" aria-label="Open ${escapeAttr(team.name)} line-up"><div class="team-top"><div class="team-identity">${managerAvatarHtml(team,"manager-avatar-large team-manager-avatar")}<div><h3 class="team-name">${escapeHtml(team.name)}</h3><p class="team-subtitle">${signed.length} of ${state.squadSize} signed</p><span class="manager-line team-manager-name">${escapeHtml(managerLabel(team))}</span></div></div><div class="budget-badge">£${state.budget-teamSpent(team)}m</div></div><div class="team-rule-row"><span>Max per club: ${state.maxPerClub}</span><span>${escapeHtml(clubWarning(team))}</span></div>${teamRuleBadgesHtml(team)}${needsRow}<div class="slots display-carousel-slots">${filledSlots||emptyMessage}</div></article>`;
+  return `<article class="team-card display-carousel-team-card" data-team-id="${escapeAttr(team.id)}" tabindex="0" role="button" aria-label="Open ${escapeAttr(team.name)} line-up"><div class="team-top"><div class="team-identity">${managerAvatarHtml(team,"manager-avatar-large team-manager-avatar")}<div><h3 class="team-name">${escapeHtml(team.name)}</h3><p class="team-subtitle">${signed.length} of ${state.squadSize} signed</p><span class="manager-line team-manager-name">${escapeHtml(managerLabel(team))}</span></div></div><div class="budget-badge">£${state.budget-teamSpent(team)}m</div></div><div class="team-rule-row"><span>Max per club: ${state.maxPerClub}</span><span>${escapeHtml(clubWarning(team))}</span></div>${teamRuleBadgesHtml(team)}<div class="slots display-carousel-slots">${filledSlots||emptyMessage}</div>${needsRow}</article>`;
 }
 function standardSquadCardHtml(team){
   const signed=(team.squad||[])
