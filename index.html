@@ -638,7 +638,30 @@ function getCompletedDeals(s=state){return (s.teams||[]).flatMap(team=>(team.squ
 function bindEvents(){document.querySelectorAll(".mode-btn").forEach(btn=>btn.addEventListener("click",()=>switchMode(btn.dataset.mode)));document.querySelectorAll(".admin-tab-btn").forEach(btn=>btn.addEventListener("click",()=>switchAdminSub(btn.dataset.adminSub)));els.saveConfigBtn.addEventListener("click",saveConfig);els.loadSampleBtn.addEventListener("click",()=>{state.players=samplePlayers.map((p,i)=>({...p,id:`p-${i+1}`,position:normalisePosition(p.position),soldTo:null,soldPrice:null}));state.playerPoolSource={type:"sample",importedAt:new Date().toISOString(),locked:false,count:state.players.length};autoPickBlindTargets(state);saveState();renderAll();setValidation("Sample players reloaded.","good")});if(els.playerPoolMode)els.playerPoolMode.addEventListener("change",()=>setPlayerPoolMode(els.playerPoolMode.value));if(els.importFplBtn)els.importFplBtn.addEventListener("click",importLatestFplPlayers);if(els.clearFplLockBtn)els.clearFplLockBtn.addEventListener("click",()=>setPlayerPoolMode("manual",true));els.resetBtn.addEventListener("click",()=>{if(confirm("Reset the whole auction?")){state=freshState();autoPickBlindTargets(state);saveState();renderAll();}});els.setCurrentBtn.addEventListener("click",setCurrentPlayer);els.placeBidBtn.addEventListener("click",placeBid);els.sellBtn.addEventListener("click",sellPlayer);if(els.saleSequenceBtn)els.saleSequenceBtn.addEventListener("click",startSaleSequence);els.passPlayerBtn.addEventListener("click",()=>{state.currentPlayerId=null;state.currentBid=0;state.leadingBidderId=null;saveState();renderAll();setValidation("Player passed.","good")});els.removeTeamSelect.addEventListener("change",renderSquadRemovalControls);els.removeSquadPlayerBtn.addEventListener("click",removeSquadPlayer);document.querySelectorAll(".bid-increment").forEach(btn=>btn.addEventListener("click",()=>{els.bidAmount.value=Number(els.bidAmount.value||0)+Number(btn.dataset.increment);renderEligibilityPanel();if(presentationOpen)renderPresentationMode()}));[els.playerSelect,els.bidderSelect,els.bidAmount].filter(Boolean).forEach(el=>el.addEventListener("input",()=>{renderEligibilityPanel();if(presentationOpen)renderPresentationMode()}));[els.playerSelect,els.bidderSelect].filter(Boolean).forEach(el=>el.addEventListener("change",()=>{renderEligibilityPanel();if(presentationOpen)renderPresentationMode()}));if(els.auctionPlayerSearch)els.auctionPlayerSearch.addEventListener("input",()=>{auctionSearchDraft=els.auctionPlayerSearch.value;renderAuctionPlayerFinder();});if(els.auctionPlayerSearch)els.auctionPlayerSearch.addEventListener("focus",()=>renderAuctionPlayerFinder());if(els.auctionPlayerSearch)els.auctionPlayerSearch.addEventListener("keydown",e=>{if(e.key==="Enter"){const first=getAuctionFilteredPlayers()[0];if(first){e.preventDefault();selectAuctionFinderPlayer(first.id)}}});if(els.auctionPositionFilter)els.auctionPositionFilter.addEventListener("change",()=>renderAuctionPlayerFinder());if(els.auctionClubFilter)els.auctionClubFilter.addEventListener("change",()=>renderAuctionPlayerFinder());if(els.clearPlayerFiltersBtn)els.clearPlayerFiltersBtn.addEventListener("click",()=>{auctionSearchDraft="";els.auctionPlayerSearch.value="";els.auctionPositionFilter.value="";els.auctionClubFilter.value="";els.playerSelect.value="";renderAuctionPlayerFinder();renderEligibilityPanel();});els.playerSearch.addEventListener("input",renderAvailablePlayers);if(els.openDisplayBtn)els.openDisplayBtn.addEventListener("click",openDisplayWindow);if(els.copyDisplayLinkBtn)els.copyDisplayLinkBtn.addEventListener("click",copyDisplayLink);if(els.presentationModeBtn)els.presentationModeBtn.addEventListener("click",openPresentationMode);if(els.closePresentationBtn)els.closePresentationBtn.addEventListener("click",closePresentationMode);els.playerFile.addEventListener("change",importPlayerFile);els.managerProfileGrid.addEventListener("input",handleManagerProfileInput);els.managerProfileGrid.addEventListener("change",handleManagerAvatarUpload);els.managerProfileGrid.addEventListener("click",handleManagerAvatarRemove);els.autoPickBlindBtn.addEventListener("click",()=>{autoPickBlindTargets(state);saveState();renderAll();setBlindValidation("Highest points scorers selected for each position.","good")});els.saveBlindBidsBtn.addEventListener("click",saveBlindBidInputs);els.clearBlindBidsBtn.addEventListener("click",()=>{if(confirm("Clear all blind auction bids?")){state.blind.bids={};state.blind.revealed={};state.blind.awarded={};saveState();renderAll();setBlindValidation("Blind bids cleared.","good")}});if(els.runHealthCheckBtn)els.runHealthCheckBtn.addEventListener("click",()=>renderHealthCheck(runAppHealthCheck()));if(els.repairStateBtn)els.repairStateBtn.addEventListener("click",()=>{state=reconcileState(state);saveState();renderAll();renderHealthCheck(runAppHealthCheck());setValidation("State repaired and health check re-run.","good")});if(els.closeLineupBtn)els.closeLineupBtn.addEventListener("click",closeSquadLineupLightbox);if(els.squadLineupLightbox)els.squadLineupLightbox.addEventListener("click",e=>{if(e.target===els.squadLineupLightbox)closeSquadLineupLightbox()});if(els.insightPanel&&!IS_DISPLAY_MODE)els.insightPanel.addEventListener("click",openInsightSpotlight);if(els.closeSpotlightBtn)els.closeSpotlightBtn.addEventListener("click",closeInsightSpotlight);if(els.insightSpotlight)els.insightSpotlight.addEventListener("click",e=>{if(e.target===els.insightSpotlight)closeInsightSpotlight()});document.addEventListener("keydown",e=>{if(e.key==="Escape"&&els.squadLineupLightbox?.classList.contains("active"))closeSquadLineupLightbox();if(e.key==="Escape"&&insightSpotlightOpen)closeInsightSpotlight();if(e.key==="Escape"&&presentationOpen)closePresentationMode()})}
 function switchMode(mode){if(IS_DISPLAY_MODE)mode="live";document.querySelectorAll(".mode-btn").forEach(b=>b.classList.toggle("active",b.dataset.mode===mode));document.querySelectorAll(".screen").forEach(s=>s.classList.toggle("active",s.id===mode));renderAll()}
 function switchAdminSub(id){document.querySelectorAll(".admin-tab-btn").forEach(b=>b.classList.toggle("active",b.dataset.adminSub===id));document.querySelectorAll(".admin-sub").forEach(s=>s.classList.toggle("active",s.id===id));renderAll()}
-function renderAll(){state=reconcileState(state);renderConfig();renderFplImportStatus();renderManagerProfiles();renderSelectors();renderLivePanel();renderBudgetTable();renderSquads();renderAvailablePlayers();renderSquadRemovalControls();renderBlindTargets();renderBlindBidMatrix();renderBlindAwardControls();renderBlindDisplay();renderAnnouncementControls();renderAnnouncementStage();renderEligibilityPanel();if(presentationOpen)renderPresentationMode();els.rulesSummary.textContent=`£${state.budget}m cap, ${state.squadSize} players, max ${state.maxPerClub} per club | GK ${POSITION_LIMITS.GK}, DEF ${POSITION_LIMITS.DEF}, MID ${POSITION_LIMITS.MID}, FWD ${POSITION_LIMITS.FWD}`}
+function safeRender(label,fn){try{fn()}catch(err){console.error(`Render failed: ${label}`,err)}}
+function renderAll(){
+  state=reconcileState(state);
+  [
+    ["configuration",renderConfig],
+    ["FPL import status",renderFplImportStatus],
+    ["manager profiles",renderManagerProfiles],
+    ["selectors",renderSelectors],
+    ["live panel",renderLivePanel],
+    ["budget table",renderBudgetTable],
+    ["live squads",renderSquads],
+    ["available players",renderAvailablePlayers],
+    ["squad removal controls",renderSquadRemovalControls],
+    ["blind targets",renderBlindTargets],
+    ["blind bid matrix",renderBlindBidMatrix],
+    ["blind award controls",renderBlindAwardControls],
+    ["blind display",renderBlindDisplay],
+    ["announcement controls",renderAnnouncementControls],
+    ["announcement stage",renderAnnouncementStage],
+    ["eligibility panel",renderEligibilityPanel]
+  ].forEach(([label,fn])=>safeRender(label,fn));
+  if(presentationOpen)safeRender("presentation mode",renderPresentationMode);
+  if(els.rulesSummary)els.rulesSummary.textContent=`£${state.budget}m cap, ${state.squadSize} players, max ${state.maxPerClub} per club | GK ${POSITION_LIMITS.GK}, DEF ${POSITION_LIMITS.DEF}, MID ${POSITION_LIMITS.MID}, FWD ${POSITION_LIMITS.FWD}`;
+}
 function currentPoolMode(){return (state.playerPoolSource?.type==="fpl")?"fpl":"manual"}
 function setPlayerPoolMode(mode,fromButton=false){mode=mode==="fpl"?"fpl":"manual";state.playerPoolSource=state.playerPoolSource||{};if(mode==="manual"){state.playerPoolSource={...state.playerPoolSource,type:"manual",locked:false,count:state.players.length};saveState();renderAll();if(fromButton)setValidation("Manual CSV mode active. The current player pool has been kept and can be edited or replaced from CSV.","good");return}state.playerPoolSource={...state.playerPoolSource,type:"fpl",locked:!!state.playerPoolSource.locked,count:state.players.length};saveState();renderAll();if(fromButton)setValidation("FPL snapshot import mode selected. Click Import saved FPL snapshot to fetch and lock the player pool.","good")}
 function renderPlayerSourceMode(){const mode=currentPoolMode();if(els.playerPoolMode)els.playerPoolMode.value=mode;if(els.manualPoolPanel)els.manualPoolPanel.classList.toggle("active",mode==="manual");if(els.fplPoolPanel)els.fplPoolPanel.classList.toggle("active",mode==="fpl");if(els.playerSourceStatus){const src=state.playerPoolSource||{};if(mode==="fpl")els.playerSourceStatus.textContent=src.locked?`FPL snapshot mode is active and locked with ${src.count||state.players.length} players.`:"FPL snapshot mode is selected. Import the saved GitHub snapshot before starting, or switch back to manual CSV if the file is missing.";else els.playerSourceStatus.textContent=`Manual CSV mode is active with ${state.players.length} players in the current pool. You can still switch to the GitHub FPL snapshot before the auction starts.`}}
@@ -722,6 +745,58 @@ function renderSquads(){
     article.addEventListener("keydown",e=>{if(e.key==="Enter"||e.key===" "){e.preventDefault();openSquadLineupLightbox(article.dataset.teamId)}});
   });
 }
+function renderAvailablePlayers(){
+  if(!els.availablePlayers)return;
+  const q=(els.playerSearch?.value||"").toLowerCase();
+  const filtered=getAvailablePlayers(state).filter(p=>[p.name,p.club,p.position].join(" ").toLowerCase().includes(q));
+  els.availablePlayers.innerHTML=filtered.length?filtered.map(p=>`<div class="player-row" data-id="${escapeAttr(p.id)}"><div><strong>${escapeHtml(p.name)}</strong><small>${escapeHtml(p.club)} | ${p.position} | ${p.points} pts | Guide £${p.guidePrice}m | ${formatLastSeasonPrice(p.lastSeasonPrice)}</small></div><span>Available</span><button class="secondary-btn choose-player" data-id="${escapeAttr(p.id)}">Choose</button></div>`).join(""):`<p class="help-text">No available players match this search.</p>`;
+  document.querySelectorAll(".choose-player").forEach(btn=>btn.addEventListener("click",()=>{
+    if(els.playerSelect)els.playerSelect.value=btn.dataset.id;
+    setCurrentPlayer();
+  }));
+}
+
+function signedPlayersForTeam(team){
+  return (team?.squad||[]).map(item=>({player:state.players.find(p=>p.id===item.playerId),price:item.price,type:item.type})).filter(x=>x.player);
+}
+function openSquadLineupLightbox(teamId){
+  const team=state.teams.find(t=>t.id===teamId);
+  if(!team||!els.squadLineupLightbox||!els.lineupBody)return;
+  const signed=signedPlayersForTeam(team);
+  const managerName=team.managerName||"Manager not set";
+  if(els.lineupTitle)els.lineupTitle.innerHTML=`${managerAvatarHtml(team,"lineup-manager-avatar")}<span class="lineup-team-name">${escapeHtml(team.name)}</span>`;
+  if(els.lineupSubtitle)els.lineupSubtitle.innerHTML=`<span class="lineup-manager-detail"><span>Manager: ${escapeHtml(managerName)}</span><span>${signed.length}/${state.squadSize} players signed</span><span>£${state.budget-teamSpent(team)}m remaining</span></span>`;
+  els.lineupBody.innerHTML=squadLineupHtml(team,signed);
+  els.squadLineupLightbox.classList.add("active");
+  els.squadLineupLightbox.setAttribute("aria-hidden","false");
+}
+function closeSquadLineupLightbox(){
+  if(!els.squadLineupLightbox)return;
+  els.squadLineupLightbox.classList.remove("active");
+  els.squadLineupLightbox.setAttribute("aria-hidden","true");
+}
+function squadLineupHtml(team,signed){
+  if(!signed.length)return `<div class="lineup-pitch"><div class="pitch-centre-line"></div><div class="pitch-centre-dot"></div><div class="lineup-empty">${escapeHtml(team.name)} has not signed any players yet.</div></div>`;
+  const grouped={GK:[],DEF:[],MID:[],FWD:[]};
+  signed.forEach(item=>{const pos=normalisePosition(item.player.position);if(grouped[pos])grouped[pos].push(item)});
+  const rows=POSITIONS.map(pos=>lineupRowHtml(pos,grouped[pos]||[])).join("");
+  const bench=signed.length>11?`<div class="lineup-bench"><h3>Full squad depth</h3><div class="lineup-players">${signed.map(lineupPlayerCardHtml).join("")}</div></div>`:"";
+  return `<div class="lineup-pitch"><div class="pitch-centre-line"></div><div class="pitch-centre-dot"></div><div class="lineup-rows">${rows}</div></div>${bench}`;
+}
+function lineupRowHtml(pos,items){
+  return `<section class="lineup-row"><div class="lineup-row-label">${pos}</div><div class="lineup-players">${items.length?items.map(lineupPlayerCardHtml).join(""):`<div class="lineup-player"><div class="lineup-player-media"><span>${pos}</span></div><div class="lineup-name">Empty slot</div><div class="lineup-meta">Awaiting signing</div></div>`}</div></section>`;
+}
+function lineupPlayerCardHtml(item){
+  const p=item.player;
+  return `<article class="lineup-player"><div class="lineup-player-media"><span class="lineup-pos">${escapeHtml(p.position)}</span>${lineupPlayerAssetHtml(p)}</div><div class="lineup-name" title="${escapeAttr(p.name)}">${escapeHtml(p.name)}</div><div class="lineup-meta">${escapeHtml(p.clubShort||p.club)} | £${Number(item.price||0)}m</div></article>`;
+}
+function lineupPlayerAssetHtml(player){
+  const kit=player.kitUrl||player.kit_url||"";
+  const src=kit||playerPhotoUrl(player);
+  if(src)return `<img src="${escapeHtml(src)}" alt="${escapeAttr(player.name)}" onerror="this.replaceWith(document.createTextNode(this.dataset.fallback||'?'))" data-fallback="${escapeAttr(initials(player?.name||"?"))}">`;
+  return `<span>${initials(player?.name||"?")}</span>`;
+}
+
 function setCurrentPlayer(){const id=els.playerSelect.value||getAuctionFilteredPlayers()[0]?.id;if(!id)return setValidation("No available player selected. Start typing or loosen the filters.","error");els.playerSelect.value=id;state.currentPlayerId=id;state.currentBid=0;state.leadingBidderId=null;saveState();renderAll();setValidation("Player is now live on the display.","good")}
 function placeBid(){const selectedId=els.playerSelect?.value||state.currentPlayerId;const p=state.players.find(x=>x.id===selectedId&&!x.soldTo);const team=state.teams.find(t=>t.id===els.bidderSelect.value);const bid=Number(els.bidAmount.value||0);if(!p||!team)return setValidation("Select a player and bidder first.","error");const isDifferentLot=state.currentPlayerId!==p.id;const currentBidForThisLot=isDifferentLot?0:Number(state.currentBid||0);if(bid<=currentBidForThisLot)return setValidation("Bid must be higher than the current bid for this player.","error");const check=validatePurchase(team,p,bid);if(!check.ok)return ruleBreach(check.message);if(isDifferentLot){state.currentPlayerId=p.id;state.currentBid=0;state.leadingBidderId=null}state.currentBid=bid;state.leadingBidderId=team.id;saveState();renderAll();setValidation(`${team.name} leads for ${p.name} at £${bid}m.`,"good")}
 function sellPlayer(){const p=currentPlayer();const team=state.teams.find(t=>t.id===state.leadingBidderId);const price=Number(state.currentBid||0);if(!p||!team||!price)return setValidation("There is no valid leading bid to sell.","error");const check=validatePurchase(team,p,price);if(!check.ok)return ruleBreach(check.message);awardPlayer(team,p,price,"open");state.log.unshift(`${p.name} sold to ${team.name} for £${price}m`);state.currentPlayerId=null;state.currentBid=0;state.leadingBidderId=null;saveState();renderAll();setValidation(`${p.name} sold to ${team.name}.`,"good");broadcastSoldDisplayEvent(p,team,price)}
