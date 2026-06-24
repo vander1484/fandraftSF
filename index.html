@@ -775,37 +775,41 @@ body.display-mode .live-insight-column .money-left span,body.display-mode .live-
 
 
 
-/* Live squads broadcast carousel: avoids unattended display scrollbars */
-.squad-grid.squad-carousel-grid,
+/* Display-only squad carousel. Normal Live Display keeps the detailed static squad grid. */
 #squadGrid{min-width:0}
-.squad-carousel-viewport{position:relative;min-height:360px;overflow:hidden;border-radius:22px}
-.squad-carousel-page{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px;position:absolute;inset:0;opacity:0;transform:translateX(24px);pointer-events:none;transition:opacity .7s ease,transform .7s ease}
-.squad-carousel-page.active{opacity:1;transform:translateX(0);pointer-events:auto;position:relative}
-.live-carousel-team-card{display:flex;flex-direction:column;min-height:340px;max-height:360px;overflow:hidden}
-.live-carousel-team-card .team-top{align-items:flex-start}
-.live-carousel-team-card .team-identity{align-items:center}
-.live-carousel-team-card .team-name{font-size:1rem;line-height:1.05;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
-.live-carousel-team-card .budget-badge{font-size:.95rem;padding:8px 10px;white-space:nowrap}
-.live-carousel-team-card .team-rule-row{margin:7px 0 6px;display:grid;grid-template-columns:1fr 1fr;gap:8px}
-.live-carousel-team-card .rule-badges{margin:5px 0 7px}
-.squad-needs-row{display:grid;gap:5px;margin:6px 0 8px;padding:8px;border-radius:15px;background:#fbf7fc;border:1px solid var(--line)}
-.needs-label{color:var(--muted);font-size:.66rem;font-weight:1000;letter-spacing:.12em;text-transform:uppercase}
-.needs-chips{display:flex;flex-wrap:wrap;gap:5px}
-.need-chip{display:inline-flex;align-items:center;border-radius:999px;padding:4px 7px;font-size:.68rem;font-weight:1000;border:1px solid var(--line);background:#ffe8ef;color:var(--pl-pink);white-space:nowrap}
-.need-chip.complete{background:#eafff5;color:#008f50;border-color:rgba(0,143,80,.2)}
-.live-carousel-slots{gap:5px;overflow:hidden;min-height:0;display:grid;align-content:start}
-.compact-slot{grid-template-columns:34px minmax(0,1fr) 46px;padding:5px 6px;font-size:.74rem;border-radius:11px}
-.compact-slot .pos{font-size:.66rem;padding:4px}.compact-slot small{font-size:.68rem}.compact-slot .price{font-size:.72rem}.compact-empty{padding:12px;font-size:.78rem;line-height:1.3}
-.squad-carousel-status{display:flex;justify-content:center;align-items:center;gap:10px;margin-top:10px;color:var(--muted);font-size:.76rem;font-weight:1000;text-transform:uppercase;letter-spacing:.1em}
-.squad-carousel-dots{display:flex;gap:6px}.squad-carousel-dot{width:9px;height:9px;border-radius:999px;background:#d8c7de}.squad-carousel-dot.active{width:24px;background:var(--pl-pink)}
+.display-squad-carousel-viewport{display:none}
+body.display-mode .display-squad-carousel-viewport{display:block;position:relative;min-height:430px;overflow:hidden;border-radius:22px}
+body.display-mode .display-squad-carousel-page{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;position:absolute;inset:0;opacity:0;transform:translateX(22px);pointer-events:none;transition:opacity .65s ease,transform .65s ease}
+body.display-mode .display-squad-carousel-page.active{opacity:1;transform:translateX(0);pointer-events:auto;position:relative}
+body.display-mode .display-carousel-team-card{display:flex;flex-direction:column;min-height:410px;max-height:430px;overflow:hidden;padding:12px;border-radius:20px}
+body.display-mode .display-carousel-team-card .team-top{align-items:flex-start;gap:8px}
+body.display-mode .display-carousel-team-card .team-identity{align-items:center;gap:8px;min-width:0}
+body.display-mode .display-carousel-team-card .manager-avatar-large{width:48px;height:48px;flex-basis:48px}
+body.display-mode .display-carousel-team-card .team-name{font-size:1.04rem;line-height:1.05;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+body.display-mode .display-carousel-team-card .team-subtitle{font-size:.78rem}
+body.display-mode .display-carousel-team-card .budget-badge{font-size:.95rem;padding:8px 10px;white-space:nowrap}
+body.display-mode .display-carousel-team-card .team-rule-row{margin:7px 0 6px;display:grid;grid-template-columns:1fr 1fr;gap:8px;font-size:.72rem}
+body.display-mode .display-carousel-team-card .rule-badges{margin:5px 0 7px}
+body.display-mode .display-carousel-team-card .rule-badge{font-size:.68rem;padding:4px 6px}
+.display-squad-needs-row{display:grid;gap:5px;margin:6px 0 8px;padding:8px;border-radius:15px;background:#fbf7fc;border:1px solid var(--line)}
+.display-needs-label{color:var(--muted);font-size:.66rem;font-weight:1000;letter-spacing:.12em;text-transform:uppercase}
+.display-needs-chips{display:flex;flex-wrap:wrap;gap:5px}
+.display-need-chip{display:inline-flex;align-items:center;border-radius:999px;padding:4px 7px;font-size:.68rem;font-weight:1000;border:1px solid var(--line);background:#ffe8ef;color:var(--pl-pink);white-space:nowrap}
+.display-need-chip.complete{background:#eafff5;color:#008f50;border-color:rgba(0,143,80,.2)}
+body.display-mode .display-carousel-slots{gap:5px;overflow:hidden;min-height:0;display:grid;align-content:start}
+body.display-mode .display-compact-slot{grid-template-columns:34px minmax(0,1fr) 46px;padding:5px 6px;font-size:.74rem;border-radius:11px}
+body.display-mode .display-compact-slot .pos{font-size:.66rem;padding:4px}
+body.display-mode .display-compact-slot small{font-size:.68rem}
+body.display-mode .display-compact-slot .price{font-size:.72rem}
+body.display-mode .display-compact-empty{padding:12px;font-size:.78rem;line-height:1.3}
+.display-squad-carousel-status{display:flex;justify-content:center;align-items:center;gap:10px;margin-top:10px;color:var(--muted);font-size:.76rem;font-weight:1000;text-transform:uppercase;letter-spacing:.1em}
+.display-squad-carousel-dots{display:flex;gap:6px}.display-squad-carousel-dot{width:9px;height:9px;border-radius:999px;background:#d8c7de}.display-squad-carousel-dot.active{width:24px;background:var(--pl-pink)}
 body.display-mode .squads-section{min-height:0;max-height:none;overflow:hidden}
 body.display-mode .squad-grid{max-height:none;overflow:hidden;padding-right:0}
-body.display-mode .squad-carousel-viewport{min-height:330px}
-body.display-mode .live-carousel-team-card{min-height:318px;max-height:330px}
 body.display-mode .team-card .team-subtitle:after{content:""}
-@media(max-width:1300px){.squad-carousel-page{grid-template-columns:repeat(3,minmax(0,1fr))}.live-carousel-team-card:nth-child(n+4){display:none}}
-@media(max-width:900px){.squad-carousel-page{grid-template-columns:repeat(2,minmax(0,1fr))}.live-carousel-team-card:nth-child(n+3){display:none}.squad-carousel-viewport{min-height:360px}}
-@media(max-width:620px){.squad-carousel-page{grid-template-columns:1fr}.live-carousel-team-card:nth-child(n+2){display:none}.live-carousel-team-card{max-height:none}.squad-carousel-viewport{min-height:380px}}
+@media(max-width:1300px){body.display-mode .display-squad-carousel-page{grid-template-columns:repeat(2,minmax(0,1fr))}.display-carousel-team-card:nth-child(n+3){display:none}}
+@media(max-width:900px){body.display-mode .display-squad-carousel-page{grid-template-columns:1fr}.display-carousel-team-card:nth-child(n+2){display:none}body.display-mode .display-squad-carousel-viewport{min-height:430px}}
+@media(max-width:620px){body.display-mode .display-carousel-team-card{max-height:none}body.display-mode .display-squad-carousel-viewport{min-height:430px}}
 
 </style>
 </head>
@@ -959,7 +963,7 @@ const samplePlayers=[
 ];
 const defaultTeams=["Kev's Kestrels","The Gegenpress","No Kane No Gain","Expected Toulouse","Ctrl Alt De Ligt","Tea & Busquets"];
 let state=loadState();let els={};const IS_DISPLAY_MODE=new URLSearchParams(location.search).get("display")==="live";let insightSlideIndex=0;let insightCarouselTimer=null;let squadCarouselIndex=0;let squadCarouselTimer=null;let insightSpotlightOpen=false;let presentationOpen=false;let saleSequenceTimer=null;let auctionSearchDraft="";let auctionBidderDraftId="";let lastDisplaySyncJson="";
-document.addEventListener("DOMContentLoaded",()=>{bindElements();bindEvents();if(IS_DISPLAY_MODE){applyDisplayMode();startDisplayStateSync()}startInsightCarousel();startSquadCarousel();renderAll();});
+document.addEventListener("DOMContentLoaded",()=>{bindElements();bindEvents();if(IS_DISPLAY_MODE){applyDisplayMode();startDisplayStateSync();startSquadCarousel()}startInsightCarousel();renderAll();});
 if(channel){channel.onmessage=e=>{if(e.data==="state-update"){syncDisplayStateFromStorage();}else if(e.data&&e.data.type==="state-full"&&e.data.payload){applyDisplaySyncedState(e.data.payload);try{localStorage.setItem(STORAGE_KEY,JSON.stringify(state))}catch(err){}}else if(e.data&&e.data.type==="sold-event"){handleSoldDisplayEvent(e.data.payload)}}}
 window.addEventListener("storage",e=>{if(e.key===STORAGE_KEY||e.key===LIVE_SYNC_KEY){syncDisplayStateFromStorage();}else if(e.key===SOLD_EVENT_KEY&&e.newValue){try{handleSoldDisplayEvent(JSON.parse(e.newValue))}catch(err){}}});
 function applyDisplaySyncedState(nextState,force=false){
@@ -1130,9 +1134,10 @@ function winnerManagerAvatarHtml(team){return team?.avatarUrl?`<span class="winn
 function confettiHtml(){return `<div class="confetti-layer">${Array.from({length:34},(_,i)=>`<span style="left:${(i*29)%100}%;animation-delay:${(i%9)*.18}s;animation-duration:${3.2+(i%7)*.28}s"></span>`).join("")}</div>`}
 function budgetRowHtml(t){const spent=teamSpent(t);const remaining=state.budget-spent;return `<div class="budget-row"><div class="team-identity">${managerAvatarHtml(t)}<div><strong>${escapeHtml(t.name)}</strong><span class="manager-line">${escapeHtml(managerLabel(t))}</span></div></div><span>£${remaining}m left</span><div class="progress"><span style="width:${Math.min(100,spent/state.budget*100)}%"></span></div><small>${t.squad.length}/${state.squadSize} players, £${spent}m spent</small></div>`}
 function startSquadCarousel(){
+  if(!IS_DISPLAY_MODE)return;
   if(squadCarouselTimer)clearInterval(squadCarouselTimer);
   squadCarouselTimer=setInterval(()=>{
-    const pages=els.squadGrid?.querySelectorAll?.(".squad-carousel-page")||[];
+    const pages=els.squadGrid?.querySelectorAll?.(".display-squad-carousel-page")||[];
     if(pages.length>1){
       squadCarouselIndex=(squadCarouselIndex+1)%pages.length;
       updateSquadCarouselVisibility();
@@ -1140,14 +1145,14 @@ function startSquadCarousel(){
   },16000);
 }
 function updateSquadCarouselVisibility(){
-  const pages=Array.from(els.squadGrid?.querySelectorAll?.(".squad-carousel-page")||[]);
+  const pages=Array.from(els.squadGrid?.querySelectorAll?.(".display-squad-carousel-page")||[]);
   if(!pages.length)return;
   if(squadCarouselIndex>=pages.length)squadCarouselIndex=0;
   pages.forEach((page,i)=>page.classList.toggle("active",i===squadCarouselIndex));
-  const dots=Array.from(els.squadGrid?.querySelectorAll?.(".squad-carousel-dot")||[]);
+  const dots=Array.from(els.squadGrid?.querySelectorAll?.(".display-squad-carousel-dot")||[]);
   dots.forEach((dot,i)=>dot.classList.toggle("active",i===squadCarouselIndex));
 }
-function liveSquadCardHtml(team){
+function displaySquadCarouselCardHtml(team){
   const signed=(team.squad||[])
     .map(item=>({player:state.players.find(p=>p.id===item.playerId),price:item.price,type:item.type}))
     .filter(x=>x.player);
@@ -1156,17 +1161,38 @@ function liveSquadCardHtml(team){
     const pos=normalisePosition(item.player.position);
     if(signedByPosition[pos])signedByPosition[pos].push(item);
   });
-  const compactFilled=POSITIONS.flatMap(pos=>(signedByPosition[pos]||[]).map(({player,price,type})=>
-    `<div class="slot filled compact-slot"><span class="pos">${escapeHtml(pos)}</span><span><strong>${escapeHtml(player.name)}</strong><small>${badgeHtml(player)}${escapeHtml(player.club)}${type==="blind"?" | blind auction":type==="auto"?" | auto-complete":""}</small></span><span class="price">£${price}m</span></div>`
+  const filledSlots=POSITIONS.flatMap(pos=>(signedByPosition[pos]||[]).map(({player,price,type})=>
+    `<div class="slot filled display-compact-slot"><span class="pos">${escapeHtml(pos)}</span><span><strong>${escapeHtml(player.name)}</strong><small>${badgeHtml(player)}${escapeHtml(player.club)}${type==="blind"?" | blind auction":type==="auto"?" | auto-complete":""}</small></span><span class="price">£${price}m</span></div>`
   )).join("");
-  const needItems=POSITIONS.map(pos=>{
+  const needs=POSITIONS.map(pos=>{
     const have=(signedByPosition[pos]||[]).length;
     const missing=Math.max(0,POSITION_LIMITS[pos]-have);
-    return missing>0?`<span class="need-chip need-${pos.toLowerCase()}">${pos} ${missing} left</span>`:`<span class="need-chip complete">${pos} complete</span>`;
+    return missing>0?`<span class="display-need-chip">${pos} ${missing} left</span>`:`<span class="display-need-chip complete">${pos} complete</span>`;
   }).join("");
-  const needsRow=`<div class="squad-needs-row"><span class="needs-label">Still needs</span><div class="needs-chips">${needItems}</div></div>`;
-  const emptyMessage=signed.length?"":`<div class="carousel-empty compact-empty">Awaiting first signing. Required build: GK 2, DEF 5, MID 5, FWD 3.</div>`;
-  return `<article class="team-card live-carousel-team-card" data-team-id="${escapeAttr(team.id)}" tabindex="0" role="button" aria-label="Open ${escapeAttr(team.name)} line-up"><div class="team-top"><div class="team-identity">${managerAvatarHtml(team,"manager-avatar-large team-manager-avatar")}<div><h3 class="team-name">${escapeHtml(team.name)}</h3><p class="team-subtitle">${signed.length} of ${state.squadSize} signed</p><span class="manager-line team-manager-name">${escapeHtml(managerLabel(team))}</span></div></div><div class="budget-badge">£${state.budget-teamSpent(team)}m</div></div><div class="team-rule-row"><span>Max per club: ${state.maxPerClub}</span><span>${escapeHtml(clubWarning(team))}</span></div>${teamRuleBadgesHtml(team)}${needsRow}<div class="slots live-carousel-slots">${compactFilled||emptyMessage}</div></article>`;
+  const needsRow=`<div class="display-squad-needs-row"><span class="display-needs-label">Still needs</span><div class="display-needs-chips">${needs}</div></div>`;
+  const emptyMessage=signed.length?"":`<div class="carousel-empty display-compact-empty">Awaiting first signing. Required build: GK 2, DEF 5, MID 5, FWD 3.</div>`;
+  return `<article class="team-card display-carousel-team-card" data-team-id="${escapeAttr(team.id)}" tabindex="0" role="button" aria-label="Open ${escapeAttr(team.name)} line-up"><div class="team-top"><div class="team-identity">${managerAvatarHtml(team,"manager-avatar-large team-manager-avatar")}<div><h3 class="team-name">${escapeHtml(team.name)}</h3><p class="team-subtitle">${signed.length} of ${state.squadSize} signed</p><span class="manager-line team-manager-name">${escapeHtml(managerLabel(team))}</span></div></div><div class="budget-badge">£${state.budget-teamSpent(team)}m</div></div><div class="team-rule-row"><span>Max per club: ${state.maxPerClub}</span><span>${escapeHtml(clubWarning(team))}</span></div>${teamRuleBadgesHtml(team)}${needsRow}<div class="slots display-carousel-slots">${filledSlots||emptyMessage}</div></article>`;
+}
+function standardSquadCardHtml(team){
+  const signed=(team.squad||[])
+    .map(item=>({player:state.players.find(p=>p.id===item.playerId),price:item.price,type:item.type}))
+    .filter(x=>x.player);
+  const signedByPosition=POSITIONS.reduce((acc,pos)=>{acc[pos]=[];return acc;},{});
+  const otherSigned=[];
+  signed.forEach(item=>{
+    const pos=normalisePosition(item.player.position);
+    if(signedByPosition[pos])signedByPosition[pos].push(item);
+    else otherSigned.push(item);
+  });
+  const orderedSlots=POSITIONS.map(pos=>{
+    const playersForPosition=signedByPosition[pos]||[];
+    const filledSlots=playersForPosition.map(({player,price,type})=>`<div class="slot filled"><span class="pos">${escapeHtml(pos)}</span><span><strong>${escapeHtml(player.name)}</strong><small>${badgeHtml(player)}${escapeHtml(player.club)} ${type==="blind"?" | blind auction":type==="auto"?" | auto-complete":""}</small></span><span class="price">£${price}m</span></div>`).join("");
+    const missingCount=Math.max(0,POSITION_LIMITS[pos]-playersForPosition.length);
+    const emptySlots=Array.from({length:missingCount},(_,i)=>`<div class="slot empty-required"><span class="pos">${escapeHtml(pos)}</span><span><strong>${escapeHtml(pos)} slot to fill</strong><small>Required ${escapeHtml(pos)} place ${playersForPosition.length+i+1} of ${POSITION_LIMITS[pos]}</small></span><span></span></div>`).join("");
+    return filledSlots+emptySlots;
+  }).join("");
+  const otherSlots=otherSigned.map(({player,price,type})=>`<div class="slot filled"><span class="pos">${escapeHtml(player.position)}</span><span><strong>${escapeHtml(player.name)}</strong><small>${badgeHtml(player)}${escapeHtml(player.club)} ${type==="blind"?" | blind auction":type==="auto"?" | auto-complete":""}</small></span><span class="price">£${price}m</span></div>`).join("");
+  return `<article class="team-card" data-team-id="${escapeAttr(team.id)}" tabindex="0" role="button" aria-label="Open ${escapeAttr(team.name)} line-up"><div class="team-top"><div class="team-identity">${managerAvatarHtml(team,"manager-avatar-large team-manager-avatar")}<div><h3 class="team-name">${escapeHtml(team.name)}</h3><p class="team-subtitle">${signed.length} of ${state.squadSize} signed</p><span class="manager-line team-manager-name">${escapeHtml(managerLabel(team))}</span></div></div><div class="budget-badge">£${state.budget-teamSpent(team)}m</div></div><div class="team-rule-row"><span>Max per club: ${state.maxPerClub}</span><span>${escapeHtml(clubWarning(team))}</span></div>${teamRuleBadgesHtml(team)}<div class="slots">${orderedSlots}${otherSlots}</div></article>`;
 }
 function renderSquads(){
   if(!els.squadGrid)return;
@@ -1175,18 +1201,22 @@ function renderSquads(){
     els.squadGrid.innerHTML=`<p class="help-text">No teams configured yet. Add managers in the Admin Panel.</p>`;
     return;
   }
-  const teamsPerPage=IS_DISPLAY_MODE?4:4;
-  const pages=[];
-  for(let i=0;i<teams.length;i+=teamsPerPage)pages.push(teams.slice(i,i+teamsPerPage));
-  if(squadCarouselIndex>=pages.length)squadCarouselIndex=0;
-  const pageHtml=pages.map((page,pageIndex)=>`<section class="squad-carousel-page ${pageIndex===squadCarouselIndex?"active":""}" aria-label="Squad carousel page ${pageIndex+1} of ${pages.length}">${page.map(liveSquadCardHtml).join("")}</section>`).join("");
-  const dots=pages.length>1?`<div class="squad-carousel-status"><span class="squad-carousel-label">Squad carousel</span><div class="squad-carousel-dots">${pages.map((_,i)=>`<span class="squad-carousel-dot ${i===squadCarouselIndex?"active":""}"></span>`).join("")}</div><span class="squad-carousel-label">${squadCarouselIndex+1}/${pages.length}</span></div>`:"";
-  els.squadGrid.innerHTML=`<div class="squad-carousel-viewport">${pageHtml}</div>${dots}`;
+  if(IS_DISPLAY_MODE){
+    const teamsPerPage=3;
+    const pages=[];
+    for(let i=0;i<teams.length;i+=teamsPerPage)pages.push(teams.slice(i,i+teamsPerPage));
+    if(squadCarouselIndex>=pages.length)squadCarouselIndex=0;
+    const pageHtml=pages.map((page,pageIndex)=>`<section class="display-squad-carousel-page ${pageIndex===squadCarouselIndex?"active":""}" aria-label="Squad carousel page ${pageIndex+1} of ${pages.length}">${page.map(displaySquadCarouselCardHtml).join("")}</section>`).join("");
+    const dots=pages.length>1?`<div class="display-squad-carousel-status"><span>Squad carousel</span><div class="display-squad-carousel-dots">${pages.map((_,i)=>`<span class="display-squad-carousel-dot ${i===squadCarouselIndex?"active":""}"></span>`).join("")}</div><span>${squadCarouselIndex+1}/${pages.length}</span></div>`:"";
+    els.squadGrid.innerHTML=`<div class="display-squad-carousel-viewport">${pageHtml}</div>${dots}`;
+    updateSquadCarouselVisibility();
+  }else{
+    els.squadGrid.innerHTML=teams.map(standardSquadCardHtml).join("");
+  }
   els.squadGrid.querySelectorAll(".team-card").forEach(article=>{
     article.addEventListener("click",e=>{if(e.target.closest("button,a,input,select,textarea"))return;openSquadLineupLightbox(article.dataset.teamId)});
     article.addEventListener("keydown",e=>{if(e.key==="Enter"||e.key===" "){e.preventDefault();openSquadLineupLightbox(article.dataset.teamId)}});
   });
-  updateSquadCarouselVisibility();
 }
 function renderAvailablePlayers(){
   if(!els.availablePlayers)return;
