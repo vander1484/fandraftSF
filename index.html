@@ -398,6 +398,23 @@ body.display-mode .display-only-watermark{display:block}
 }
 
 
+/* Streaming ticker for the live broadcast display */
+.streaming-ticker{margin-top:14px;display:grid;grid-template-columns:auto minmax(0,1fr);align-items:center;gap:10px;border-radius:24px;background:linear-gradient(135deg,rgba(55,0,60,.96),rgba(95,0,105,.9));color:white;border:1px solid rgba(255,255,255,.22);box-shadow:0 20px 58px rgba(55,0,60,.22);overflow:hidden;min-height:54px}
+.ticker-label{align-self:stretch;display:flex;align-items:center;padding:0 16px;background:linear-gradient(135deg,var(--pl-mint),var(--pl-cyan));color:var(--pl-purple);font-weight:1000;text-transform:uppercase;letter-spacing:.12em;font-size:.74rem;white-space:nowrap}
+.ticker-viewport{min-width:0;overflow:hidden;white-space:nowrap;mask-image:linear-gradient(90deg,transparent 0,#000 4%,#000 96%,transparent 100%)}
+.ticker-track{display:inline-flex;align-items:center;gap:0;white-space:nowrap;will-change:transform;animation:tickerScroll var(--ticker-duration,48s) linear infinite}
+.ticker-item{display:inline-flex;align-items:center;gap:8px;margin-right:34px;font-weight:950;color:white;text-shadow:0 2px 10px rgba(0,0,0,.28)}
+.ticker-item:before{content:"";width:10px;height:10px;border-radius:50%;background:var(--pl-pink);box-shadow:0 0 0 5px rgba(233,0,82,.16)}
+.ticker-item strong{color:var(--pl-mint)}
+.ticker-item .ticker-muted{color:rgba(255,255,255,.72);font-weight:850}
+.streaming-ticker:hover .ticker-track{animation-play-state:paused}
+body.display-mode .streaming-ticker{position:fixed;left:14px;right:14px;bottom:12px;z-index:35;margin-top:0;box-shadow:0 22px 70px rgba(0,0,0,.36);min-height:58px}
+body.display-mode .app-shell{padding-bottom:84px}
+body.display-mode .display-only-watermark{bottom:78px}
+@keyframes tickerScroll{0%{transform:translateX(0)}100%{transform:translateX(-50%)}}
+@media(max-width:720px){.streaming-ticker{grid-template-columns:1fr}.ticker-label{justify-content:center;padding:8px 12px}.ticker-viewport{padding:0 0 10px}}
+@media(prefers-reduced-motion:reduce){.ticker-track{animation:none;transform:none}.ticker-viewport{overflow:auto;mask-image:none}.streaming-ticker:hover .ticker-track{animation-play-state:running}}
+
 /* Squad line-up lightbox */
 .team-card{cursor:pointer;transition:transform .16s ease,box-shadow .16s ease,border-color .16s ease}
 .team-card:hover{transform:translateY(-2px);box-shadow:0 18px 42px rgba(55,0,60,.16);border-color:rgba(55,0,60,.28)}
@@ -523,6 +540,10 @@ body.display-mode .live-insight-column .money-left span,body.display-mode .live-
           <section class="squads-section"><div class="section-title-row"><div><p class="eyebrow">Live squads</p><h2>Teams as they fill</h2></div><div class="display-actions"><button id="presentationModeBtn" class="primary-btn">Presentation mode</button><button id="openDisplayBtn" class="secondary-btn">Open display window</button><button id="copyDisplayLinkBtn" class="secondary-btn">Copy display link</button></div></div><div id="squadGrid" class="squad-grid"></div></section>
         </div>
         <aside class="leader-card live-insight-column" id="insightPanel" title="Click to expand this dashboard panel"><div class="card-header"><div><span class="pill" id="insightTitle">Budget table</span><span class="expand-hint">Click to expand</span><h3 class="carousel-title" id="insightSubtitle">Spend by team</h3></div><div class="carousel-meta"><span class="carousel-dot active" data-insight-dot="0"></span><span class="carousel-dot" data-insight-dot="1"></span><span class="carousel-dot" data-insight-dot="2"></span><span class="carousel-dot" data-insight-dot="3"></span><span class="muted" id="insightTimer">30s</span></div></div><div id="budgetTable" class="budget-table"></div></aside>
+      </div>
+      <div id="streamingTicker" class="streaming-ticker" aria-live="polite">
+        <div class="ticker-label">Draft ticker</div>
+        <div class="ticker-viewport"><div id="tickerTrack" class="ticker-track"></div></div>
       </div>
     </section>
 
@@ -672,6 +693,7 @@ function renderAll(){
     ["live panel",renderLivePanel],
     ["budget table",renderBudgetTable],
     ["live squads",renderSquads],
+    ["streaming ticker",renderStreamingTicker],
     ["available players",renderAvailablePlayers],
     ["squad removal controls",renderSquadRemovalControls],
     ["commissioner panel",renderCommissionerPanel],
@@ -713,6 +735,59 @@ function renderAuctionFilterOptions(available){if(!els.auctionPositionFilter||!e
 function getAuctionFilteredPlayers(){const q=(auctionSearchDraft||els.auctionPlayerSearch?.value||"").trim().toLowerCase();const pos=els.auctionPositionFilter?.value||"";const club=els.auctionClubFilter?.value||"";return getAvailablePlayers(state).filter(p=>{const hay=[p.name,p.fullName,p.club,p.clubShort,p.position,String(p.points||0)].join(" ").toLowerCase();return (!q||hay.includes(q))&&(!pos||normalisePosition(p.position)===pos)&&(!club||p.club===club)}).sort((a,b)=>{const qa=q&&a.name.toLowerCase().startsWith(q)?-1:0;const qb=q&&b.name.toLowerCase().startsWith(q)?-1:0;return qa-qb||b.points-a.points||a.name.localeCompare(b.name)})}
 function renderAuctionPlayerFinder(){if(!els.auctionPlayerResults)return;const selectedId=els.playerSelect?.value||"";const selected=selectedId?state.players.find(p=>p.id===selectedId):null;if(selected&&document.activeElement!==els.auctionPlayerSearch&&auctionSearchDraft===selected.name&&els.auctionPlayerSearch){els.auctionPlayerSearch.value=selected.name}const results=getAuctionFilteredPlayers();els.auctionPlayerResults.innerHTML=results.length?results.map(p=>{const selectedClass=p.id===selectedId?" active":"";const playerInitials=initials(p.name);const photo=playerPhotoUrl(p);return `<button type="button" class="auction-player-option${selectedClass}" data-player-id="${p.id}"><span class="mini-photo">${photo?`<img src="${escapeAttr(photo)}" alt="" onerror="this.parentElement.textContent='${escapeAttr(playerInitials)}'">`:escapeHtml(playerInitials)}</span><span><strong>${escapeHtml(p.name)}</strong><small>${escapeHtml(p.club)} | ${p.position} | ${p.points} pts | ${formatLastSeasonPrice(p.lastSeasonPrice)}</small></span><span class="option-price">£${Number(p.guidePrice||0)}m</span></button>`}).join(""):`<p class="help-text">No available players match that search and filter combination.</p>`;els.auctionPlayerResults.querySelectorAll(".auction-player-option").forEach(btn=>btn.addEventListener("click",()=>selectAuctionFinderPlayer(btn.dataset.playerId)));if(els.auctionPlayerMeta){const selectedText=selected?`Selected: ${selected.name} | ${selected.club} | ${selected.position} | ${selected.points} pts`:`${getAvailablePlayers(state).length} available players. Showing ${results.length}.`;els.auctionPlayerMeta.textContent=selectedText}}
 function selectAuctionFinderPlayer(id){const p=state.players.find(x=>x.id===id&&!getPlayerAssignment(x.id,state));if(!p)return;els.playerSelect.value=p.id;auctionSearchDraft=p.name;if(els.auctionPlayerSearch)els.auctionPlayerSearch.value=p.name;renderAuctionPlayerFinder();renderEligibilityPanel();if(presentationOpen)renderPresentationMode()}
+
+function renderStreamingTicker(){
+  if(!els.tickerTrack)return;
+  const items=getStreamingTickerItems();
+  const safeItems=items.length?items:["Welcome to the Fantasy Draft Auction | select a player in Admin to begin"];
+  const itemHtml=safeItems.map(item=>`<span class="ticker-item">${tickerTextHtml(item)}</span>`).join("");
+  els.tickerTrack.innerHTML=itemHtml+itemHtml;
+  const totalChars=safeItems.join(" ").length;
+  const duration=Math.max(36,Math.min(92,totalChars*.18));
+  els.tickerTrack.style.setProperty("--ticker-duration",`${duration}s`);
+}
+function tickerTextHtml(text){
+  const escaped=escapeHtml(text);
+  return escaped.replace(/^(LIVE LOT|LEADING BID|LATEST DEAL|RECORD DEAL|BUDGET WATCH|SQUAD WATCH|SLOTS LEFT|AUCTION PROGRESS|BLIND AUCTION|STILL AVAILABLE|COMMISSIONER):/,(match,label)=>`<strong>${label}:</strong>`);
+}
+function getStreamingTickerItems(){
+  const items=[];
+  const p=currentPlayer();
+  const leader=state.teams.find(t=>t.id===state.leadingBidderId);
+  if(p){
+    items.push(`LIVE LOT: ${p.name} | ${p.club} | ${p.position} | ${p.points} pts | guide £${p.guidePrice}m`);
+    items.push(`LEADING BID: ${leader?leader.name:"no leading bidder yet"} | £${Number(state.currentBid||0)}m`);
+  }else{
+    items.push("LIVE LOT: awaiting the next player selection from Admin");
+  }
+  const deals=getCompletedDeals(state).sort((a,b)=>Number(b.price||0)-Number(a.price||0));
+  const recentLog=(state.log||[]).find(Boolean);
+  if(recentLog)items.push(`LATEST DEAL: ${recentLog}`);
+  if(deals.length){
+    const record=deals[0];
+    items.push(`RECORD DEAL: ${record.player.name} to ${record.team.name} for £${record.price}m`);
+  }
+  const totalSlots=(state.teams||[]).length*Number(state.squadSize||15);
+  const filledSlots=getCompletedDeals(state).length;
+  const slotsLeft=Math.max(0,totalSlots-filledSlots);
+  const progress=totalSlots?Math.round((filledSlots/totalSlots)*100):0;
+  items.push(`AUCTION PROGRESS: ${progress}% complete | ${filledSlots}/${totalSlots} squad slots filled`);
+  items.push(`SLOTS LEFT: ${slotsLeft} total places still to fill across all squads`);
+  const budgetLeaders=[...(state.teams||[])].sort((a,b)=>(state.budget-teamSpent(b))-(state.budget-teamSpent(a))).slice(0,2);
+  if(budgetLeaders.length){
+    items.push(`BUDGET WATCH: most money left | ${budgetLeaders.map(t=>`${t.name} £${state.budget-teamSpent(t)}m`).join(" | ")}`);
+  }
+  const nearlyFull=(state.teams||[]).filter(t=>(t.squad||[]).length>=Math.max(1,state.squadSize-3)&&((t.squad||[]).length<state.squadSize)).sort((a,b)=>(b.squad||[]).length-(a.squad||[]).length)[0];
+  if(nearlyFull)items.push(`SQUAD WATCH: ${nearlyFull.name} is close to full | ${(nearlyFull.squad||[]).length}/${state.squadSize} signed`);
+  const topAvailable=getAvailablePlayers(state).sort((a,b)=>Number(b.points||0)-Number(a.points||0)).slice(0,3);
+  if(topAvailable.length)items.push(`STILL AVAILABLE: ${topAvailable.map(x=>`${x.name} ${x.points} pts`).join(" | ")}`);
+  const blindTargets=POSITIONS.map(pos=>{const player=getBlindPlayer(pos);return player?`${pos}: ${player.name}`:`${pos}: not set`});
+  items.push(`BLIND AUCTION: ${blindTargets.join(" | ")}`);
+  const latestCorrection=(state.correctionHistory||[])[0];
+  if(latestCorrection)items.push(`COMMISSIONER: latest correction | ${latestCorrection.details||latestCorrection.action}`);
+  return items.slice(0,12);
+}
+
 function renderLivePanel(){const p=currentPlayer();const team=state.teams.find(t=>t.id===state.leadingBidderId);renderLivePlayerArt(p);if(!p){els.auctionStatus.textContent="Awaiting selection";if(els.playerInitials)els.playerInitials.textContent="?";els.currentClub.innerHTML=`<span class="club-badge">?</span>Select a player in Admin`;els.currentName.textContent="No player selected";els.currentPosition.textContent="Position";els.currentPoints.textContent="0 pts last season";els.currentPrice.textContent="Guide £0.0m";els.currentLastPrice.textContent="Last season £0m";els.currentNotes.textContent="The selected player will appear here for everyone watching the live display."}else{els.auctionStatus.textContent="Bidding live";if(els.playerInitials)els.playerInitials.textContent=initials(p.name);els.currentClub.innerHTML=`${badgeHtml(p)}${escapeHtml(p.club)}`;els.currentName.textContent=p.name;els.currentPosition.textContent=p.position;els.currentPoints.textContent=`${p.points} pts last season`;els.currentPrice.textContent=`Guide £${p.guidePrice}m`;els.currentLastPrice.textContent=formatLastSeasonPrice(p.lastSeasonPrice);els.currentNotes.textContent=p.note||""}els.currentBid.textContent=`£${state.currentBid}m`;els.leadingBidder.textContent=team?.name||"None"}
 function renderLivePlayerArt(player){if(!els.livePlayerArt||!els.livePlayerCard)return;const url=playerPhotoUrl(player);els.livePlayerCard.classList.toggle("has-photo",!!url);if(url){const fallback=livePlayerFallbackHtml(player).replace(/"/g,"&quot;").replace(/'/g,"&#39;");els.livePlayerArt.innerHTML=`<img src="${escapeHtml(url)}" alt="${escapeHtml(player.name)}" onerror="this.closest('.shirt-card').classList.remove('has-photo');this.parentElement.innerHTML='${fallback}'">`;return}els.livePlayerArt.innerHTML=livePlayerFallbackHtml(player)}
 function renderBudgetTable(){renderInsightCarousel();const sortedTeams=[...state.teams].sort((a,b)=>{const remainingDiff=(state.budget-teamSpent(b))-(state.budget-teamSpent(a));if(remainingDiff!==0)return remainingDiff;const spentDiff=teamSpent(a)-teamSpent(b);if(spentDiff!==0)return spentDiff;return a.name.localeCompare(b.name)});els.blindBudgetTable.innerHTML=sortedTeams.map(budgetRowHtml).join("")}
