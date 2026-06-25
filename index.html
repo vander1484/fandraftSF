@@ -1070,6 +1070,32 @@ body.display-mode .display-squad-carousel-viewport,body.display-mode .display-sq
 @media(max-width:1500px){body.display-mode .display-squad-board{grid-template-columns:repeat(6,minmax(0,1fr))!important;grid-template-rows:repeat(2,minmax(0,1fr))!important}body.display-mode .auction-card{grid-template-columns:minmax(0,1fr) minmax(340px,.7fr)!important}}
 @media(max-width:1000px){body.display-mode .display-squad-board{grid-template-columns:repeat(3,minmax(0,1fr))!important;grid-template-rows:repeat(4,minmax(0,1fr))!important}body.display-mode .auction-card{grid-template-columns:1fr!important}.key-bids{display:none!important}}
 
+
+
+/* 15-slot squad board: fixed slots, grey empties, filled signings highlighted */
+body.display-mode .broadcast-team-card{grid-template-rows:auto minmax(0,1fr) auto!important;gap:4px!important}
+body.display-mode .broadcast-column-head{grid-template-columns:30px minmax(0,1fr)!important;grid-template-rows:auto!important;padding-bottom:4px!important}
+body.display-mode .broadcast-column-head .manager-avatar-large{grid-row:auto!important;width:30px!important;height:30px!important;flex-basis:30px!important}
+body.display-mode .broadcast-column-title .team-name{font-size:clamp(.68rem,.76vw,.9rem)!important}
+body.display-mode .broadcast-column-title .team-subtitle{font-size:clamp(.52rem,.58vw,.68rem)!important}
+body.display-mode .broadcast-column-head .budget-badge{display:none!important}
+body.display-mode .broadcast-squad-list{display:grid!important;grid-template-rows:repeat(15,minmax(0,1fr))!important;gap:2px!important;align-content:stretch!important;height:100%!important;min-height:0!important;overflow:hidden!important}
+body.display-mode .broadcast-squad-slot{min-width:0!important;display:grid!important;grid-template-columns:19px minmax(0,1fr) 31px!important;gap:3px!important;align-items:center!important;border-radius:6px!important;border:1px solid rgba(55,0,60,.08)!important;padding:1px 3px!important;min-height:0!important;overflow:hidden!important}
+body.display-mode .broadcast-squad-slot.empty{background:#ece7ef!important;color:#8b8090!important;border-color:rgba(55,0,60,.06)!important;opacity:.64!important}
+body.display-mode .broadcast-squad-slot.filled{background:linear-gradient(90deg,rgba(0,255,135,.22),rgba(4,245,255,.13))!important;color:var(--pl-purple)!important;border-color:rgba(0,255,135,.42)!important;opacity:1!important}
+body.display-mode .broadcast-squad-slot.empty .broadcast-mini-pos{background:#d8cddc!important;color:#6f6275!important}
+body.display-mode .broadcast-squad-slot.filled .broadcast-mini-pos{background:var(--pl-purple)!important;color:#fff!important}
+body.display-mode .broadcast-slot-name{min-width:0!important;display:grid!important;gap:0!important;line-height:1!important}
+body.display-mode .broadcast-slot-name strong{font-size:clamp(.48rem,.55vw,.68rem)!important;line-height:1!important;white-space:nowrap!important;overflow:hidden!important;text-overflow:ellipsis!important;color:inherit!important}
+body.display-mode .broadcast-slot-name small{font-size:clamp(.39rem,.44vw,.52rem)!important;line-height:1!important;white-space:nowrap!important;overflow:hidden!important;text-overflow:ellipsis!important;color:var(--muted)!important}
+body.display-mode .broadcast-squad-slot.empty .broadcast-slot-name small{color:#9a8fa0!important}
+body.display-mode .broadcast-mini-pos{font-size:clamp(.42rem,.47vw,.55rem)!important;border-radius:4px!important;padding:1px 0!important;line-height:1!important}
+body.display-mode .broadcast-mini-fee{font-size:clamp(.44rem,.5vw,.62rem)!important;line-height:1!important;text-align:right!important;font-weight:1000!important;color:var(--pl-pink)!important;white-space:nowrap!important;overflow:hidden!important;text-overflow:ellipsis!important}
+body.display-mode .broadcast-squad-slot.empty .broadcast-mini-fee{color:#9a8fa0!important}
+body.display-mode .broadcast-column-footer{display:flex!important;justify-content:space-between!important;align-items:center!important;gap:4px!important;border-top:1px solid #efe7f2!important;padding-top:3px!important;min-width:0!important}
+body.display-mode .broadcast-column-footer span{font-size:clamp(.44rem,.5vw,.6rem)!important;line-height:1!important;text-transform:uppercase!important;letter-spacing:.08em!important;font-weight:1000!important;color:var(--muted)!important}
+body.display-mode .broadcast-column-footer strong{font-size:clamp(.62rem,.75vw,.92rem)!important;line-height:1!important;color:var(--pl-purple)!important;white-space:nowrap!important}
+
 </style>
 </head>
 <body>
@@ -1412,19 +1438,26 @@ function updateSquadCarouselVisibility(){
   dots.forEach((dot,i)=>dot.classList.toggle("active",i===squadCarouselIndex));
 }
 function displaySquadCarouselCardHtml(team){
-  const signed=signedPlayersForTeam(team).sort((a,b)=>{
-    const pa=POSITIONS.indexOf(normalisePosition(a.player.position));
-    const pb=POSITIONS.indexOf(normalisePosition(b.player.position));
-    if(pa!==pb)return pa-pb;
-    return String(a.player.name||"").localeCompare(String(b.player.name||""));
+  const signedByPosition=POSITIONS.reduce((acc,pos)=>{acc[pos]=[];return acc;},{});
+  signedPlayersForTeam(team).forEach(item=>{
+    const pos=normalisePosition(item.player.position);
+    if(signedByPosition[pos])signedByPosition[pos].push(item);
   });
+  POSITIONS.forEach(pos=>signedByPosition[pos].sort((a,b)=>String(a.player.name||"").localeCompare(String(b.player.name||""))));
   const spend=teamSpent(team);
   const remaining=state.budget-spend;
-  const playerRows=signed.length?signed.map(({player,price,type})=>{
-    const pos=normalisePosition(player.position)||player.position||"?";
-    return `<div class="broadcast-squad-player"><span class="broadcast-mini-pos">${escapeHtml(pos)}</span><strong>${escapeHtml(player.name)}</strong><span class="broadcast-mini-fee">£${price}m</span></div>`;
-  }).join(""):`<div class="broadcast-empty-squad">Awaiting first signing</div>`;
-  return `<article class="team-card display-carousel-team-card broadcast-team-card" data-team-id="${escapeAttr(team.id)}" tabindex="0" role="button" aria-label="Open ${escapeAttr(team.name)} line-up"><div class="broadcast-column-head">${managerAvatarHtml(team,"manager-avatar-large team-manager-avatar")}<div class="broadcast-column-title"><h3 class="team-name">${escapeHtml(team.name)}</h3><p class="team-subtitle">${escapeHtml(managerLabel(team))}</p></div><div class="budget-badge">£${remaining}m</div></div><div class="broadcast-squad-list">${playerRows}</div></article>`;
+  const slotRows=POSITIONS.map(pos=>{
+    const items=signedByPosition[pos]||[];
+    return Array.from({length:POSITION_LIMITS[pos]},(_,idx)=>{
+      const item=items[idx];
+      if(item){
+        const typeLabel=item.type==="blind"?"Blind":item.type==="auto"?"Auto":"Sold";
+        return `<div class="broadcast-squad-slot filled"><span class="broadcast-mini-pos">${escapeHtml(pos)}</span><span class="broadcast-slot-name"><strong>${escapeHtml(item.player.name)}</strong><small>${escapeHtml(item.player.clubShort||item.player.club||typeLabel)}</small></span><span class="broadcast-mini-fee">£${item.price}m</span></div>`;
+      }
+      return `<div class="broadcast-squad-slot empty"><span class="broadcast-mini-pos">${escapeHtml(pos)}</span><span class="broadcast-slot-name"><strong>${escapeHtml(pos)} slot</strong><small>Empty</small></span><span class="broadcast-mini-fee">-</span></div>`;
+    }).join("");
+  }).join("");
+  return `<article class="team-card display-carousel-team-card broadcast-team-card" data-team-id="${escapeAttr(team.id)}" tabindex="0" role="button" aria-label="Open ${escapeAttr(team.name)} line-up"><div class="broadcast-column-head">${managerAvatarHtml(team,"manager-avatar-large team-manager-avatar")}<div class="broadcast-column-title"><h3 class="team-name">${escapeHtml(team.name)}</h3><p class="team-subtitle">${escapeHtml(managerLabel(team))}</p></div></div><div class="broadcast-squad-list">${slotRows}</div><div class="broadcast-column-footer"><span>Remaining</span><strong>£${remaining}m</strong></div></article>`;
 }
 function standardSquadCardHtml(team){
   const signed=(team.squad||[])
