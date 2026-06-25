@@ -322,8 +322,7 @@ body.display-mode .player-stage{grid-template-columns:210px minmax(0,1fr);gap:24
 body.display-mode .shirt-card{height:210px;border-radius:34px}
 body.display-mode .shirt-card.has-photo .live-player-art img{max-height:178px}
 body.display-mode .key-bids strong{font-size:clamp(2.5rem,4.5vw,5rem)}
-body.display-mode .display-only-watermark{display:block}
-.display-only-watermark{display:none;position:fixed;right:18px;bottom:12px;z-index:20;border-radius:999px;padding:8px 12px;background:rgba(55,0,60,.78);color:white;font-size:.78rem;font-weight:1000;letter-spacing:.08em;text-transform:uppercase;backdrop-filter:blur(10px)}
+.display-only-watermark{display:none!important}
 @media(max-width:1180px){body.display-mode .live-layout{grid-template-columns:1fr}body.display-mode .live-insight-column{height:auto;position:relative;top:auto}body.display-mode .squad-grid{max-height:none}body.display-mode .squads-section{min-height:auto}}
 @media(max-width:1180px){.live-layout{grid-template-columns:1fr}.live-insight-column{min-height:auto;overflow:visible}.live-insight-column .insight-carousel{overflow:visible}.live-insight-column .spotlight-summary{grid-template-columns:repeat(auto-fit,minmax(140px,1fr))}}
 @media(max-width:720px){.key-bids{grid-template-columns:1fr}.blind-lot-card{grid-template-columns:64px minmax(0,1fr)}.player-portrait{width:64px;height:76px}}
@@ -409,7 +408,6 @@ body.display-mode .display-only-watermark{display:block}
 .ticker-item .ticker-muted{color:rgba(255,255,255,.72);font-weight:850}
 .streaming-ticker:hover .ticker-track{animation-play-state:paused}
 body.display-mode .streaming-ticker{position:fixed;left:14px;right:14px;top:10px;bottom:auto;z-index:35;margin-top:0;box-shadow:0 22px 70px rgba(0,0,0,.36);min-height:58px}
-body.display-mode .display-only-watermark{bottom:12px}
 @keyframes tickerScroll{0%{transform:translateX(0)}100%{transform:translateX(-50%)}}
 @media(max-width:720px){.streaming-ticker{grid-template-columns:1fr}.ticker-label{justify-content:center;padding:8px 12px}.ticker-viewport{padding:0 0 10px}}
 @media(prefers-reduced-motion:reduce){.ticker-track{animation:none;transform:none}.ticker-viewport{overflow:auto;mask-image:none}.streaming-ticker:hover .ticker-track{animation-play-state:running}}
@@ -1080,7 +1078,7 @@ body.display-mode .broadcast-column-title .team-name{font-size:clamp(.68rem,.76v
 body.display-mode .broadcast-column-title .team-subtitle{font-size:clamp(.52rem,.58vw,.68rem)!important}
 body.display-mode .broadcast-column-head .budget-badge{display:none!important}
 body.display-mode .broadcast-squad-list{display:grid!important;grid-template-rows:repeat(15,minmax(0,1fr))!important;gap:2px!important;align-content:stretch!important;height:100%!important;min-height:0!important;overflow:hidden!important}
-body.display-mode .broadcast-squad-slot{min-width:0!important;display:grid!important;grid-template-columns:19px minmax(0,1fr) 31px!important;gap:3px!important;align-items:center!important;border-radius:6px!important;border:1px solid rgba(55,0,60,.08)!important;padding:1px 3px!important;min-height:0!important;overflow:hidden!important}
+body.display-mode .broadcast-squad-slot{min-width:0!important;display:grid!important;grid-template-columns:18px 20px minmax(0,1fr) 31px!important;gap:3px!important;align-items:center!important;border-radius:6px!important;border:1px solid rgba(55,0,60,.08)!important;padding:1px 3px!important;min-height:0!important;overflow:hidden!important}
 body.display-mode .broadcast-squad-slot.empty{background:#ece7ef!important;color:#8b8090!important;border-color:rgba(55,0,60,.06)!important;opacity:.64!important}
 body.display-mode .broadcast-squad-slot.filled{background:linear-gradient(90deg,rgba(0,255,135,.22),rgba(4,245,255,.13))!important;color:var(--pl-purple)!important;border-color:rgba(0,255,135,.42)!important;opacity:1!important}
 body.display-mode .broadcast-squad-slot.empty .broadcast-mini-pos{background:#d8cddc!important;color:#6f6275!important}
@@ -1090,6 +1088,10 @@ body.display-mode .broadcast-slot-name strong{font-size:clamp(.48rem,.55vw,.68re
 body.display-mode .broadcast-slot-name small{font-size:clamp(.39rem,.44vw,.52rem)!important;line-height:1!important;white-space:nowrap!important;overflow:hidden!important;text-overflow:ellipsis!important;color:var(--muted)!important}
 body.display-mode .broadcast-squad-slot.empty .broadcast-slot-name small{color:#9a8fa0!important}
 body.display-mode .broadcast-mini-pos{font-size:clamp(.42rem,.47vw,.55rem)!important;border-radius:4px!important;padding:1px 0!important;line-height:1!important}
+body.display-mode .broadcast-slot-thumb{width:20px!important;height:20px!important;border-radius:50%!important;display:grid!important;place-items:center!important;background:#ded5e3!important;color:#6f6275!important;border:1px solid rgba(55,0,60,.1)!important;overflow:hidden!important;font-size:.42rem!important;font-weight:1000!important;line-height:1!important;flex:0 0 20px!important}
+body.display-mode .broadcast-slot-thumb img{width:100%!important;height:100%!important;object-fit:cover!important;display:block!important}
+body.display-mode .broadcast-squad-slot.filled .broadcast-slot-thumb{background:linear-gradient(135deg,var(--pl-mint),var(--pl-cyan))!important;color:var(--pl-purple)!important;border-color:rgba(0,255,135,.45)!important}
+body.display-mode .broadcast-squad-slot.empty .broadcast-slot-thumb{opacity:.45!important}
 body.display-mode .broadcast-mini-fee{font-size:clamp(.44rem,.5vw,.62rem)!important;line-height:1!important;text-align:right!important;font-weight:1000!important;color:var(--pl-pink)!important;white-space:nowrap!important;overflow:hidden!important;text-overflow:ellipsis!important}
 body.display-mode .broadcast-squad-slot.empty .broadcast-mini-fee{color:#9a8fa0!important}
 body.display-mode .broadcast-column-footer{display:flex!important;justify-content:space-between!important;align-items:center!important;gap:4px!important;border-top:1px solid #efe7f2!important;padding-top:3px!important;min-width:0!important}
@@ -1193,7 +1195,7 @@ body.display-mode .broadcast-column-footer strong{font-size:clamp(.62rem,.75vw,.
   </div>
 </div>
 
-<div class="display-only-watermark">Display mode</div>
+
 
 <div id="insightSpotlight" class="insight-spotlight" aria-hidden="true"><div class="insight-spotlight-card" role="dialog" aria-modal="true" aria-labelledby="spotlightTitle"><div class="spotlight-header"><div><p class="eyebrow">Expanded dashboard</p><h2 id="spotlightTitle">Budget table</h2><p class="muted" id="spotlightSubtitle">Spend by team</p></div><button id="closeSpotlightBtn" class="spotlight-close">Close</button></div><div id="spotlightBody" class="spotlight-body"></div><div id="spotlightControls" class="spotlight-controls"></div></div></div>
 
@@ -1452,9 +1454,12 @@ function displaySquadCarouselCardHtml(team){
       const item=items[idx];
       if(item){
         const typeLabel=item.type==="blind"?"Blind":item.type==="auto"?"Auto":"Sold";
-        return `<div class="broadcast-squad-slot filled"><span class="broadcast-mini-pos">${escapeHtml(pos)}</span><span class="broadcast-slot-name"><strong>${escapeHtml(item.player.name)}</strong><small>${escapeHtml(item.player.clubShort||item.player.club||typeLabel)}</small></span><span class="broadcast-mini-fee">£${item.price}m</span></div>`;
+        const photo=playerPhotoUrl(item.player);
+        const playerInitials=initials(item.player.name);
+        const thumb=photo?`<span class="broadcast-slot-thumb"><img src="${escapeAttr(photo)}" alt="" onerror="this.parentElement.textContent='${escapeAttr(playerInitials)}'"></span>`:`<span class="broadcast-slot-thumb">${escapeHtml(playerInitials)}</span>`;
+        return `<div class="broadcast-squad-slot filled"><span class="broadcast-mini-pos">${escapeHtml(pos)}</span>${thumb}<span class="broadcast-slot-name"><strong>${escapeHtml(item.player.name)}</strong><small>${escapeHtml(item.player.clubShort||item.player.club||typeLabel)}</small></span><span class="broadcast-mini-fee">£${item.price}m</span></div>`;
       }
-      return `<div class="broadcast-squad-slot empty"><span class="broadcast-mini-pos">${escapeHtml(pos)}</span><span class="broadcast-slot-name"><strong>${escapeHtml(pos)} slot</strong><small>Empty</small></span><span class="broadcast-mini-fee">-</span></div>`;
+      return `<div class="broadcast-squad-slot empty"><span class="broadcast-mini-pos">${escapeHtml(pos)}</span><span class="broadcast-slot-thumb"></span><span class="broadcast-slot-name"><strong>${escapeHtml(pos)} slot</strong><small>Empty</small></span><span class="broadcast-mini-fee">-</span></div>`;
     }).join("");
   }).join("");
   return `<article class="team-card display-carousel-team-card broadcast-team-card" data-team-id="${escapeAttr(team.id)}" tabindex="0" role="button" aria-label="Open ${escapeAttr(team.name)} line-up"><div class="broadcast-column-head">${managerAvatarHtml(team,"manager-avatar-large team-manager-avatar")}<div class="broadcast-column-title"><h3 class="team-name">${escapeHtml(team.name)}</h3><p class="team-subtitle">${escapeHtml(managerLabel(team))}</p></div></div><div class="broadcast-squad-list">${slotRows}</div><div class="broadcast-column-footer"><span>Remaining</span><strong>£${remaining}m</strong></div></article>`;
@@ -1691,3 +1696,4 @@ async function importPlayerFile(event){const file=event.target.files?.[0];if(!fi
 </script>
 </body>
 </html>
+<!-- Display marker removed and slot player thumbnails added. -->
