@@ -957,6 +957,83 @@ body.display-mode .live-insight-column .insight-carousel{max-height:none;overflo
   body.display-mode .display-squad-carousel-viewport{height:520px}
 }
 
+
+
+/* Broadcast display overhaul: prioritise readable selected player line-ups */
+body.display-mode .app-shell{padding:78px 10px 10px;background:transparent}
+body.display-mode .live-layout{height:calc(100vh - 88px);min-height:0;grid-template-columns:minmax(0,3.4fr) minmax(270px,.72fr);gap:10px;align-items:stretch}
+body.display-mode .live-main-column{display:grid;grid-template-rows:clamp(150px,22vh,205px) minmax(0,1fr);gap:10px;min-height:0}
+body.display-mode .auction-card{height:100%;min-height:0;padding:10px 14px;border-radius:22px;display:grid;grid-template-rows:auto minmax(0,1fr) auto;overflow:hidden}
+body.display-mode .auction-card .card-header{margin:0 0 2px}
+body.display-mode .auction-card .card-header .muted{font-size:.78rem}
+body.display-mode .player-stage{grid-template-columns:108px minmax(0,1fr);gap:14px;margin:0;align-items:center;min-height:0}
+body.display-mode .shirt-card{width:108px;height:108px;border-radius:20px}
+body.display-mode .shirt-card.has-photo .live-player-art img{max-height:98px}
+body.display-mode .club-line{font-size:.82rem;margin:0 0 2px}
+body.display-mode .player-info h2{font-size:clamp(2.15rem,4.1vw,4.35rem);line-height:.82;letter-spacing:-.075em;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+body.display-mode .meta-row{gap:5px;margin:5px 0}
+body.display-mode .meta-row span{font-size:.72rem;padding:4px 7px;line-height:1}
+body.display-mode .notes{font-size:.78rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+body.display-mode .key-bids{grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;margin-top:4px}
+body.display-mode .key-bids>div{padding:8px 12px;border-radius:16px;min-height:58px}
+body.display-mode .key-bids .label{font-size:.63rem;letter-spacing:.13em}
+body.display-mode .key-bids strong{font-size:clamp(1.95rem,3.2vw,3.45rem);line-height:.82;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+body.display-mode .squads-section{height:100%;min-height:0;margin:0;padding:14px;border-radius:24px;display:grid;grid-template-rows:auto minmax(0,1fr);overflow:hidden;background:rgba(255,255,255,.96)}
+body.display-mode .squads-section .section-title-row{margin:0 0 8px;align-items:end}
+body.display-mode .squads-section .eyebrow{font-size:.66rem}
+body.display-mode .squads-section h2{font-size:clamp(1.55rem,2.1vw,2.25rem);margin:4px 0 0;color:var(--pl-purple);line-height:.9}
+body.display-mode #squadGrid.squad-grid{height:100%;display:block;overflow:hidden;min-height:0}
+body.display-mode .display-squad-carousel-viewport{height:calc(100% - 30px);min-height:0;display:block;overflow:hidden;border-radius:20px}
+body.display-mode .display-squad-carousel-page{height:100%;width:100%;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;align-items:stretch}
+body.display-mode .display-carousel-team-card.broadcast-team-card{height:100%;min-height:0;max-height:none;padding:12px;border-radius:20px;display:grid;grid-template-rows:auto 8px minmax(0,1fr);gap:9px;overflow:hidden;background:linear-gradient(135deg,#fff,#fbf7fd);border:1px solid rgba(55,0,60,.16);box-shadow:0 10px 28px rgba(55,0,60,.1)}
+body.display-mode .broadcast-team-head{display:grid;grid-template-columns:minmax(0,1fr) auto auto;gap:10px;align-items:center;min-width:0}
+body.display-mode .broadcast-team-head .manager-avatar-large{width:46px;height:46px;flex-basis:46px}
+body.display-mode .broadcast-team-head .team-name{font-size:clamp(1.1rem,1.45vw,1.42rem);line-height:.94;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin:0;color:var(--pl-purple)}
+body.display-mode .broadcast-team-head .team-subtitle{font-size:.76rem;line-height:1.05;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin:2px 0 0}
+body.display-mode .broadcast-team-stats{display:grid;justify-items:center;background:#f4edf7;border:1px solid var(--line);border-radius:15px;padding:6px 10px;min-width:64px}
+body.display-mode .broadcast-team-stats strong{font-size:1.25rem;color:var(--pl-purple);line-height:1;letter-spacing:-.04em}
+body.display-mode .broadcast-team-stats span{font-size:.58rem;color:var(--muted);font-weight:1000;text-transform:uppercase;letter-spacing:.1em}
+body.display-mode .broadcast-team-head .budget-badge{font-size:1rem;padding:8px 10px;white-space:nowrap}
+body.display-mode .broadcast-fill-bar{height:8px;background:#efe7f2;border-radius:999px;overflow:hidden;border:1px solid var(--line)}
+body.display-mode .broadcast-fill-bar i{display:block;height:100%;background:linear-gradient(90deg,var(--pl-pink),var(--pl-cyan),var(--pl-mint));border-radius:999px}
+body.display-mode .broadcast-position-grid{min-height:0;display:grid;grid-template-rows:1.1fr 1.7fr 1.7fr 1.25fr;gap:7px;overflow:hidden}
+body.display-mode .broadcast-pos-group{min-height:0;border:1px solid var(--line);border-radius:15px;background:#fff;display:grid;grid-template-rows:auto minmax(0,1fr);overflow:hidden}
+body.display-mode .broadcast-pos-group header{display:flex;justify-content:space-between;gap:8px;align-items:center;padding:6px 8px;border-bottom:1px solid #efe7f2;background:#fbf7fd}
+body.display-mode .broadcast-pos-group header span{font-weight:1000;color:var(--pl-purple);font-size:.78rem}
+body.display-mode .broadcast-pos-group header em{font-style:normal;font-weight:1000;font-size:.64rem;text-transform:uppercase;letter-spacing:.08em;color:var(--muted)}
+body.display-mode .broadcast-pos-group.complete header{background:linear-gradient(90deg,rgba(0,255,135,.28),#fff)}
+body.display-mode .broadcast-pos-group.partial header{background:linear-gradient(90deg,rgba(255,228,138,.55),#fff)}
+body.display-mode .broadcast-pos-group.empty header{background:linear-gradient(90deg,rgba(233,0,82,.12),#fff)}
+body.display-mode .broadcast-pos-players{display:grid;gap:4px;align-content:start;padding:5px 6px;overflow:hidden;min-height:0}
+body.display-mode .broadcast-player-row{display:grid;grid-template-columns:32px minmax(0,1fr) 46px;gap:6px;align-items:center;border-radius:10px;background:#f8f3fa;border:1px solid rgba(55,0,60,.09);padding:4px 6px;min-height:30px}
+body.display-mode .broadcast-pos{display:none}
+body.display-mode .broadcast-player-main{min-width:0}
+body.display-mode .broadcast-player-main strong{display:block;font-size:clamp(.82rem,1.02vw,1rem);line-height:1.02;color:var(--pl-purple);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+body.display-mode .broadcast-player-main small{display:flex;align-items:center;gap:4px;font-size:clamp(.62rem,.78vw,.74rem);line-height:1;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+body.display-mode .broadcast-player-main .club-badge{width:18px;height:18px;border-radius:6px;margin-right:2px;flex:0 0 18px}
+body.display-mode .broadcast-fee{font-size:.82rem;font-weight:1000;color:var(--pl-pink);text-align:right;white-space:nowrap}
+body.display-mode .broadcast-empty-line{font-size:.74rem;color:var(--muted);font-weight:850;padding:5px 7px;border:1px dashed rgba(55,0,60,.18);border-radius:10px;background:#fbf8fc}
+body.display-mode .display-squad-carousel-status{height:26px;margin-top:4px;font-size:.7rem;letter-spacing:.12em;color:var(--pl-purple)}
+body.display-mode .display-squad-carousel-dot{width:8px;height:8px}.display-squad-carousel-dot.active{width:28px}
+body.display-mode .live-insight-column{height:calc(100vh - 88px);min-height:0;max-height:calc(100vh - 88px);padding:10px;border-radius:22px;position:sticky;top:78px;overflow:hidden}
+body.display-mode .live-insight-column .card-header{margin-bottom:4px}
+body.display-mode .live-insight-column .pill{padding:6px 9px;font-size:.7rem}
+body.display-mode .live-insight-column .carousel-title{font-size:.92rem}
+body.display-mode .live-insight-column .card-header .muted{font-size:.78rem}
+body.display-mode .live-insight-column .insight-carousel{height:calc(100% - 44px);max-height:none;overflow:hidden;padding:0}
+body.display-mode .live-insight-column .spotlight-summary{display:none}
+body.display-mode .live-insight-column .insight-table{gap:6px}
+body.display-mode .live-insight-column .insight-row{grid-template-columns:26px minmax(0,1fr);padding:6px 7px;border-radius:13px}
+body.display-mode .live-insight-column .rank-badge{width:23px;height:23px;border-radius:8px;font-size:.66rem}
+body.display-mode .live-insight-column .insight-main strong{font-size:.8rem;line-height:1.05}
+body.display-mode .live-insight-column .insight-main small{font-size:.64rem}
+body.display-mode .live-insight-column .insight-meta{gap:3px;margin-top:2px}
+body.display-mode .live-insight-column .insight-chip{font-size:.54rem;padding:2px 4px}
+body.display-mode .live-insight-column .money-left,body.display-mode .live-insight-column .deal-price,body.display-mode .live-insight-column .points-metric{padding-top:5px;font-size:.72rem}
+body.display-mode .live-insight-column .money-left strong,body.display-mode .live-insight-column .deal-price strong,body.display-mode .live-insight-column .points-metric strong{font-size:.82rem}
+body.display-mode .live-insight-column .money-left span,body.display-mode .live-insight-column .deal-price span,body.display-mode .live-insight-column .points-metric span{font-size:.5rem}
+@media(max-width:1250px){body.display-mode .live-layout{grid-template-columns:1fr}body.display-mode .live-insight-column{display:none}body.display-mode .display-squad-carousel-page{grid-template-columns:1fr}body.display-mode .live-main-column{grid-template-rows:clamp(150px,24vh,205px) minmax(560px,1fr)}}
+
 </style>
 </head>
 <body>
@@ -1299,25 +1376,28 @@ function updateSquadCarouselVisibility(){
   dots.forEach((dot,i)=>dot.classList.toggle("active",i===squadCarouselIndex));
 }
 function displaySquadCarouselCardHtml(team){
-  const signed=(team.squad||[])
-    .map(item=>({player:state.players.find(p=>p.id===item.playerId),price:item.price,type:item.type}))
-    .filter(x=>x.player);
+  const signed=signedPlayersForTeam(team);
   const signedByPosition=POSITIONS.reduce((acc,pos)=>{acc[pos]=[];return acc;},{});
   signed.forEach(item=>{
     const pos=normalisePosition(item.player.position);
     if(signedByPosition[pos])signedByPosition[pos].push(item);
   });
-  const filledSlots=POSITIONS.flatMap(pos=>(signedByPosition[pos]||[]).map(({player,price,type})=>
-    `<div class="slot filled display-compact-slot"><span class="pos">${escapeHtml(pos)}</span><span><strong>${escapeHtml(player.name)}</strong><small>${badgeHtml(player)}${escapeHtml(player.club)}${type==="blind"?" | blind auction":type==="auto"?" | auto-complete":""}</small></span><span class="price">£${price}m</span></div>`
-  )).join("");
-  const needs=POSITIONS.map(pos=>{
+  const positionGroups=POSITIONS.map(pos=>{
+    const rows=(signedByPosition[pos]||[]).map(({player,price,type})=>{
+      const source=type==="blind"?"Blind":type==="auto"?"Auto":"Auction";
+      return `<div class="broadcast-player-row"><span class="broadcast-pos">${escapeHtml(pos)}</span><div class="broadcast-player-main"><strong>${escapeHtml(player.name)}</strong><small>${badgeHtml(player)}${escapeHtml(player.club)} • ${source}</small></div><span class="broadcast-fee">£${price}m</span></div>`;
+    }).join("");
     const have=(signedByPosition[pos]||[]).length;
     const missing=Math.max(0,POSITION_LIMITS[pos]-have);
-    return missing>0?`<span class="display-need-chip">${pos} ${missing} left</span>`:`<span class="display-need-chip complete">${pos} complete</span>`;
+    const stateClass=missing===0?"complete":have>0?"partial":"empty";
+    const label=missing===0?"complete":`${missing} left`;
+    return `<section class="broadcast-pos-group ${stateClass}"><header><span>${escapeHtml(pos)}</span><em>${have}/${POSITION_LIMITS[pos]} ${label}</em></header><div class="broadcast-pos-players">${rows||`<div class="broadcast-empty-line">No ${escapeHtml(pos)} signed yet</div>`}</div></section>`;
   }).join("");
-  const needsRow=`<div class="display-squad-needs-row"><span class="display-needs-label">Still needs</span><div class="display-needs-chips">${needs}</div></div>`;
-  const emptyMessage=signed.length?"":`<div class="carousel-empty display-compact-empty">Awaiting first signing. Required build: GK 2, DEF 5, MID 5, FWD 3.</div>`;
-  return `<article class="team-card display-carousel-team-card" data-team-id="${escapeAttr(team.id)}" tabindex="0" role="button" aria-label="Open ${escapeAttr(team.name)} line-up"><div class="team-top"><div class="team-identity">${managerAvatarHtml(team,"manager-avatar-large team-manager-avatar")}<div><h3 class="team-name">${escapeHtml(team.name)}</h3><p class="team-subtitle">${signed.length} of ${state.squadSize} signed</p><span class="manager-line team-manager-name">${escapeHtml(managerLabel(team))}</span></div></div><div class="budget-badge">£${state.budget-teamSpent(team)}m</div></div><div class="team-rule-row"><span>Max per club: ${state.maxPerClub}</span><span>${escapeHtml(clubWarning(team))}</span></div>${teamRuleBadgesHtml(team)}<div class="slots display-carousel-slots">${filledSlots||emptyMessage}</div>${needsRow}</article>`;
+  const spend=teamSpent(team);
+  const remaining=state.budget-spend;
+  const signedCount=signed.length;
+  const completedPct=state.squadSize?Math.round((signedCount/state.squadSize)*100):0;
+  return `<article class="team-card display-carousel-team-card broadcast-team-card" data-team-id="${escapeAttr(team.id)}" tabindex="0" role="button" aria-label="Open ${escapeAttr(team.name)} line-up"><div class="broadcast-team-head"><div class="team-identity">${managerAvatarHtml(team,"manager-avatar-large team-manager-avatar")}<div><h3 class="team-name">${escapeHtml(team.name)}</h3><p class="team-subtitle">${escapeHtml(managerLabel(team))}</p></div></div><div class="broadcast-team-stats"><strong>${signedCount}/${state.squadSize}</strong><span>signed</span></div><div class="budget-badge">£${remaining}m</div></div><div class="broadcast-fill-bar"><i style="width:${completedPct}%"></i></div><div class="broadcast-position-grid">${positionGroups}</div></article>`;
 }
 function standardSquadCardHtml(team){
   const signed=(team.squad||[])
@@ -1348,12 +1428,17 @@ function renderSquads(){
     return;
   }
   if(IS_DISPLAY_MODE){
-    const teamsPerPage=3;
+    const teamsPerPage=2;
+    const displayTeams=[...teams].sort((a,b)=>{
+      const filledDiff=(b.squad||[]).length-(a.squad||[]).length;
+      if(filledDiff!==0)return filledDiff;
+      return String(a.name||"").localeCompare(String(b.name||""));
+    });
     const pages=[];
-    for(let i=0;i<teams.length;i+=teamsPerPage)pages.push(teams.slice(i,i+teamsPerPage));
+    for(let i=0;i<displayTeams.length;i+=teamsPerPage)pages.push(displayTeams.slice(i,i+teamsPerPage));
     if(squadCarouselIndex>=pages.length)squadCarouselIndex=0;
-    const pageHtml=pages.map((page,pageIndex)=>`<section class="display-squad-carousel-page ${pageIndex===squadCarouselIndex?"active":""}" aria-label="Squad carousel page ${pageIndex+1} of ${pages.length}">${page.map(displaySquadCarouselCardHtml).join("")}</section>`).join("");
-    const dots=pages.length>1?`<div class="display-squad-carousel-status"><span>Squad carousel</span><div class="display-squad-carousel-dots">${pages.map((_,i)=>`<span class="display-squad-carousel-dot ${i===squadCarouselIndex?"active":""}"></span>`).join("")}</div><span>${squadCarouselIndex+1}/${pages.length}</span></div>`:"";
+    const pageHtml=pages.map((page,pageIndex)=>`<section class="display-squad-carousel-page ${pageIndex===squadCarouselIndex?"active":""}" aria-label="Squad line-up page ${pageIndex+1} of ${pages.length}">${page.map(displaySquadCarouselCardHtml).join("")}</section>`).join("");
+    const dots=pages.length>1?`<div class="display-squad-carousel-status"><span>Line-up pages</span><div class="display-squad-carousel-dots">${pages.map((_,i)=>`<span class="display-squad-carousel-dot ${i===squadCarouselIndex?"active":""}"></span>`).join("")}</div><span>${squadCarouselIndex+1}/${pages.length}</span></div>`:"";
     els.squadGrid.innerHTML=`<div class="display-squad-carousel-viewport">${pageHtml}</div>${dots}`;
     updateSquadCarouselVisibility();
   }else{
