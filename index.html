@@ -1098,6 +1098,147 @@ body.display-mode .broadcast-column-footer{display:flex!important;justify-conten
 body.display-mode .broadcast-column-footer span{font-size:clamp(.44rem,.5vw,.6rem)!important;line-height:1!important;text-transform:uppercase!important;letter-spacing:.08em!important;font-weight:1000!important;color:var(--muted)!important}
 body.display-mode .broadcast-column-footer strong{font-size:clamp(.62rem,.75vw,.92rem)!important;line-height:1!important;color:var(--pl-purple)!important;white-space:nowrap!important}
 
+
+
+/* Six-team rotating broadcast squad pages: more horizontal room for readable names */
+body.display-mode #squadGrid.squad-grid{
+  height:100%!important;
+  min-height:0!important;
+  display:grid!important;
+  grid-template-rows:minmax(0,1fr) auto!important;
+  gap:5px!important;
+  overflow:hidden!important;
+}
+body.display-mode .broadcast-six-team-viewport{
+  display:block!important;
+  position:relative!important;
+  height:100%!important;
+  min-height:0!important;
+  overflow:hidden!important;
+  border-radius:18px!important;
+}
+body.display-mode .display-squad-carousel-page.broadcast-six-team-page{
+  position:absolute!important;
+  inset:0!important;
+  height:100%!important;
+  width:100%!important;
+  display:grid!important;
+  grid-template-columns:repeat(6,minmax(0,1fr))!important;
+  grid-template-rows:1fr!important;
+  gap:8px!important;
+  align-items:stretch!important;
+  opacity:0!important;
+  transform:translateX(22px)!important;
+  pointer-events:none!important;
+  transition:opacity .7s ease,transform .7s ease!important;
+}
+body.display-mode .display-squad-carousel-page.broadcast-six-team-page.active{
+  position:relative!important;
+  opacity:1!important;
+  transform:translateX(0)!important;
+  pointer-events:auto!important;
+}
+body.display-mode .display-squad-carousel-status{
+  display:flex!important;
+  height:18px!important;
+  margin:1px 0 0!important;
+  justify-content:center!important;
+  align-items:center!important;
+  gap:8px!important;
+  color:var(--muted)!important;
+  font-size:clamp(.48rem,.56vw,.66rem)!important;
+  font-weight:1000!important;
+  text-transform:uppercase!important;
+  letter-spacing:.1em!important;
+  line-height:1!important;
+}
+body.display-mode .display-squad-carousel-dot{
+  display:block!important;
+  width:7px!important;
+  height:7px!important;
+  border-radius:999px!important;
+  background:#d8c7de!important;
+}
+body.display-mode .display-squad-carousel-dot.active{
+  width:22px!important;
+  background:var(--pl-pink)!important;
+}
+body.display-mode .broadcast-six-team-page .broadcast-team-card{
+  padding:8px!important;
+  border-radius:15px!important;
+  gap:6px!important;
+}
+body.display-mode .broadcast-six-team-page .broadcast-column-head{
+  grid-template-columns:38px minmax(0,1fr)!important;
+  padding-bottom:6px!important;
+  gap:5px!important;
+}
+body.display-mode .broadcast-six-team-page .broadcast-column-head .manager-avatar-large{
+  width:38px!important;
+  height:38px!important;
+  flex-basis:38px!important;
+  font-size:.68rem!important;
+}
+body.display-mode .broadcast-six-team-page .broadcast-column-title .team-name{
+  font-size:clamp(.86rem,1.03vw,1.18rem)!important;
+  line-height:.96!important;
+}
+body.display-mode .broadcast-six-team-page .broadcast-column-title .team-subtitle{
+  font-size:clamp(.62rem,.74vw,.86rem)!important;
+  line-height:1!important;
+}
+body.display-mode .broadcast-six-team-page .broadcast-squad-list{
+  gap:3px!important;
+}
+body.display-mode .broadcast-six-team-page .broadcast-squad-slot{
+  grid-template-columns:22px 26px minmax(0,1fr) 42px!important;
+  gap:5px!important;
+  padding:2px 5px!important;
+  border-radius:8px!important;
+}
+body.display-mode .broadcast-six-team-page .broadcast-mini-pos{
+  font-size:clamp(.5rem,.56vw,.65rem)!important;
+  border-radius:5px!important;
+}
+body.display-mode .broadcast-six-team-page .broadcast-slot-thumb{
+  width:26px!important;
+  height:26px!important;
+  flex-basis:26px!important;
+  font-size:.5rem!important;
+}
+body.display-mode .broadcast-six-team-page .broadcast-slot-name strong{
+  font-size:clamp(.64rem,.74vw,.9rem)!important;
+  line-height:1.02!important;
+}
+body.display-mode .broadcast-six-team-page .broadcast-slot-name small{
+  font-size:clamp(.48rem,.56vw,.68rem)!important;
+  line-height:1!important;
+}
+body.display-mode .broadcast-six-team-page .broadcast-mini-fee{
+  font-size:clamp(.56rem,.66vw,.78rem)!important;
+}
+body.display-mode .broadcast-six-team-page .broadcast-column-footer{
+  padding-top:5px!important;
+}
+body.display-mode .broadcast-six-team-page .broadcast-column-footer span{
+  font-size:clamp(.5rem,.58vw,.68rem)!important;
+}
+body.display-mode .broadcast-six-team-page .broadcast-column-footer strong{
+  font-size:clamp(.78rem,.92vw,1.08rem)!important;
+}
+@media(max-width:1500px){
+  body.display-mode .display-squad-carousel-page.broadcast-six-team-page{
+    grid-template-columns:repeat(3,minmax(0,1fr))!important;
+    grid-template-rows:repeat(2,minmax(0,1fr))!important;
+  }
+}
+@media(max-width:1000px){
+  body.display-mode .display-squad-carousel-page.broadcast-six-team-page{
+    grid-template-columns:repeat(2,minmax(0,1fr))!important;
+    grid-template-rows:repeat(3,minmax(0,1fr))!important;
+  }
+}
+
 </style>
 </head>
 <body>
@@ -1429,7 +1570,7 @@ function startSquadCarousel(){
       squadCarouselIndex=(squadCarouselIndex+1)%pages.length;
       updateSquadCarouselVisibility();
     }
-  },16000);
+  },45000);
 }
 function updateSquadCarouselVisibility(){
   const pages=Array.from(els.squadGrid?.querySelectorAll?.(".display-squad-carousel-page")||[]);
@@ -1494,7 +1635,14 @@ function renderSquads(){
   }
   if(IS_DISPLAY_MODE){
     const displayTeams=[...teams].slice(0,12);
-    els.squadGrid.innerHTML=`<div class="display-squad-board" aria-label="All current squad line-ups">${displayTeams.map(displaySquadCarouselCardHtml).join("")}</div>`;
+    const pageSize=6;
+    const pages=[];
+    for(let i=0;i<displayTeams.length;i+=pageSize)pages.push(displayTeams.slice(i,i+pageSize));
+    if(squadCarouselIndex>=pages.length)squadCarouselIndex=0;
+    const pageHtml=pages.map((page,pageIndex)=>`<div class="display-squad-carousel-page broadcast-six-team-page ${pageIndex===squadCarouselIndex?"active":""}" data-page="${pageIndex}">${page.map(displaySquadCarouselCardHtml).join("")}</div>`).join("");
+    const dots=pages.length>1?`<div class="display-squad-carousel-status"><span>Squad page</span><span class="display-squad-carousel-dots">${pages.map((_,i)=>`<i class="display-squad-carousel-dot ${i===squadCarouselIndex?"active":""}"></i>`).join("")}</span><span>${squadCarouselIndex+1}/${pages.length}</span></div>`:"";
+    els.squadGrid.innerHTML=`<div class="display-squad-carousel-viewport broadcast-six-team-viewport" aria-label="Current squad line-ups, rotating six teams per page">${pageHtml}</div>${dots}`;
+    startSquadCarousel();
   }else{
     els.squadGrid.innerHTML=teams.map(standardSquadCardHtml).join("");
   }
