@@ -1239,6 +1239,77 @@ body.display-mode .broadcast-six-team-page .broadcast-column-footer strong{
   }
 }
 
+
+
+/* Full-width six-team pages: use the whole broadcast pane and float the page key */
+body.display-mode .squads-section{
+  position:relative!important;
+}
+body.display-mode #squadGrid.squad-grid{
+  width:100%!important;
+  max-width:none!important;
+  height:100%!important;
+  min-height:0!important;
+  display:grid!important;
+  grid-template-columns:1fr!important;
+  grid-template-rows:minmax(0,1fr)!important;
+  gap:0!important;
+  overflow:hidden!important;
+}
+body.display-mode .broadcast-six-team-viewport{
+  grid-column:1 / -1!important;
+  grid-row:1!important;
+  width:100%!important;
+  max-width:none!important;
+  height:100%!important;
+  min-height:0!important;
+}
+body.display-mode .display-squad-carousel-page.broadcast-six-team-page{
+  width:100%!important;
+  max-width:none!important;
+  grid-template-columns:repeat(6,minmax(0,1fr))!important;
+  grid-template-rows:1fr!important;
+}
+body.display-mode .display-squad-carousel-page.broadcast-six-team-page.active{
+  position:absolute!important;
+  inset:0!important;
+}
+body.display-mode .display-squad-carousel-status{
+  position:absolute!important;
+  top:12px!important;
+  right:18px!important;
+  z-index:8!important;
+  width:auto!important;
+  height:auto!important;
+  margin:0!important;
+  padding:6px 10px!important;
+  display:flex!important;
+  justify-content:flex-end!important;
+  align-items:center!important;
+  gap:8px!important;
+  border-radius:999px!important;
+  background:rgba(255,255,255,.92)!important;
+  border:1px solid rgba(55,0,60,.12)!important;
+  box-shadow:0 8px 22px rgba(55,0,60,.10)!important;
+  color:var(--pl-purple)!important;
+  pointer-events:none!important;
+}
+body.display-mode .display-squad-carousel-status span:first-child{
+  white-space:nowrap!important;
+}
+@media(max-width:900px){
+  body.display-mode .display-squad-carousel-page.broadcast-six-team-page{
+    grid-template-columns:repeat(3,minmax(0,1fr))!important;
+    grid-template-rows:repeat(2,minmax(0,1fr))!important;
+  }
+}
+@media(max-width:620px){
+  body.display-mode .display-squad-carousel-page.broadcast-six-team-page{
+    grid-template-columns:repeat(2,minmax(0,1fr))!important;
+    grid-template-rows:repeat(3,minmax(0,1fr))!important;
+  }
+}
+
 </style>
 </head>
 <body>
