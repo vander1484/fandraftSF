@@ -1626,8 +1626,8 @@ const samplePlayers=[
 {name:"Jarrod Bowen",club:"West Ham United",position:"MID",points:182,guidePrice:8,lastSeasonPrice:37,note:"Consistent minutes and goal involvement."}
 ];
 const defaultTeams=["Kev's Kestrels","The Gegenpress","No Kane No Gain","Expected Toulouse","Ctrl Alt De Ligt","Tea & Busquets"];
-let state=loadState();let els={};const IS_DISPLAY_MODE=new URLSearchParams(location.search).get("display")==="live";let insightSlideIndex=0;let insightCarouselTimer=null;let squadCarouselIndex=0;let squadCarouselTimer=null;let insightSpotlightOpen=false;let presentationOpen=false;let endgameSlideIndex=0;let endgameTimer=null;let saleSequenceTimer=null;let auctionSearchDraft="";let auctionBidderDraftId="";let lastDisplaySyncJson="";let lastRenderedLotMotionKey="";let lastRenderedNominationMotionKey="";let nominationReorderMotionPending=false;
-document.addEventListener("DOMContentLoaded",()=>{bindElements();bindEvents();if(IS_DISPLAY_MODE){applyDisplayMode();startDisplayStateSync();startSquadCarousel()}startInsightCarousel();renderAll();refreshPlayerStatsFromSnapshotIfNeeded(false);});
+let state=loadState();let els={};const IS_DISPLAY_MODE=new URLSearchParams(location.search).get("display")==="live";let insightSlideIndex=0;let insightCarouselTimer=null;let squadCarouselIndex=0;let squadCarouselTimer=null;let insightSpotlightOpen=false;let presentationOpen=false;let endgameSlideIndex=0;let endgameTimer=null;let saleSequenceTimer=null;let auctionSearchDraft="";let auctionBidderDraftId="";let lastDisplaySyncJson="";let lastRenderedLotMotionKey="";let lastRenderedNominationMotionKey="";let nominationReorderMotionPending=false;const liveStatsHydrationInFlight=new Set();
+document.addEventListener("DOMContentLoaded",()=>{bindElements();bindEvents();if(IS_DISPLAY_MODE){applyDisplayMode();startDisplayStateSync();startSquadCarousel()}startInsightCarousel();renderAll();refreshPlayerStatsFromSnapshotIfNeeded(false).then(changed=>{if(!changed)refreshPlayerStatsFromHistoricalCsvIfNeeded(false);}).catch(()=>refreshPlayerStatsFromHistoricalCsvIfNeeded(false));});
 if(channel){channel.onmessage=e=>{if(e.data==="state-update"){syncDisplayStateFromStorage();}else if(e.data&&e.data.type==="state-full"&&e.data.payload){applyDisplaySyncedState(e.data.payload);try{localStorage.setItem(STORAGE_KEY,JSON.stringify(state))}catch(err){}}else if(e.data&&e.data.type==="sold-event"){handleSoldDisplayEvent(e.data.payload)}}}
 window.addEventListener("storage",e=>{if(e.key===STORAGE_KEY||e.key===LIVE_SYNC_KEY){syncDisplayStateFromStorage();}else if(e.key===SOLD_EVENT_KEY&&e.newValue){try{handleSoldDisplayEvent(JSON.parse(e.newValue))}catch(err){}}});
 function applyDisplaySyncedState(nextState,force=false){
@@ -1707,19 +1707,269 @@ function setPlayerPoolMode(mode,fromButton=false){mode=mode==="fpl"?"fpl":"manua
 function renderPlayerSourceMode(){const mode=currentPoolMode();if(els.playerPoolMode)els.playerPoolMode.value=mode;if(els.manualPoolPanel)els.manualPoolPanel.classList.toggle("active",mode==="manual");if(els.fplPoolPanel)els.fplPoolPanel.classList.toggle("active",mode==="fpl");if(els.playerSourceStatus){const src=state.playerPoolSource||{};if(mode==="fpl")els.playerSourceStatus.textContent=src.locked?`FPL snapshot mode is active and locked with ${src.count||state.players.length} players.`:"FPL snapshot mode is selected. Import the saved GitHub snapshot before starting, or switch back to manual CSV if the file is missing.";else els.playerSourceStatus.textContent=`Manual CSV mode is active with ${state.players.length} players in the current pool. You can still switch to the GitHub FPL snapshot before the auction starts.`}}
 function renderFplImportStatus(){if(!els.fplImportStatus)return;renderPlayerSourceMode();const box=els.fplImportStatus.closest(".fpl-import-box");const src=state.playerPoolSource||{};if(box){box.classList.toggle("imported",src.type==="fpl"&&src.locked);box.classList.toggle("error",!!src.lastError)}if(src.type==="fpl"&&src.locked){const rawWhen=src.snapshotGeneratedAt||src.importedAt;const when=rawWhen?new Date(rawWhen).toLocaleString("en-GB",{dateStyle:"medium",timeStyle:"short"}):"unknown time";els.fplImportStatus.textContent=`Locked FPL snapshot active: ${src.count||state.players.length} players from snapshot generated on ${when}. The pool will not auto-sync during the auction.`}else if(src.lastError){els.fplImportStatus.textContent=`FPL snapshot import failed: ${src.lastError}. Run the GitHub Action to create data/fpl-players.json or switch to manual CSV.`}else if(src.type==="fpl"){els.fplImportStatus.textContent="FPL snapshot mode selected. Click Import saved FPL snapshot after the GitHub Action has generated data/fpl-players.json."}else if(src.type==="sample"){els.fplImportStatus.textContent=`Sample player pool active: ${src.count||state.players.length} players. Use the GitHub FPL snapshot when you want the current official player list.`}else{els.fplImportStatus.textContent="Manual CSV mode active. You can switch to FPL snapshot mode if you want to import the saved official player list."}}
 async function importLatestFplPlayers(){if(!els.importFplBtn)return;setPlayerPoolMode("fpl");const squadsUsed=state.teams.some(t=>(t.squad||[]).length);if(squadsUsed&&!confirm("Importing a new FPL snapshot after squads already contain players can remove unmatched old player records from squads. Continue?"))return;const originalText=els.importFplBtn.textContent;els.importFplBtn.disabled=true;els.importFplBtn.textContent="Importing...";if(els.fplImportStatus)els.fplImportStatus.textContent="Loading data/fpl-players.json from this GitHub Pages site...";setValidation("Importing saved FPL snapshot. This should only take a few seconds.","good");try{if(!window.fetch)throw new Error("This browser does not support fetch requests");const controller="AbortController" in window?new AbortController():null;const timer=controller?setTimeout(()=>controller.abort(),15000):null;let response;try{response=await fetch("data/fpl-players.json?cacheBust="+Date.now(),{cache:"no-store",signal:controller?.signal})}finally{if(timer)clearTimeout(timer)}if(!response.ok)throw new Error(`Could not load data/fpl-players.json, HTTP ${response.status}. Run the Update FPL Snapshot GitHub Action first.`);const data=await response.json();const imported=snapshotDataToPlayers(data);if(!imported.length)throw new Error("No players found in the saved FPL snapshot");const previous=state.players||[];const previousByFplId=new Map(previous.filter(p=>p.fplId).map(p=>[String(p.fplId),p]));const previousByNameClub=new Map(previous.map(p=>[`${normalKey(p.name)}|${normalKey(p.club)}`,p]));state.players=imported.map((p,i)=>{const old=previousByFplId.get(String(p.fplId))||previousByNameClub.get(`${normalKey(p.name)}|${normalKey(p.club)}`);return{...p,id:old?.id||p.id||`fpl-${p.fplId||i+1}`,soldTo:null,soldPrice:null}});state.playerPoolSource={type:"fpl",importedAt:new Date().toISOString(),snapshotGeneratedAt:data.generatedAt||data.updatedAt||null,locked:true,count:state.players.length,endpoint:"data/fpl-players.json",lastError:null};state.currentPlayerId=null;state.currentBid=0;state.leadingBidderId=null;autoPickBlindTargets(state,true);state=reconcileState(state);saveState();renderAll();setValidation(`Imported and locked ${state.players.length} players from the saved FPL snapshot. Manual CSV remains available as a fallback.`,"good")}catch(err){const message=err?.name==="AbortError"?"request timed out while loading the local snapshot":(err?.message||"unknown snapshot import error");state.playerPoolSource={...(state.playerPoolSource||{}),type:"fpl",locked:false,count:state.players.length,lastError:message};saveState();renderFplImportStatus();setValidation(`FPL snapshot import failed: ${message}. Run the GitHub Action or switch to manual CSV mode.`,"error")}finally{els.importFplBtn.disabled=false;els.importFplBtn.textContent=originalText}}
-function coalesceStatValue(source,keys){for(const key of keys){const value=source?.[key];if(value!==undefined&&value!==null&&value!=="")return value}return undefined}
+function coalesceStatValue(source,keys){for(const key of keys){const value=source?.[key];if(value!==undefined&&value!==null&&value!=="")return value}const normalisedKeys=new Map(Object.keys(source||{}).map(key=>[normalKey(key),key]));for(const key of keys){const actual=normalisedKeys.get(normalKey(key));const value=actual?source?.[actual]:undefined;if(value!==undefined&&value!==null&&value!=="")return value}return undefined}
 function readStatNumber(source,keys){const value=coalesceStatValue(source,keys);const n=Number(value);return Number.isFinite(n)?n:0}
+function mostRecentSeasonRecord(records){
+  if(!Array.isArray(records)||!records.length)return null;
+  const scoreSeason=rec=>{
+    const name=String(rec?.season_name||rec?.season||rec?.seasonName||"");
+    const years=(name.match(/\d{4}|\d{2}/g)||[]).map(Number);
+    if(years.length){
+      const last=years[years.length-1];
+      return last<100?2000+last:last;
+    }
+    return Number(rec?.season_end_year||rec?.seasonEndYear||rec?.year||0)||0;
+  };
+  return [...records].sort((a,b)=>scoreSeason(b)-scoreSeason(a))[0]||records[records.length-1];
+}
+function firstObject(...items){return items.find(item=>item&&typeof item==="object"&&!Array.isArray(item))||{}}
 function addPlayerStatFields(target,source){
-  const nested=source?.stats||source?.lastSeasonStats||source?.last_season_stats||source?.history||{};
-  const merged={...(nested||{}),...(source||{})};
-  target.gamesPlayed=readStatNumber(merged,["gamesPlayed","games_played","appearances","matches_played","matchesPlayed","apps","played","starts"]);
-  target.starts=readStatNumber(merged,["starts","lineup_starts"]);
+  const lastSeason=firstObject(
+    source?.lastSeasonStats,
+    source?.last_season_stats,
+    source?.lastSeason,
+    source?.last_season,
+    source?.previousSeason,
+    source?.previous_season,
+    source?.seasonStats,
+    source?.season_stats,
+    mostRecentSeasonRecord(source?.history_past),
+    mostRecentSeasonRecord(source?.historyPast),
+    mostRecentSeasonRecord(source?.past),
+    source?.stats,
+    source?.history
+  );
+  const merged={...(lastSeason||{}),...(source||{})};
+  target.gamesPlayed=readStatNumber(merged,["gamesPlayed","games_played","appearances","appearance","matches_played","matchesPlayed","apps","played","games","games_played","starts","starts_per_90"]);
+  target.starts=readStatNumber(merged,["starts","lineup_starts","lineupStarts"]);
   target.minutes=readStatNumber(merged,["minutes","mins"]);
   target.goals=readStatNumber(merged,["goals","goals_scored","goalsScored"]);
   target.assists=readStatNumber(merged,["assists"]);
-  target.cleanSheets=readStatNumber(merged,["cleanSheets","clean_sheets","cleanSheetsMade","cs"]);
-  target.defCon=readStatNumber(merged,["defCon","def_con","defensive_contribution","defensive_contributions","defensiveContribution","defensiveContributions","defcon"]);
+  target.cleanSheets=readStatNumber(merged,["cleanSheets","clean_sheets","cleanSheetsMade","cleanSheet","clean_sheet","cs"]);
+  target.defCon=readStatNumber(merged,["defCon","def_con","defensive_contribution","defensive_contributions","defensiveContribution","defensiveContributions","defcon","dc"]);
+  if(!statNumber(target.points))target.points=readStatNumber(merged,["points","total_points","totalPoints"]);
   return target;
+}
+function livePlayerStatsMissing(player){
+  if(!player)return false;
+  return statNumber(player.points)>0&&(playerGamesPlayed(player)+statNumber(player.goals??player.goals_scored)+statNumber(player.assists)+statNumber(player.cleanSheets??player.clean_sheets)+statNumber(player.defCon??player.def_con??player.defensive_contribution??player.defensive_contributions)===0);
+}
+function mergeStatsIntoPlayerById(playerId,stats){
+  if(!playerId||!stats)return false;
+  let changed=false;
+  const apply=(p)=>{
+    if(!p||p.id!==playerId)return p;
+    const next={...p};
+    ["points","gamesPlayed","starts","minutes","goals","assists","cleanSheets","defCon"].forEach(key=>{
+      if(stats[key]!==undefined&&stats[key]!==null&&stats[key]!==""&&Number(stats[key])!==Number(next[key]||0)){next[key]=stats[key];changed=true;}
+    });
+    return next;
+  };
+  state.players=(state.players||[]).map(apply);
+  state.teams=(state.teams||[]).map(team=>({...team,squad:(team.squad||[]).map(apply)}));
+  return changed;
+}
+function statsFromFplRecord(record){
+  if(!record)return null;
+  const out={};
+  addPlayerStatFields(out,record);
+  return out;
+}
+async function hydrateLivePlayerStatsIfNeeded(player){
+  if(!player||!livePlayerStatsMissing(player))return false;
+  const key=String(player.fplId||player.id||player.name);
+  if(liveStatsHydrationInFlight.has(key))return false;
+  liveStatsHydrationInFlight.add(key);
+  try{
+    let stats=null;
+    if(player.fplId&&window.fetch){
+      try{
+        const res=await fetch(`https://fantasy.premierleague.com/api/element-summary/${encodeURIComponent(player.fplId)}/`,{cache:"no-store"});
+        if(res.ok){
+          const data=await res.json();
+          stats=statsFromFplRecord(mostRecentSeasonRecord(data?.history_past)||data);
+        }
+      }catch(err){console.warn("Could not load FPL element-summary stats",err)}
+    }
+    if((!stats||!statNumber(stats.goals)&&!statNumber(stats.assists)&&!statNumber(stats.cleanSheets)&&!statNumber(stats.gamesPlayed))&&window.fetch){
+      try{
+        const res=await fetch("https://fantasy.premierleague.com/api/bootstrap-static/",{cache:"no-store"});
+        if(res.ok){
+          const data=await res.json();
+          const el=(data.elements||[]).find(x=>String(x.id)===String(player.fplId)||String(x.code)===String(player.code)||normalKey(x.web_name)===normalKey(player.name));
+          if(el)stats=statsFromFplRecord(el);
+        }
+      }catch(err){console.warn("Could not load FPL bootstrap stats",err)}
+    }
+    if((!stats||!statNumber(stats.goals)&&!statNumber(stats.assists)&&!statNumber(stats.cleanSheets)&&!statNumber(stats.gamesPlayed))&&window.fetch){
+      try{
+        stats=await statsFromHistoricalCsv(player);
+      }catch(err){console.warn("Could not load historical CSV stats",err)}
+    }
+    if(stats&&mergeStatsIntoPlayerById(player.id,stats)){saveState();renderAll();return true;}
+    return false;
+  }finally{liveStatsHydrationInFlight.delete(key)}
+}
+const HISTORICAL_STATS_CSV_URLS=[
+  "data/last-season-player-stats.csv",
+  "data/fpl-last-season-stats.csv",
+  "https://raw.githubusercontent.com/vaastav/Fantasy-Premier-League/refs/heads/master/data/2024-25/players_raw.csv"
+];
+let historicalStatsCache=null;
+function csvLineToCells(line){
+  const cells=[];
+  let value="";
+  let quoted=false;
+  for(let i=0;i<line.length;i++){
+    const char=line[i];
+    if(char==='"'){
+      if(quoted&&line[i+1]==='"'){value+='"';i++;}
+      else quoted=!quoted;
+    }else if(char===","&&!quoted){cells.push(value);value="";}
+    else value+=char;
+  }
+  cells.push(value);
+  return cells;
+}
+function parseCsvRows(text){
+  const rows=[];
+  let row="";
+  let quoted=false;
+  for(let i=0;i<String(text||"").length;i++){
+    const char=text[i];
+    if(char==='"'){
+      if(quoted&&text[i+1]==='"'){row+='"';i++;}
+      else {quoted=!quoted;row+=char;}
+    }else if((char==='\n'||char==='\r')&&!quoted){
+      if(row.trim())rows.push(csvLineToCells(row));
+      row="";
+      if(char==='\r'&&text[i+1]==='\n')i++;
+    }else row+=char;
+  }
+  if(row.trim())rows.push(csvLineToCells(row));
+  if(!rows.length)return [];
+  const headers=rows[0].map(h=>String(h||"").trim());
+  return rows.slice(1).map(cells=>{
+    const obj={};
+    headers.forEach((h,i)=>obj[h]=cells[i]??"");
+    return obj;
+  });
+}
+function readAnyField(obj,names){
+  for(const name of names){
+    if(obj?.[name]!==undefined&&obj?.[name]!==null&&String(obj[name]).trim()!=="")return obj[name];
+  }
+  const lower=new Map(Object.keys(obj||{}).map(k=>[normalKey(k),k]));
+  for(const name of names){
+    const key=lower.get(normalKey(name));
+    if(key&&String(obj[key]).trim()!=="")return obj[key];
+  }
+  return "";
+}
+function fullNameFromStatsRecord(row){
+  const explicit=readAnyField(row,["full_name","fullName","name","player_name","playerName","display_name"]);
+  const first=readAnyField(row,["first_name","firstName"]);
+  const second=readAnyField(row,["second_name","secondName","surname","last_name","lastName"]);
+  return explicit||[first,second].filter(Boolean).join(" ").trim();
+}
+function initialSurnameKey(value){
+  const words=String(value||"").replace(/[.]/g," ").trim().split(/\s+/).filter(Boolean);
+  if(words.length<2)return normalKey(value);
+  return normalKey(`${words[0].charAt(0)} ${words[words.length-1]}`);
+}
+function playerAliasKeys(player){
+  const values=[player?.name,player?.fullName,player?.web_name,player?.secondName,player?.second_name].filter(Boolean);
+  const keys=new Set();
+  values.forEach(value=>{
+    keys.add(normalKey(value));
+    keys.add(initialSurnameKey(value));
+  });
+  return [...keys].filter(Boolean);
+}
+function statsRecordAliasKeys(row){
+  const full=fullNameFromStatsRecord(row);
+  const web=readAnyField(row,["web_name","webName","known_name","knownName"]);
+  const second=readAnyField(row,["second_name","secondName","surname","last_name","lastName"]);
+  const first=readAnyField(row,["first_name","firstName"]);
+  const keys=new Set();
+  [full,web,second,[first,second].filter(Boolean).join(" ")].filter(Boolean).forEach(value=>{
+    keys.add(normalKey(value));
+    keys.add(initialSurnameKey(value));
+  });
+  return [...keys].filter(Boolean);
+}
+function statsFromHistoricalRow(row){
+  const stats={};
+  stats.points=readStatNumber(row,["points","total_points","totalPoints"]);
+  stats.gamesPlayed=readStatNumber(row,["gamesPlayed","games_played","appearances","apps","matches_played","matchesPlayed","played","starts"]);
+  stats.starts=readStatNumber(row,["starts"]);
+  stats.minutes=readStatNumber(row,["minutes","mins"]);
+  stats.goals=readStatNumber(row,["goals","goals_scored","goalsScored"]);
+  stats.assists=readStatNumber(row,["assists"]);
+  stats.cleanSheets=readStatNumber(row,["cleanSheets","clean_sheets","cleanSheetsMade","cleanSheet","clean_sheet","cs"]);
+  stats.defCon=readStatNumber(row,["defCon","def_con","defensive_contribution","defensive_contributions","defensiveContribution","defensiveContributions","defcon","dc"]);
+  return stats;
+}
+async function loadHistoricalStatsIndex(){
+  if(historicalStatsCache)return historicalStatsCache;
+  const cache={byCode:new Map(),byFplId:new Map(),byAlias:new Map(),source:""};
+  for(const url of HISTORICAL_STATS_CSV_URLS){
+    try{
+      const res=await fetch(`${url}${url.includes("?")?"&":"?"}cacheBust=${Date.now()}`,{cache:"no-store"});
+      if(!res.ok)continue;
+      const rows=parseCsvRows(await res.text());
+      if(!rows.length)continue;
+      rows.forEach(row=>{
+        const stats=statsFromHistoricalRow(row);
+        const record={row,stats};
+        const code=String(readAnyField(row,["code","player_code","playerCode"])).trim();
+        const id=String(readAnyField(row,["id","element","element_id","fplId","fpl_id"])).trim();
+        if(code)cache.byCode.set(code,record);
+        if(id)cache.byFplId.set(id,record);
+        statsRecordAliasKeys(row).forEach(key=>{if(key&&!cache.byAlias.has(key))cache.byAlias.set(key,record)});
+      });
+      cache.source=url;
+      historicalStatsCache=cache;
+      return cache;
+    }catch(err){console.warn("Historical stats source failed",url,err)}
+  }
+  historicalStatsCache=cache;
+  return cache;
+}
+async function statsFromHistoricalCsv(player){
+  const cache=await loadHistoricalStatsIndex();
+  let record=null;
+  if(player?.code)record=cache.byCode.get(String(player.code));
+  if(!record&&player?.fplId)record=cache.byFplId.get(String(player.fplId));
+  if(!record){
+    for(const key of playerAliasKeys(player)){
+      record=cache.byAlias.get(key);
+      if(record)break;
+    }
+  }
+  return record?.stats||null;
+}
+async function refreshPlayerStatsFromHistoricalCsvIfNeeded(force=false){
+  if(!window.fetch||!state?.players?.length)return false;
+  const missing=(state.players||[]).some(p=>p&&livePlayerStatsMissing(p));
+  if(!force&&!missing)return false;
+  try{
+    const cache=await loadHistoricalStatsIndex();
+    if(!cache.source)return false;
+    let changed=false;
+    (state.players||[]).forEach(player=>{
+      if(!player||(!force&&!livePlayerStatsMissing(player)))return;
+      let record=null;
+      if(player.code)record=cache.byCode.get(String(player.code));
+      if(!record&&player.fplId)record=cache.byFplId.get(String(player.fplId));
+      if(!record){
+        for(const key of playerAliasKeys(player)){record=cache.byAlias.get(key);if(record)break;}
+      }
+      if(record&&mergeStatsIntoPlayerById(player.id,record.stats))changed=true;
+    });
+    if(changed){saveState();renderAll();}
+    return changed;
+  }catch(err){console.warn("Could not refresh stats from historical CSV",err);return false;}
 }
 function snapshotDataToPlayers(data){if(Array.isArray(data?.players))return data.players.map((p,i)=>{const player={id:p.id||`fpl-${p.fplId||p.fpl_id||i+1}`,fplId:p.fplId??p.fpl_id??null,code:p.code||p.playerCode||p.player_code||null,teamCode:p.teamCode??p.team_code??p.clubCode??p.club_code??null,clubShort:p.clubShort||p.club_short||"",name:p.name||p.web_name||`Player ${i+1}`,fullName:p.fullName||p.full_name||p.name||"",club:p.club||"Unknown club",position:normalisePosition(p.position),points:Number(p.points??p.total_points)||0,guidePrice:Number(p.guidePrice??p.guide_price??0)||0,lastSeasonPrice:Number(p.lastSeasonPrice??p.last_season_price??0)||0,note:p.note||"Imported from saved FPL snapshot.",badgeUrl:p.badgeUrl||p.badge_url||"",photoUrl:p.photoUrl||p.photo_url||p.imageUrl||p.image_url||"",status:p.status||"a",selectedByPercent:Number(p.selectedByPercent??p.selected_by_percent??0)||0};addPlayerStatFields(player,p);if(!player.photoUrl&&player.code)player.photoUrl=premierLeaguePhotoUrl(player.code);if(!player.badgeUrl&&player.teamCode)player.badgeUrl=premierLeagueBadgeUrl(player.teamCode);return player}).filter(p=>p.name&&p.club&&POSITIONS.includes(p.position));return fplDataToPlayers(data)}
 function fplDataToPlayers(data){const teams=new Map((data.teams||[]).map(t=>[t.id,t]));const types=new Map((data.element_types||[]).map(t=>[t.id,t]));return (data.elements||[]).map(el=>{const team=teams.get(el.team)||{};const type=types.get(el.element_type)||{};const pos=normalisePosition(type.singular_name_short||type.singular_name||el.element_type);const fullName=[el.first_name,el.second_name].filter(Boolean).join(" ").trim();const name=el.web_name||fullName||`Player ${el.id}`;const news=[el.status&&el.status!=="a"?`Status: ${el.status.toUpperCase()}`:"",el.news||"",el.chance_of_playing_next_round!=null?`Chance next round: ${el.chance_of_playing_next_round}%`:""].filter(Boolean).join(" | ");const player={id:`fpl-${el.id}`,fplId:el.id,code:el.code||null,teamCode:team.code||null,clubShort:team.short_name||"",name,fullName,club:team.name||team.short_name||"Unknown club",position:pos,points:Number(el.total_points)||0,guidePrice:Number(el.now_cost||0)/10,lastSeasonPrice:0,note:news||`Imported from official FPL. Selected by ${Number(el.selected_by_percent||0).toFixed(1)}% of teams.`,badgeUrl:team.code?premierLeagueBadgeUrl(team.code):"",photoUrl:el.code?premierLeaguePhotoUrl(el.code):"",status:el.status||"a",selectedByPercent:Number(el.selected_by_percent)||0};return addPlayerStatFields(player,el)}).filter(p=>p.name&&p.club&&POSITIONS.includes(p.position))}
@@ -2010,7 +2260,7 @@ function playerStatSummaryHtml(player){
   ];
   return stats.map(item=>`<div class="player-stat-card ${item.featured?"featured":""}"><span>${escapeHtml(item.label)}</span><strong>${item.value||item.value===0?escapeHtml(String(item.value)):"-"}</strong></div>`).join("");
 }
-function renderLivePanel(){const p=currentPlayer();const team=state.teams.find(t=>t.id===state.leadingBidderId);const lotMotionKey=p?`${p.id}|${state.nomination?.lastNominatorId||"none"}`:"none";const shouldAnimateLot=lotMotionKey!==lastRenderedLotMotionKey;lastRenderedLotMotionKey=lotMotionKey;renderLivePlayerArt(p);if(!p){els.auctionStatus.textContent="Awaiting selection";if(els.playerInitials)els.playerInitials.textContent="?";els.currentClub.innerHTML=`<span class="club-badge">?</span>Select a player in Admin`;els.currentName.textContent="No player selected";els.currentPosition.textContent="Position";els.currentPoints.textContent="0 pts last season";els.currentPrice.textContent="Guide £0.0m";els.currentLastPrice.textContent="Last season £0m";els.currentNotes.textContent="The selected player will appear here for everyone watching the live display.";if(els.currentStatsSummary)els.currentStatsSummary.innerHTML=playerStatSummaryHtml(null)}else{els.auctionStatus.textContent="Bidding live";if(els.playerInitials)els.playerInitials.textContent=initials(p.name);els.currentClub.innerHTML=`${badgeHtml(p)}${escapeHtml(p.club)}`;els.currentName.textContent=p.name;els.currentPosition.textContent=p.position;els.currentPoints.textContent=`${p.points} pts last season`;els.currentPrice.textContent=`Guide £${p.guidePrice}m`;els.currentLastPrice.textContent=formatLastSeasonPrice(p.lastSeasonPrice);els.currentNotes.textContent=p.note||"";if(els.currentStatsSummary)els.currentStatsSummary.innerHTML=playerStatSummaryHtml(p)}renderNominationLiveStrip(p);els.currentBid.textContent=`£${state.currentBid}m`;els.leadingBidder.textContent=team?.name||"None";if(shouldAnimateLot&&els.auctionCard){els.auctionCard.classList.remove("motion-lot-change");void els.auctionCard.offsetWidth;els.auctionCard.classList.add("motion-lot-change");setTimeout(()=>els.auctionCard?.classList.remove("motion-lot-change"),760)}}
+function renderLivePanel(){const p=currentPlayer();const team=state.teams.find(t=>t.id===state.leadingBidderId);const lotMotionKey=p?`${p.id}|${state.nomination?.lastNominatorId||"none"}`:"none";const shouldAnimateLot=lotMotionKey!==lastRenderedLotMotionKey;lastRenderedLotMotionKey=lotMotionKey;renderLivePlayerArt(p);if(!p){els.auctionStatus.textContent="Awaiting selection";if(els.playerInitials)els.playerInitials.textContent="?";els.currentClub.innerHTML=`<span class="club-badge">?</span>Select a player in Admin`;els.currentName.textContent="No player selected";els.currentPosition.textContent="Position";els.currentPoints.textContent="0 pts last season";els.currentPrice.textContent="Guide £0.0m";els.currentLastPrice.textContent="Last season £0m";els.currentNotes.textContent="The selected player will appear here for everyone watching the live display.";if(els.currentStatsSummary)els.currentStatsSummary.innerHTML=playerStatSummaryHtml(null)}else{els.auctionStatus.textContent="Bidding live";if(els.playerInitials)els.playerInitials.textContent=initials(p.name);els.currentClub.innerHTML=`${badgeHtml(p)}${escapeHtml(p.club)}`;els.currentName.textContent=p.name;els.currentPosition.textContent=p.position;els.currentPoints.textContent=`${p.points} pts last season`;els.currentPrice.textContent=`Guide £${p.guidePrice}m`;els.currentLastPrice.textContent=formatLastSeasonPrice(p.lastSeasonPrice);els.currentNotes.textContent=p.note||"";if(els.currentStatsSummary)els.currentStatsSummary.innerHTML=playerStatSummaryHtml(p);hydrateLivePlayerStatsIfNeeded(p)}renderNominationLiveStrip(p);els.currentBid.textContent=`£${state.currentBid}m`;els.leadingBidder.textContent=team?.name||"None";if(shouldAnimateLot&&els.auctionCard){els.auctionCard.classList.remove("motion-lot-change");void els.auctionCard.offsetWidth;els.auctionCard.classList.add("motion-lot-change");setTimeout(()=>els.auctionCard?.classList.remove("motion-lot-change"),760)}}
 function renderLivePlayerArt(player){if(!els.livePlayerArt||!els.livePlayerCard)return;const url=playerPhotoUrl(player);els.livePlayerCard.classList.toggle("has-photo",!!url);if(url){const fallback=livePlayerFallbackHtml(player).replace(/"/g,"&quot;").replace(/'/g,"&#39;");els.livePlayerArt.innerHTML=`<img src="${escapeHtml(url)}" alt="${escapeHtml(player.name)}" onerror="this.closest('.shirt-card').classList.remove('has-photo');this.parentElement.innerHTML='${fallback}'">`;return}els.livePlayerArt.innerHTML=livePlayerFallbackHtml(player)}
 function renderBudgetTable(){renderInsightCarousel();if(!els.blindBudgetTable)return;const sortedTeams=[...state.teams].sort((a,b)=>{const remainingDiff=(state.budget-teamSpent(b))-(state.budget-teamSpent(a));if(remainingDiff!==0)return remainingDiff;const spentDiff=teamSpent(a)-teamSpent(b);if(spentDiff!==0)return spentDiff;return a.name.localeCompare(b.name)});els.blindBudgetTable.innerHTML=sortedTeams.map(budgetRowHtml).join("")}
 function startInsightCarousel(){if(insightCarouselTimer)clearInterval(insightCarouselTimer);insightCarouselTimer=setInterval(()=>{insightSlideIndex=(insightSlideIndex+1)%insightSlides().length;renderInsightCarousel()},30000)}
