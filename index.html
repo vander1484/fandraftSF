@@ -1741,7 +1741,7 @@ const samplePlayers=[
 const defaultTeams=["Kev's Kestrels","The Gegenpress","No Kane No Gain","Expected Toulouse","Ctrl Alt De Ligt","Tea & Busquets","Team 7","Team 8","Team 9","Team 10","Team 11","Team 12"];
 const defaultManagerNames=["Niki Blair","Richard Combe","Aaron Laird","Adam Bennett","Monkey","Spud","Sean Lightheart","Russell Masterton","Alex McIntyre","Phil Westgarth","Neil McLaughlin","Andy Pollock"];
 let state=loadState();let els={};const IS_DISPLAY_MODE=new URLSearchParams(location.search).get("display")==="live";let insightSlideIndex=0;let insightCarouselTimer=null;let squadCarouselIndex=0;let squadCarouselTimer=null;let insightSpotlightOpen=false;let presentationOpen=false;let endgameSlideIndex=0;let endgameTimer=null;let saleSequenceTimer=null;let auctionSearchDraft="";let auctionBidderDraftId="";let lastDisplaySyncJson="";let lastRenderedLotMotionKey="";let lastRenderedNominationMotionKey="";let nominationReorderMotionPending=false;const liveStatsHydrationInFlight=new Set();
-document.addEventListener("DOMContentLoaded",()=>{bindElements();bindEvents();bindBroadcastEvents();if(IS_DISPLAY_MODE){applyDisplayMode();startDisplayStateSync();startSquadCarousel()}startInsightCarousel();renderAll();refreshPlayerStatsFromSnapshotIfNeeded(false).then(changed=>{if(!changed)refreshPlayerStatsFromHistoricalCsvIfNeeded(false);}).catch(()=>refreshPlayerStatsFromHistoricalCsvIfNeeded(false));});
+document.addEventListener("DOMContentLoaded",()=>{bindElements();bindEvents();bindBroadcastEvents();if(IS_DISPLAY_MODE){applyDisplayMode();startDisplayStateSync();startSquadCarousel()}startInsightCarousel();renderAll();refreshPlayerStatsFromSnapshotIfNeeded(true).catch(()=>false).then(()=>repairHistoricalStatsIntegrity()).then(()=>refreshPlayerStatsFromHistoricalCsvIfNeeded(false)).catch(err=>console.warn("Player-stat integrity refresh failed",err));});
 if(channel){channel.onmessage=e=>{if(e.data==="state-update"){syncDisplayStateFromStorage();}else if(e.data&&e.data.type==="state-full"&&e.data.payload){applyDisplaySyncedState(e.data.payload);try{localStorage.setItem(STORAGE_KEY,JSON.stringify(state))}catch(err){}}else if(e.data&&e.data.type==="sold-event"){handleSoldDisplayEvent(e.data.payload)}}}
 window.addEventListener("storage",e=>{if(e.key===STORAGE_KEY||e.key===LIVE_SYNC_KEY){syncDisplayStateFromStorage();}else if(e.key===SOLD_EVENT_KEY&&e.newValue){try{handleSoldDisplayEvent(JSON.parse(e.newValue))}catch(err){}}});
 function applyDisplaySyncedState(nextState,force=false){
@@ -1797,6 +1797,7 @@ function renderAll(){
     ["nomination admin",renderNominationAdmin],
     ["selectors",renderSelectors],
     ["live panel",renderLivePanel],
+    ["live stat provenance",renderLiveStatProvenance],
     ["broadcast layer",renderBroadcastLayer],
     ["leading bidder profile",renderLeadingBidderProfile],
     ["live admin console",renderLiveAdminConsole],
@@ -1831,6 +1832,7 @@ function renderLeadingBidderProfile(){
     els.leadingBidderAvatar.classList.remove("has-photo");
   }
 }
+function renderLiveStatProvenance(){const player=currentPlayer();if(player?.statsSource==="no verified previous-season record"&&els.currentPoints)els.currentPoints.textContent="Last season n/a"}
 function currentPoolMode(){return (state.playerPoolSource?.type==="fpl")?"fpl":"manual"}
 function setPlayerPoolMode(mode,fromButton=false){mode=mode==="fpl"?"fpl":"manual";state.playerPoolSource=state.playerPoolSource||{};if(mode==="manual"){state.playerPoolSource={...state.playerPoolSource,type:"manual",locked:false,count:state.players.length};saveState();renderAll();if(fromButton)setValidation("Manual CSV mode active. The current player pool has been kept and can be edited or replaced from CSV.","good");return}state.playerPoolSource={...state.playerPoolSource,type:"fpl",locked:!!state.playerPoolSource.locked,count:state.players.length};saveState();renderAll();if(fromButton)setValidation("FPL snapshot import mode selected. Click Import saved FPL snapshot to fetch and lock the player pool.","good")}
 function renderPlayerSourceMode(){const mode=currentPoolMode();if(els.playerPoolMode)els.playerPoolMode.value=mode;if(els.manualPoolPanel)els.manualPoolPanel.classList.toggle("active",mode==="manual");if(els.fplPoolPanel)els.fplPoolPanel.classList.toggle("active",mode==="fpl");if(els.playerSourceStatus){const src=state.playerPoolSource||{};if(mode==="fpl")els.playerSourceStatus.textContent=src.locked?`FPL snapshot mode is active and locked with ${src.count||state.players.length} players.`:"FPL snapshot mode is selected. Import the saved GitHub snapshot before starting, or switch back to manual CSV if the file is missing.";else els.playerSourceStatus.textContent=`Manual CSV mode is active with ${state.players.length} players in the current pool. You can still switch to the GitHub FPL snapshot before the auction starts.`}}
@@ -2027,9 +2029,23 @@ function statsRecordAliasKeys(row){
   });
   return [...keys].filter(Boolean);
 }
+function strictHistoricalNameMatch(player,row){
+  const playerNames=[player?.name,player?.fullName,player?.web_name].filter(Boolean).map(normalKey).filter(Boolean);
+  const full=fullNameFromStatsRecord(row),web=readAnyField(row,["web_name","webName","known_name","knownName"]),second=readAnyField(row,["second_name","secondName","surname","last_name","lastName"]);
+  const recordNames=[full,web,second].filter(Boolean).map(normalKey).filter(Boolean);
+  return playerNames.some(name=>recordNames.includes(name));
+}
+function verifiedHistoricalRecord(cache,player){
+  if(!cache||!player)return null;
+  if(player.code){const byCode=cache.byCode.get(String(player.code));if(byCode)return byCode;}
+  for(const key of [player.name,player.fullName,player.web_name].filter(Boolean).map(normalKey)){
+    const candidate=cache.byAlias.get(key);
+    if(candidate&&strictHistoricalNameMatch(player,candidate.row))return candidate;
+  }
+  return null;
+}
 function statsFromHistoricalRow(row){
   const stats={};
-  stats.points=readStatNumber(row,["points","total_points","totalPoints"]);
   stats.gamesPlayed=readStatNumber(row,["gamesPlayed","games_played","appearances","apps","matches_played","matchesPlayed","played","starts"]);
   stats.starts=readStatNumber(row,["starts"]);
   stats.minutes=readStatNumber(row,["minutes","mins"]);
@@ -2067,15 +2083,7 @@ async function loadHistoricalStatsIndex(){
 }
 async function statsFromHistoricalCsv(player){
   const cache=await loadHistoricalStatsIndex();
-  let record=null;
-  if(player?.code)record=cache.byCode.get(String(player.code));
-  if(!record&&player?.fplId)record=cache.byFplId.get(String(player.fplId));
-  if(!record){
-    for(const key of playerAliasKeys(player)){
-      record=cache.byAlias.get(key);
-      if(record)break;
-    }
-  }
+  const record=verifiedHistoricalRecord(cache,player);
   return record?.stats||null;
 }
 async function refreshPlayerStatsFromHistoricalCsvIfNeeded(force=false){
@@ -2088,20 +2096,47 @@ async function refreshPlayerStatsFromHistoricalCsvIfNeeded(force=false){
     let changed=false;
     (state.players||[]).forEach(player=>{
       if(!player||(!force&&!livePlayerStatsMissing(player)))return;
-      let record=null;
-      if(player.code)record=cache.byCode.get(String(player.code));
-      if(!record&&player.fplId)record=cache.byFplId.get(String(player.fplId));
-      if(!record){
-        for(const key of playerAliasKeys(player)){record=cache.byAlias.get(key);if(record)break;}
-      }
+      const record=verifiedHistoricalRecord(cache,player);
       if(record&&mergeStatsIntoPlayerById(player.id,record.stats))changed=true;
     });
     if(changed){saveState();renderAll();}
     return changed;
   }catch(err){console.warn("Could not refresh stats from historical CSV",err);return false;}
 }
+async function repairHistoricalStatsIntegrity(){
+  if(!window.fetch||!state?.players?.length)return false;
+  const cache=await loadHistoricalStatsIndex();
+  if(!cache.source)return false;
+  let changed=false;
+  const statKeys=["gamesPlayed","starts","minutes","goals","assists","cleanSheets","defCon"];
+  state.players=state.players.map(player=>{
+    if(!player||Number(player.statsIntegrityVersion||0)>=2)return player;
+    if(!player.fplId&&!player.code){changed=true;return{...player,statsIntegrityVersion:2,statsSource:player.statsSource||"manual/imported stats"};}
+    const next={...player},verified=verifiedHistoricalRecord(cache,player);
+    if(verified){
+      statKeys.forEach(key=>{const value=verified.stats[key];if(value!==undefined&&Number(next[key]||0)!==Number(value)){next[key]=value;changed=true;}});
+      next.statsSource="verified historical name/code match";
+    }else{
+      const unsafe=player.fplId?cache.byFplId.get(String(player.fplId)):null;
+      if(unsafe&&!strictHistoricalNameMatch(player,unsafe.row)){
+        const comparable=statKeys.filter(key=>Number(unsafe.stats[key]||0)>0);
+        const matching=comparable.filter(key=>Number(player[key]||0)===Number(unsafe.stats[key]||0));
+        if(comparable.length>=2&&matching.length>=Math.min(3,comparable.length)){
+          statKeys.forEach(key=>{if(Number(next[key]||0)!==0){next[key]=0;changed=true;}});
+          next.statsSource="no verified previous-season record";
+        }
+      }
+      if(next.statsSource!=="no verified previous-season record"){next.statsSource="no verified previous-season record";changed=true;}
+    }
+    next.statsIntegrityVersion=2;
+    if(next.statsIntegrityVersion!==player.statsIntegrityVersion)changed=true;
+    return next;
+  });
+  if(changed){saveState();renderAll();}
+  return changed;
+}
 function snapshotDataToPlayers(data){if(Array.isArray(data?.players))return data.players.map((p,i)=>{const player={id:p.id||`fpl-${p.fplId||p.fpl_id||i+1}`,fplId:p.fplId??p.fpl_id??null,code:p.code||p.playerCode||p.player_code||null,teamCode:p.teamCode??p.team_code??p.clubCode??p.club_code??null,clubShort:p.clubShort||p.club_short||"",name:p.name||p.web_name||`Player ${i+1}`,fullName:p.fullName||p.full_name||p.name||"",club:p.club||"Unknown club",position:normalisePosition(p.position),points:Number(p.points??p.total_points)||0,guidePrice:Number(p.guidePrice??p.guide_price??0)||0,lastSeasonPrice:Number(p.lastSeasonPrice??p.last_season_price??0)||0,note:p.note||"Imported from saved FPL snapshot.",badgeUrl:p.badgeUrl||p.badge_url||"",photoUrl:p.photoUrl||p.photo_url||p.imageUrl||p.image_url||"",status:p.status||"a",selectedByPercent:Number(p.selectedByPercent??p.selected_by_percent??0)||0};addPlayerStatFields(player,p);if(!player.photoUrl&&player.code)player.photoUrl=premierLeaguePhotoUrl(player.code);if(!player.badgeUrl&&player.teamCode)player.badgeUrl=premierLeagueBadgeUrl(player.teamCode);return player}).filter(p=>p.name&&p.club&&POSITIONS.includes(p.position));return fplDataToPlayers(data)}
-function fplDataToPlayers(data){const teams=new Map((data.teams||[]).map(t=>[t.id,t]));const types=new Map((data.element_types||[]).map(t=>[t.id,t]));return (data.elements||[]).map(el=>{const team=teams.get(el.team)||{};const type=types.get(el.element_type)||{};const pos=normalisePosition(type.singular_name_short||type.singular_name||el.element_type);const fullName=[el.first_name,el.second_name].filter(Boolean).join(" ").trim();const name=el.web_name||fullName||`Player ${el.id}`;const news=[el.status&&el.status!=="a"?`Status: ${el.status.toUpperCase()}`:"",el.news||"",el.chance_of_playing_next_round!=null?`Chance next round: ${el.chance_of_playing_next_round}%`:""].filter(Boolean).join(" | ");const player={id:`fpl-${el.id}`,fplId:el.id,code:el.code||null,teamCode:team.code||null,clubShort:team.short_name||"",name,fullName,club:team.name||team.short_name||"Unknown club",position:pos,points:Number(el.total_points)||0,guidePrice:Number(el.now_cost||0)/10,lastSeasonPrice:0,note:news||`Imported from official FPL. Selected by ${Number(el.selected_by_percent||0).toFixed(1)}% of teams.`,badgeUrl:team.code?premierLeagueBadgeUrl(team.code):"",photoUrl:el.code?premierLeaguePhotoUrl(el.code):"",status:el.status||"a",selectedByPercent:Number(el.selected_by_percent)||0};return addPlayerStatFields(player,el)}).filter(p=>p.name&&p.club&&POSITIONS.includes(p.position))}
+function fplDataToPlayers(data){const teams=new Map((data.teams||[]).map(t=>[t.id,t]));const types=new Map((data.element_types||[]).map(t=>[t.id,t]));return (data.elements||[]).map(el=>{const team=teams.get(el.team)||{};const type=types.get(el.element_type)||{};const pos=normalisePosition(type.singular_name_short||type.singular_name||el.element_type);const fullName=[el.first_name,el.second_name].filter(Boolean).join(" ").trim();const name=el.web_name||fullName||`Player ${el.id}`;const news=[el.status&&el.status!=="a"?`Status: ${el.status.toUpperCase()}`:"",el.news||"",el.chance_of_playing_next_round!=null?`Chance next round: ${el.chance_of_playing_next_round}%`:""].filter(Boolean).join(" | ");return{id:`fpl-${el.id}`,fplId:el.id,code:el.code||null,teamCode:team.code||null,clubShort:team.short_name||"",name,fullName,club:team.name||team.short_name||"Unknown club",position:pos,points:Number(el.total_points)||0,guidePrice:Number(el.now_cost||0)/10,lastSeasonPrice:0,note:news||`Imported from official FPL. Selected by ${Number(el.selected_by_percent||0).toFixed(1)}% of teams.`,badgeUrl:team.code?premierLeagueBadgeUrl(team.code):"",photoUrl:el.code?premierLeaguePhotoUrl(el.code):"",status:el.status||"a",selectedByPercent:Number(el.selected_by_percent)||0,gamesPlayed:0,starts:0,minutes:0,goals:0,assists:0,cleanSheets:0,defCon:0}}).filter(p=>p.name&&p.club&&POSITIONS.includes(p.position))}
 function normalKey(value){return String(value||"").toLowerCase().replace(/[^a-z0-9]+/g,"").trim()}
 
 async function refreshPlayerStatsFromSnapshotIfNeeded(force=false){
@@ -2119,8 +2154,8 @@ async function refreshPlayerStatsFromSnapshotIfNeeded(force=false){
     state.players=state.players.map(p=>{
       const fresh=byFplId.get(String(p.fplId))||byNameClub.get(`${normalKey(p.name)}|${normalKey(p.club)}`);
       if(!fresh)return p;
-      const next={...p,gamesPlayed:fresh.gamesPlayed??p.gamesPlayed,starts:fresh.starts??p.starts,minutes:fresh.minutes??p.minutes,goals:fresh.goals??p.goals,assists:fresh.assists??p.assists,cleanSheets:fresh.cleanSheets??p.cleanSheets,defCon:fresh.defCon??p.defCon};
-      if(JSON.stringify([p.gamesPlayed,p.starts,p.minutes,p.goals,p.assists,p.cleanSheets,p.defCon])!==JSON.stringify([next.gamesPlayed,next.starts,next.minutes,next.goals,next.assists,next.cleanSheets,next.defCon]))changed=true;
+      const next={...p,points:fresh.points??p.points,gamesPlayed:fresh.gamesPlayed??p.gamesPlayed,starts:fresh.starts??p.starts,minutes:fresh.minutes??p.minutes,goals:fresh.goals??p.goals,assists:fresh.assists??p.assists,cleanSheets:fresh.cleanSheets??p.cleanSheets,defCon:fresh.defCon??p.defCon};
+      if(JSON.stringify([p.points,p.gamesPlayed,p.starts,p.minutes,p.goals,p.assists,p.cleanSheets,p.defCon])!==JSON.stringify([next.points,next.gamesPlayed,next.starts,next.minutes,next.goals,next.assists,next.cleanSheets,next.defCon]))changed=true;
       return next;
     });
     if(changed){saveState();renderAll();}
@@ -2395,13 +2430,15 @@ function statNumber(value){const n=Number(value);return Number.isFinite(n)?n:0}
 function playerGamesPlayed(player){const explicit=statNumber(player?.gamesPlayed??player?.games_played??player?.appearances??player?.matches_played);if(explicit)return explicit;const starts=statNumber(player?.starts);if(starts)return starts;return 0}
 function playerStatSummaryHtml(player){
   if(!player)return `<div class="player-stat-card featured"><span>Points</span><strong>0</strong></div><div class="player-stat-card"><span>Games</span><strong>-</strong></div><div class="player-stat-card"><span>Goals</span><strong>-</strong></div><div class="player-stat-card"><span>Assists</span><strong>-</strong></div><div class="player-stat-card"><span>Clean sheets</span><strong>-</strong></div><div class="player-stat-card"><span>Minutes</span><strong>-</strong></div>`;
+  const unavailable=player.statsSource==="no verified previous-season record";
+  const historicalValue=value=>unavailable?"-":statNumber(value);
   const stats=[
-    {label:"Points",value:statNumber(player.points),featured:true},
-    {label:"Games",value:playerGamesPlayed(player)},
-    {label:"Goals",value:statNumber(player.goals??player.goals_scored)},
-    {label:"Assists",value:statNumber(player.assists)},
-    {label:"Clean sheets",value:statNumber(player.cleanSheets??player.clean_sheets)},
-    {label:"Minutes",value:statNumber(player.minutes??player.mins)}
+    {label:"Points",value:unavailable?"-":statNumber(player.points),featured:true},
+    {label:"Games",value:unavailable?"-":playerGamesPlayed(player)},
+    {label:"Goals",value:historicalValue(player.goals??player.goals_scored)},
+    {label:"Assists",value:historicalValue(player.assists)},
+    {label:"Clean sheets",value:historicalValue(player.cleanSheets??player.clean_sheets)},
+    {label:"Minutes",value:historicalValue(player.minutes??player.mins)}
   ];
   return stats.map(item=>`<div class="player-stat-card ${item.featured?"featured":""}"><span>${escapeHtml(item.label)}</span><strong>${item.value||item.value===0?escapeHtml(String(item.value)):"-"}</strong></div>`).join("");
 }
