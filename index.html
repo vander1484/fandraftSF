@@ -1497,6 +1497,34 @@ body.display-mode .key-bids .live-bidder-copy strong{font-size:clamp(1.15rem,1.5
 body.display-mode .live-bidder-copy small{display:block!important;color:var(--muted)!important;font-size:clamp(.65rem,.76vw,.84rem)!important;line-height:1.05!important;font-weight:900!important;white-space:nowrap!important;overflow:hidden!important;text-overflow:ellipsis!important}
 @media(max-width:1250px){body.display-mode .auction-card{grid-template-columns:minmax(0,1fr) minmax(320px,.46fr)!important}body.display-mode .live-bidder-identity{grid-template-columns:42px minmax(0,1fr)!important}body.display-mode .live-bidder-avatar{width:42px!important;height:42px!important}}
 
+/* Display density pass: one-line player identity and name-first squad slots */
+body.display-mode .live-main-column{grid-template-rows:clamp(138px,14.5vh,158px) minmax(0,1fr)!important}
+body.display-mode .player-info{grid-template-columns:auto minmax(0,1fr)!important;grid-template-rows:auto auto auto auto!important;column-gap:10px!important;row-gap:2px!important}
+body.display-mode .player-info h2{grid-column:1!important;grid-row:1!important;align-self:center!important}
+body.display-mode .club-line{grid-column:2!important;grid-row:1!important;align-self:center!important;justify-self:start!important;display:inline-flex!important;align-items:center!important;width:auto!important;max-width:100%!important;padding:4px 8px!important;border:1px solid rgba(55,0,60,.12)!important;border-radius:999px!important;background:rgba(255,255,255,.78)!important;font-size:.68rem!important;font-weight:900!important}
+body.display-mode .club-line .club-badge{width:20px!important;height:20px!important;margin-right:5px!important}
+body.display-mode .meta-row{grid-column:1 / -1!important;grid-row:2!important}
+body.display-mode .player-stat-summary{grid-column:1 / -1!important;grid-row:3!important}
+body.display-mode .nomination-strip{grid-column:1 / -1!important;grid-row:4!important}
+body.display-mode .squads-section{padding:8px 10px!important}
+body.display-mode .squads-section .section-title-row{margin:0 0 5px!important;min-height:24px!important;align-items:center!important}
+body.display-mode .squads-section .eyebrow{display:none!important}
+body.display-mode .squads-section h2{font-size:clamp(1.15rem,1.35vw,1.5rem)!important;line-height:1!important;margin:0!important}
+body.display-mode .display-squad-carousel-status{top:8px!important;right:12px!important;padding:5px 9px!important}
+body.display-mode .broadcast-six-team-page .broadcast-team-card{padding:6px!important;gap:4px!important}
+body.display-mode .broadcast-six-team-page .broadcast-column-head{grid-template-columns:32px minmax(0,1fr)!important;padding-bottom:4px!important;gap:4px!important}
+body.display-mode .broadcast-six-team-page .broadcast-column-head .manager-avatar-large{width:32px!important;height:32px!important;flex-basis:32px!important;font-size:.6rem!important}
+body.display-mode .broadcast-six-team-page .broadcast-column-title .team-name{font-size:clamp(.82rem,.96vw,1.08rem)!important;line-height:1!important}
+body.display-mode .broadcast-six-team-page .broadcast-column-title .team-subtitle{font-size:clamp(.58rem,.66vw,.76rem)!important;line-height:1!important}
+body.display-mode .broadcast-six-team-page .broadcast-squad-list{grid-template-rows:repeat(15,minmax(25px,1fr))!important;gap:3px!important}
+body.display-mode .broadcast-six-team-page .broadcast-squad-slot{grid-template-columns:20px 22px minmax(0,1fr) 38px!important;gap:4px!important;padding:1px 4px!important;min-height:25px!important;border-radius:7px!important}
+body.display-mode .broadcast-six-team-page .broadcast-slot-thumb{width:22px!important;height:22px!important;flex-basis:22px!important;font-size:.46rem!important}
+body.display-mode .broadcast-six-team-page .broadcast-slot-name{align-content:center!important}
+body.display-mode .broadcast-six-team-page .broadcast-slot-name strong{font-size:clamp(.66rem,.74vw,.84rem)!important;line-height:1.05!important;font-weight:950!important}
+body.display-mode .broadcast-six-team-page .broadcast-slot-name small{display:none!important}
+body.display-mode .broadcast-six-team-page .broadcast-mini-fee{font-size:clamp(.56rem,.64vw,.74rem)!important}
+body.display-mode .broadcast-six-team-page .broadcast-column-footer{padding-top:3px!important}
+
 </style>
 </head>
 <body>
