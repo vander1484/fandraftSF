@@ -1481,6 +1481,22 @@ body.display-mode .key-bids{grid-template-columns:minmax(145px,.72fr) minmax(0,1
 body.display-mode .key-bids>div:first-child strong{font-size:clamp(1.9rem,2.7vw,3rem)!important;white-space:nowrap!important}
 body.display-mode .key-bids>div:nth-child(2) strong{font-size:clamp(1.35rem,2vw,2.25rem)!important;line-height:.96!important;letter-spacing:-.04em!important;white-space:normal!important;overflow:hidden!important;text-overflow:clip!important;overflow-wrap:break-word!important;text-wrap:balance!important;display:-webkit-box!important;-webkit-box-orient:vertical!important;-webkit-line-clamp:2!important;line-clamp:2!important}
 
+/* Unified live-bid module: one decision surface, with bidder identity and less chrome */
+body.display-mode .auction-card{grid-template-columns:minmax(0,1fr) minmax(360px,.42fr)!important}
+body.display-mode #currentLastPrice{display:none!important}
+body.display-mode .key-bids{display:grid!important;grid-template-columns:minmax(105px,.42fr) minmax(0,1.58fr)!important;gap:0!important;padding:0!important;border:1px solid rgba(55,0,60,.15)!important;border-radius:18px!important;background:linear-gradient(135deg,#fff,#f4edf7)!important;overflow:hidden!important;align-self:stretch!important}
+body.display-mode .key-bids>div{border:0!important;border-radius:0!important;background:transparent!important;box-shadow:none!important;padding:10px 12px!important}
+body.display-mode .key-bids>div:first-child{border-right:1px solid rgba(55,0,60,.12)!important;align-content:center!important}
+body.display-mode .key-bids>div:first-child strong{font-size:clamp(1.75rem,2.35vw,2.7rem)!important;line-height:.9!important}
+body.display-mode .live-bidder-profile{display:grid!important;align-content:center!important;gap:6px!important;min-width:0!important}
+body.display-mode .live-bidder-identity{display:grid!important;grid-template-columns:48px minmax(0,1fr)!important;gap:10px!important;align-items:center!important;min-width:0!important}
+body.display-mode .live-bidder-avatar{width:48px!important;height:48px!important;border-radius:15px!important;display:grid!important;place-items:center!important;overflow:hidden!important;background:linear-gradient(135deg,var(--pl-mint),var(--pl-cyan))!important;color:var(--pl-purple)!important;border:1px solid rgba(0,255,135,.45)!important;font-size:.8rem!important;font-weight:1000!important;box-shadow:0 7px 18px rgba(55,0,60,.1)!important}
+body.display-mode .live-bidder-avatar img{width:100%!important;height:100%!important;object-fit:cover!important;display:block!important}
+body.display-mode .live-bidder-copy{min-width:0!important;display:grid!important;gap:3px!important}
+body.display-mode .key-bids .live-bidder-copy strong{font-size:clamp(1.15rem,1.55vw,1.75rem)!important;line-height:.96!important;letter-spacing:-.035em!important;white-space:normal!important;overflow:hidden!important;text-wrap:balance!important;display:-webkit-box!important;-webkit-box-orient:vertical!important;-webkit-line-clamp:2!important;line-clamp:2!important}
+body.display-mode .live-bidder-copy small{display:block!important;color:var(--muted)!important;font-size:clamp(.65rem,.76vw,.84rem)!important;line-height:1.05!important;font-weight:900!important;white-space:nowrap!important;overflow:hidden!important;text-overflow:ellipsis!important}
+@media(max-width:1250px){body.display-mode .auction-card{grid-template-columns:minmax(0,1fr) minmax(320px,.46fr)!important}body.display-mode .live-bidder-identity{grid-template-columns:42px minmax(0,1fr)!important}body.display-mode .live-bidder-avatar{width:42px!important;height:42px!important}}
+
 </style>
 </head>
 <body>
@@ -1512,7 +1528,7 @@ body.display-mode .key-bids>div:nth-child(2) strong{font-size:clamp(1.35rem,2vw,
                 <div id="nominationLiveStrip" class="nomination-strip"></div>
               </div>
             </div>
-            <div class="bid-strip key-bids"><div><span class="label">Current bid</span><strong id="currentBid">£0m</strong></div><div><span class="label">Leading bidder</span><strong id="leadingBidder">None</strong></div></div>
+            <div class="bid-strip key-bids"><div class="live-bid-amount"><span class="label">Current bid</span><strong id="currentBid">£0m</strong></div><div class="live-bidder-profile"><span class="label">Leading bidder</span><div class="live-bidder-identity"><span id="leadingBidderAvatar" class="live-bidder-avatar">?</span><div class="live-bidder-copy"><strong id="leadingBidder">None</strong><small id="leadingBidderManager">Waiting for first bid</small></div></div></div></div>
           </section>
           <section class="squads-section"><div class="section-title-row"><div><p class="eyebrow">Live squads</p><h2>Teams as they fill</h2></div><div class="display-actions"><button id="presentationModeBtn" class="primary-btn">Presentation mode</button><button id="launchEndgameBtn" class="success-btn">Final squads show</button><button id="openDisplayBtn" class="secondary-btn">Open display window</button><button id="copyDisplayLinkBtn" class="secondary-btn">Copy display link</button></div></div><div id="squadGrid" class="squad-grid"></div></section>
         </div>
@@ -1708,6 +1724,7 @@ function renderAll(){
     ["nomination admin",renderNominationAdmin],
     ["selectors",renderSelectors],
     ["live panel",renderLivePanel],
+    ["leading bidder profile",renderLeadingBidderProfile],
     ["live admin console",renderLiveAdminConsole],
     ["budget table",renderBudgetTable],
     ["live squads",renderSquads],
@@ -1727,6 +1744,18 @@ function renderAll(){
   ].forEach(([label,fn])=>safeRender(label,fn));
   if(presentationOpen)safeRender("presentation mode",renderPresentationMode);
   if(els.rulesSummary)els.rulesSummary.textContent=`£${state.budget}m cap, ${state.squadSize} players, max ${state.maxPerClub} per club | GK ${POSITION_LIMITS.GK}, DEF ${POSITION_LIMITS.DEF}, MID ${POSITION_LIMITS.MID}, FWD ${POSITION_LIMITS.FWD}`;
+}
+function renderLeadingBidderProfile(){
+  if(!els.leadingBidderAvatar||!els.leadingBidderManager)return;
+  const team=state.teams.find(t=>t.id===state.leadingBidderId);
+  els.leadingBidderManager.textContent=team?.managerName||"Waiting for first bid";
+  if(team?.avatarUrl){
+    els.leadingBidderAvatar.innerHTML=`<img src="${escapeHtml(team.avatarUrl)}" alt="">`;
+    els.leadingBidderAvatar.classList.add("has-photo");
+  }else{
+    els.leadingBidderAvatar.textContent=team?initials(team.managerName||team.name):"?";
+    els.leadingBidderAvatar.classList.remove("has-photo");
+  }
 }
 function currentPoolMode(){return (state.playerPoolSource?.type==="fpl")?"fpl":"manual"}
 function setPlayerPoolMode(mode,fromButton=false){mode=mode==="fpl"?"fpl":"manual";state.playerPoolSource=state.playerPoolSource||{};if(mode==="manual"){state.playerPoolSource={...state.playerPoolSource,type:"manual",locked:false,count:state.players.length};saveState();renderAll();if(fromButton)setValidation("Manual CSV mode active. The current player pool has been kept and can be edited or replaced from CSV.","good");return}state.playerPoolSource={...state.playerPoolSource,type:"fpl",locked:!!state.playerPoolSource.locked,count:state.players.length};saveState();renderAll();if(fromButton)setValidation("FPL snapshot import mode selected. Click Import saved FPL snapshot to fetch and lock the player pool.","good")}
