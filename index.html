@@ -1525,6 +1525,36 @@ body.display-mode .broadcast-six-team-page .broadcast-slot-name small{display:no
 body.display-mode .broadcast-six-team-page .broadcast-mini-fee{font-size:clamp(.56rem,.64vw,.74rem)!important}
 body.display-mode .broadcast-six-team-page .broadcast-column-footer{padding-top:3px!important}
 
+/* Base bidder identity prevents unstyled initials outside the detached display window */
+.live-bidder-identity{display:grid;grid-template-columns:44px minmax(0,1fr);gap:9px;align-items:center;min-width:0}
+.live-bidder-avatar{width:44px;height:44px;border-radius:14px;display:grid;place-items:center;overflow:hidden;background:linear-gradient(135deg,var(--pl-mint),var(--pl-cyan));color:var(--pl-purple);border:1px solid rgba(0,255,135,.45);font-size:.76rem;font-weight:1000;line-height:1}
+.live-bidder-avatar img{width:100%;height:100%;object-fit:cover;display:block}
+.live-bidder-copy{min-width:0;display:grid;gap:2px}.live-bidder-copy small{display:block;color:var(--muted);font-size:.75rem;font-weight:900}
+
+/* Consolidated live-header audit: one title rail, compact manager-only nomination queue */
+body.display-mode .live-main-column{grid-template-rows:clamp(128px,13.5vh,148px) minmax(0,1fr)!important}
+body.display-mode .player-info{grid-template-columns:auto auto minmax(0,1fr)!important;grid-template-rows:auto auto auto!important;column-gap:8px!important;row-gap:3px!important}
+body.display-mode .player-info h2{grid-column:1!important;grid-row:1!important}
+body.display-mode .club-line{grid-column:2!important;grid-row:1!important}
+body.display-mode .meta-row{grid-column:3!important;grid-row:1!important;align-self:center!important;justify-self:start!important;min-width:0!important}
+body.display-mode .meta-row span{font-size:.56rem!important;padding:3px 6px!important}
+body.display-mode .player-stat-summary{grid-column:1 / -1!important;grid-row:2!important;margin:0!important}
+body.display-mode .nomination-strip{grid-column:1 / -1!important;grid-row:3!important;grid-template-columns:repeat(2,minmax(0,1fr))!important;margin:0!important;gap:6px!important}
+body.display-mode .nomination-live-card{display:grid!important;grid-template-columns:auto minmax(0,1fr)!important;align-items:center!important;gap:7px!important;padding:4px 7px!important;min-height:27px!important}
+body.display-mode .nomination-live-card>span{white-space:nowrap!important;font-size:.48rem!important}
+.nomination-manager-identity{display:grid;grid-template-columns:26px minmax(0,1fr);gap:6px;align-items:center;min-width:0}
+.nomination-manager-avatar{width:26px;height:26px;border-radius:9px;display:grid;place-items:center;overflow:hidden;background:linear-gradient(135deg,var(--pl-mint),var(--pl-cyan));color:var(--pl-purple);font-size:.48rem;font-weight:1000;line-height:1;border:1px solid rgba(0,255,135,.4)}
+.nomination-manager-avatar img{width:100%;height:100%;object-fit:cover;display:block}
+.nomination-manager-identity strong{min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;color:var(--pl-purple);font-size:.72rem;line-height:1;font-weight:950}
+body.display-mode .nomination-manager-identity{grid-template-columns:24px minmax(0,1fr)!important;gap:5px!important}
+body.display-mode .nomination-manager-avatar{width:24px!important;height:24px!important;border-radius:8px!important}
+body.display-mode .nomination-manager-identity strong{font-size:.68rem!important}
+body.display-mode .key-bids>div{display:grid!important;grid-template-rows:auto minmax(0,1fr)!important;align-content:stretch!important;align-items:start!important;padding:10px 12px!important}
+body.display-mode .key-bids .label{align-self:start!important;margin:0!important;line-height:1!important}
+body.display-mode .live-bid-amount strong{align-self:center!important}
+body.display-mode .live-bidder-profile{gap:0!important}
+body.display-mode .live-bidder-identity{align-self:center!important}
+
 </style>
 </head>
 <body>
@@ -2098,7 +2128,22 @@ function normaliseNominationState(s){
 function nominationTeamById(id){return state.teams.find(t=>t.id===id)||null}
 function getNominationSnapshot(){state.nomination=normaliseNominationState(state);const order=state.nomination.order||[];const idx=Number(state.nomination.currentIndex||0);const byOffset=o=>order.length?nominationTeamById(order[(idx+o)%order.length]):null;return{nominatedBy:nominationTeamById(state.nomination.lastNominatorId)||null,current:byOffset(0),next:byOffset(1),after:byOffset(2),order,index:idx}}
 function claimCurrentNominator(){state.nomination=normaliseNominationState(state);const snap=getNominationSnapshot();if(snap.current){state.nomination.lastNominatorId=snap.current.id;state.nomination.currentIndex=(state.nomination.currentIndex+1)%state.nomination.order.length;state.nomination.currentNominatorId=state.nomination.order[state.nomination.currentIndex]||null}return{...snap,nominatedBy:snap.current}}
-function renderNominationLiveStrip(player){if(!els.nominationLiveStrip)return;const snap=getNominationSnapshot();const nominated=player?(snap.nominatedBy||snap.current):null;const nominatedText=player&&nominated?`${escapeHtml(player.name)} nominated by ${escapeHtml(managerLabel(nominated))}`:"Awaiting nomination";const nextText=snap.current?`${escapeHtml(managerLabel(snap.current))}`:"Not set";const afterText=snap.next?`${escapeHtml(managerLabel(snap.next))}`:"Not set";const motionKey=`${player?.id||"none"}|${nominated?.id||"none"}|${snap.current?.id||"none"}|${snap.next?.id||"none"}`;const shouldAnimate=motionKey!==lastRenderedNominationMotionKey;lastRenderedNominationMotionKey=motionKey;els.nominationLiveStrip.innerHTML=`<div class="nomination-live-card"><span>Nominated by</span><strong>${nominatedText}</strong><small>${nominated?escapeHtml(nominated.name):"Set an order in Draft Setup"}</small></div><div class="nomination-live-card"><span>Next in line</span><strong>${nextText}</strong><small>Then ${afterText}</small></div>`;if(shouldAnimate){els.nominationLiveStrip.classList.remove("motion-nomination-update");void els.nominationLiveStrip.offsetWidth;els.nominationLiveStrip.classList.add("motion-nomination-update");setTimeout(()=>els.nominationLiveStrip?.classList.remove("motion-nomination-update"),720)}}
+function compactNominationManagerHtml(team,fallback){
+  if(!team)return `<div class="nomination-manager-identity"><span class="nomination-manager-avatar">?</span><strong>${escapeHtml(fallback)}</strong></div>`;
+  const avatar=team.avatarUrl?`<span class="nomination-manager-avatar"><img src="${escapeHtml(team.avatarUrl)}" alt=""></span>`:`<span class="nomination-manager-avatar">${initials(team.managerName||team.name)}</span>`;
+  return `<div class="nomination-manager-identity">${avatar}<strong>${escapeHtml(team.managerName||team.name||fallback)}</strong></div>`;
+}
+function renderNominationLiveStrip(player){
+  if(!els.nominationLiveStrip)return;
+  const snap=getNominationSnapshot();
+  const nominated=player?(snap.nominatedBy||snap.current):null;
+  const next=snap.current||null;
+  const motionKey=`${player?.id||"none"}|${nominated?.id||"none"}|${next?.id||"none"}`;
+  const shouldAnimate=motionKey!==lastRenderedNominationMotionKey;
+  lastRenderedNominationMotionKey=motionKey;
+  els.nominationLiveStrip.innerHTML=`<div class="nomination-live-card"><span>Nominated by</span>${compactNominationManagerHtml(nominated,"Awaiting nomination")}</div><div class="nomination-live-card"><span>Next in line</span>${compactNominationManagerHtml(next,"Not set")}</div>`;
+  if(shouldAnimate){els.nominationLiveStrip.classList.remove("motion-nomination-update");void els.nominationLiveStrip.offsetWidth;els.nominationLiveStrip.classList.add("motion-nomination-update");setTimeout(()=>els.nominationLiveStrip?.classList.remove("motion-nomination-update"),720)}
+}
 function nominationAdminMetricHtml(){const snap=getNominationSnapshot();const current=snap.current?managerLabel(snap.current):"Not set";const next=snap.next?managerLabel(snap.next):"Not set";return `<div class="live-admin-metric"><span>Next nomination</span><strong>${escapeHtml(current)}</strong><small class="manager-line">Then ${escapeHtml(next)}</small></div>`}
 function renderNominationAdmin(){
   state.nomination=normaliseNominationState(state);
