@@ -1461,6 +1461,23 @@ body.display-mode .nomination-live-card small{font-size:.62rem}
 @keyframes motionReorderCard{0%{opacity:.72;transform:translate3d(18px,0,0) scale(.992)}100%{opacity:1;transform:translate3d(0,0,0) scale(1)}}
 @media(prefers-reduced-motion:reduce){.auction-card.motion-lot-change,.auction-card.motion-lot-change *,.nomination-strip.motion-nomination-update .nomination-live-card,.integrated-nomination-bar.motion-nomination-update,.manager-profile-row.combined-team-card.motion-reorder-card{animation:none!important;transition:none!important;transform:none!important}}
 
+/* Final display-window fit: keep the current lot fully visible above the six-team board */
+body.display-mode .live-main-column{grid-template-rows:clamp(150px,16vh,172px) minmax(0,1fr)!important}
+body.display-mode .auction-card{padding:9px 12px!important;align-items:stretch!important}
+body.display-mode .player-stage{grid-template-columns:92px minmax(0,1fr)!important;gap:11px!important;align-items:center!important;overflow:visible!important}
+body.display-mode .shirt-card{width:92px!important;height:92px!important;min-width:92px!important;border-radius:18px!important}
+body.display-mode .shirt-card.has-photo .live-player-art img{max-height:84px!important}
+body.display-mode .player-info{align-content:center!important;overflow:visible!important;gap:2px!important}
+body.display-mode .player-info h2{font-size:clamp(2rem,2.65vw,3rem)!important;line-height:.96!important;letter-spacing:-.055em!important;overflow:visible!important;text-overflow:clip!important}
+body.display-mode .club-line{font-size:.7rem!important;line-height:1.05!important;overflow:visible!important}
+body.display-mode .meta-row span{font-size:.58rem!important;padding:2px 5px!important}
+body.display-mode .player-stat-summary{margin:3px 0 0!important}
+body.display-mode .player-stat-card{padding:4px 6px!important}
+body.display-mode .nomination-strip{margin-top:3px!important}
+body.display-mode .nomination-live-card{padding:4px 7px!important}
+body.display-mode .key-bids>div{padding:8px 11px!important}
+body.display-mode .key-bids strong{font-size:clamp(1.8rem,2.7vw,3rem)!important;line-height:.92!important}
+
 </style>
 </head>
 <body>
