@@ -1565,6 +1565,128 @@ body.display-mode .live-bidder-identity{align-self:center!important}
 @media(max-width:800px){.broadcast-player-intro{grid-template-columns:1fr;text-align:center}.broadcast-intro-photo{height:38vh}.auction-card.is-between-lots .between-lot-panel{grid-template-columns:1fr 1fr}.between-lot-lead{grid-column:1/-1}}
 @media(prefers-reduced-motion:reduce){.broadcast-stage,.broadcast-toast{transition:none!important}.broadcast-stage:before{animation:none!important}.broadcast-stage *{animation:none!important}}
 
+/* Market Desk: image-led between-lot broadcast cards */
+.auction-card.is-between-lots .between-lot-panel{
+  display:grid;
+  position:absolute;
+  inset:5px;
+  z-index:5;
+  grid-template-columns:repeat(4,minmax(0,1fr));
+  gap:8px;
+  align-items:stretch;
+  padding:7px;
+  border-radius:17px;
+  background:linear-gradient(135deg,#fff 0%,#f7f0fa 100%);
+}
+.market-desk-card{
+  min-width:0;
+  display:grid;
+  grid-template-rows:auto 1fr;
+  gap:5px;
+  padding:9px 11px;
+  overflow:hidden;
+  border:1px solid rgba(55,0,60,.1);
+  border-radius:14px;
+  background:rgba(255,255,255,.94);
+  box-shadow:0 5px 16px rgba(55,0,60,.06);
+}
+.market-desk-card::after{
+  content:"";
+  position:absolute;
+  inset:auto 0 0;
+  height:3px;
+  background:var(--pl-pink);
+}
+.market-desk-card{position:relative}
+.market-desk-next::after{background:var(--mint)}
+.market-desk-budget::after{background:#55d8c5}
+.market-desk-star::after{background:linear-gradient(90deg,var(--pl-pink),#ff87cc)}
+.market-desk-label{
+  display:flex;
+  align-items:center;
+  gap:6px;
+  color:var(--pl-pink);
+  font-size:.58rem;
+  font-weight:1000;
+  letter-spacing:.13em;
+  line-height:1;
+  text-transform:uppercase;
+}
+.market-live-dot{
+  width:7px;
+  height:7px;
+  flex:0 0 auto;
+  border-radius:50%;
+  background:var(--mint);
+  box-shadow:0 0 0 4px rgba(0,255,133,.13);
+  animation:marketLivePulse 1.8s ease-in-out infinite;
+}
+.market-desk-body{
+  min-width:0;
+  display:grid;
+  grid-template-columns:clamp(54px,5.3vw,76px) minmax(0,1fr);
+  gap:10px;
+  align-items:center;
+}
+.market-desk-portrait,
+.market-player-portrait{
+  width:clamp(54px,5.3vw,76px);
+  height:clamp(54px,5.3vw,76px);
+  display:grid!important;
+  place-items:center!important;
+  align-self:center;
+  overflow:hidden;
+  border:2px solid #fff;
+  border-radius:13px;
+  background:linear-gradient(145deg,var(--pl-purple),#78316f);
+  color:#fff;
+  font-size:clamp(.9rem,1.3vw,1.3rem)!important;
+  font-weight:1000;
+  line-height:1!important;
+  box-shadow:0 4px 12px rgba(55,0,60,.16);
+}
+.market-player-portrait{
+  align-items:end;
+  background:linear-gradient(145deg,#f2edf4,#fff);
+  color:var(--pl-purple);
+}
+.market-desk-portrait img,
+.market-player-portrait img{
+  width:100%;
+  height:100%;
+  display:block;
+  object-fit:cover;
+  object-position:center top;
+}
+.market-player-portrait img{object-fit:contain}
+.market-desk-placeholder{align-items:center;color:#fff;background:linear-gradient(145deg,#756676,#a28ea4)}
+.market-desk-copy{min-width:0;display:grid;align-content:center;gap:3px}
+.market-desk-copy strong{
+  min-width:0;
+  color:var(--pl-purple);
+  font-size:clamp(.95rem,1.35vw,1.35rem);
+  font-weight:1000;
+  line-height:1.02;
+  overflow-wrap:anywhere;
+}
+.market-desk-copy small{
+  min-width:0;
+  color:var(--muted);
+  font-size:clamp(.62rem,.8vw,.78rem);
+  font-weight:850;
+  line-height:1.15;
+  display:-webkit-box;
+  -webkit-box-orient:vertical;
+  -webkit-line-clamp:2;
+  overflow:hidden;
+}
+@keyframes marketLivePulse{0%,100%{transform:scale(.9);opacity:.7}50%{transform:scale(1.08);opacity:1}}
+@media(max-width:900px){
+  .auction-card.is-between-lots .between-lot-panel{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .market-desk-portrait,.market-player-portrait{width:48px;height:48px}
+  .market-desk-body{grid-template-columns:48px minmax(0,1fr)}
+}
+@media(prefers-reduced-motion:reduce){.market-live-dot{animation:none}}
 </style>
 </head>
 <body>
@@ -2655,7 +2777,32 @@ function showBroadcastToast(label,text,cue="bid"){if(!els.broadcastToast)return;
 function sendBroadcastReaction(label){state.broadcast=normaliseBroadcastState(state.broadcast);const text=String(label||"REACTION").toUpperCase();state.broadcast.reaction={id:`reaction-${Date.now()}`,label:text};state.broadcast.commentary.unshift(`REACTION: ${text}`);state.broadcast.commentary=state.broadcast.commentary.slice(0,12);saveState();renderAll()}
 function getDraftProgressStats(){const filledSlots=getCompletedDeals(state).length,totalSlots=(state.teams||[]).length*Number(state.squadSize||15);return{filledSlots,totalSlots,slotsLeft:Math.max(0,totalSlots-filledSlots),percentComplete:totalSlots?Math.round(filledSlots/totalSlots*100):0}}
 function broadcastMarketSnapshot(){const deals=getCompletedDeals(state);const record=deals.slice().sort((a,b)=>b.price-a.price)[0];const budget=state.teams.slice().sort((a,b)=>(state.budget-teamSpent(b))-(state.budget-teamSpent(a)))[0];const available=getAvailablePlayers(state).slice().sort((a,b)=>b.points-a.points)[0];const recent=deals[deals.length-1];return{record,budget,available,recent}}
-function renderBetweenLotPanel(){if(!els.betweenLotPanel||!els.auctionCard)return;const between=!currentPlayer();els.auctionCard.classList.toggle("is-between-lots",between);if(!between)return;const m=broadcastMarketSnapshot(),snap=getNominationSnapshot();els.betweenLotPanel.innerHTML=`<div class="between-lot-lead"><span>Up next</span><strong>${escapeHtml(snap.current?.managerName||snap.current?.name||"Awaiting nomination")}</strong><small>${escapeHtml(snap.current?.name||"Select the next player in Admin")}</small></div><div class="market-mini"><span>Record deal</span><strong>${m.record?`£${m.record.price}m ${escapeHtml(m.record.player.name)}`:"No sales yet"}</strong><small>${m.record?escapeHtml(m.record.team.name):"Draft night begins here"}</small></div><div class="market-mini"><span>Budget leader</span><strong>${m.budget?`£${state.budget-teamSpent(m.budget)}m`:"£0m"}</strong><small>${escapeHtml(m.budget?.name||"Not available")}</small></div><div class="market-mini"><span>Star available</span><strong>${escapeHtml(m.available?.name||"Player pool ready")}</strong><small>${m.available?`${m.available.points} points last season`:"Awaiting next lot"}</small></div>`}
+function renderBetweenLotPanel(){
+  if(!els.betweenLotPanel||!els.auctionCard)return;
+  const between=!currentPlayer();
+  els.auctionCard.classList.toggle("is-between-lots",between);
+  if(!between)return;
+  const m=broadcastMarketSnapshot(),snap=getNominationSnapshot(),next=snap.current;
+  const managerVisual=team=>team?managerAvatarHtml(team,"market-desk-portrait"):`<span class="manager-avatar market-desk-portrait market-desk-placeholder">?</span>`;
+  const playerVisual=player=>`<span class="market-player-portrait${player?"":" market-desk-placeholder"}">${player?playerImageHtml(player):"?"}</span>`;
+  els.betweenLotPanel.innerHTML=`
+    <article class="market-desk-card market-desk-next">
+      <div class="market-desk-label"><span class="market-live-dot"></span>Up next</div>
+      <div class="market-desk-body">${managerVisual(next)}<div class="market-desk-copy"><strong>${escapeHtml(next?.managerName||next?.name||"Awaiting nomination")}</strong><small>${escapeHtml(next?.name||"Select the next player in Admin")}</small></div></div>
+    </article>
+    <article class="market-desk-card market-desk-record">
+      <div class="market-desk-label">Record deal</div>
+      <div class="market-desk-body">${playerVisual(m.record?.player)}<div class="market-desk-copy"><strong>${m.record?`£${m.record.price}m`:"No sales yet"}</strong><small>${m.record?`${escapeHtml(m.record.player.name)} · ${escapeHtml(m.record.team.name)}`:"Draft night begins here"}</small></div></div>
+    </article>
+    <article class="market-desk-card market-desk-budget">
+      <div class="market-desk-label">Budget leader</div>
+      <div class="market-desk-body">${managerVisual(m.budget)}<div class="market-desk-copy"><strong>${m.budget?`£${state.budget-teamSpent(m.budget)}m`:"£0m"}</strong><small>${escapeHtml(m.budget?.name||"Not available")}${m.budget?.managerName?` · ${escapeHtml(m.budget.managerName)}`:""}</small></div></div>
+    </article>
+    <article class="market-desk-card market-desk-star">
+      <div class="market-desk-label">Star available</div>
+      <div class="market-desk-body">${playerVisual(m.available)}<div class="market-desk-copy"><strong>${escapeHtml(m.available?.name||"Player pool ready")}</strong><small>${m.available?`${Number(m.available.points||0)} points · ${escapeHtml(m.available.club||"")}`:"Awaiting next lot"}</small></div></div>
+    </article>`;
+}
 function recordBroadcastBid(player,team,bid,previousLeader){state.broadcast=normaliseBroadcastState(state.broadcast);if(state.broadcast.bidHistory.some(x=>x.playerId!==player.id))state.broadcast.bidHistory=[];const item={id:`bid-${Date.now()}-${Math.random().toString(36).slice(2,6)}`,playerId:player.id,teamId:team.id,teamName:team.name,managerName:team.managerName||team.name,bid:Number(bid),at:Date.now()};state.broadcast.bidHistory.push(item);state.broadcast.bidHistory=state.broadcast.bidHistory.slice(-10);const history=state.broadcast.bidHistory.filter(x=>x.playerId===player.id),teams=new Set(history.slice(-4).map(x=>x.teamId));if(history.length>=4&&teams.size===2){state.broadcast.commentary.unshift(`BIDDING WAR: ${player.name} reaches £${bid}m | ${[...teams].map(id=>state.teams.find(t=>t.id===id)?.name).filter(Boolean).join(" v ")}`)}else if(Number(player.guidePrice)>0&&bid>=Number(player.guidePrice)*1.5){state.broadcast.commentary.unshift(`PRICE WATCH: ${player.name} is now £${Math.round(bid-Number(player.guidePrice))}m above guide`)}else if(previousLeader&&previousLeader.id!==team.id){state.broadcast.commentary.unshift(`OUTBID: ${team.name} takes the lead for ${player.name} at £${bid}m`)}state.broadcast.commentary=state.broadcast.commentary.slice(0,12)}
 function currentBidDrama(){const p=currentPlayer(),history=(state.broadcast?.bidHistory||[]).filter(x=>x.playerId===p?.id),last=history[history.length-1],teams=new Set(history.slice(-4).map(x=>x.teamId));return{history,last,war:history.length>=4&&teams.size===2}}
 function renderBroadcastLayer(){renderBroadcastControls();renderBetweenLotPanel();const p=currentPlayer(),drama=currentBidDrama();els.auctionCard?.classList.toggle("bidding-war",!!drama.war);if((IS_DISPLAY_MODE||presentationOpen)&&p&&p.id!==lastBroadcastLotId){lastBroadcastLotId=p.id;showPlayerIntroduction(p)}if(!p)lastBroadcastLotId=null;if((IS_DISPLAY_MODE||presentationOpen)&&drama.last&&drama.last.id!==lastBroadcastBidId){lastBroadcastBidId=drama.last.id;showBroadcastToast(drama.war?"Bidding war":"New leader",`${drama.last.teamName} at £${drama.last.bid}m`)}const reaction=state.broadcast?.reaction;if((IS_DISPLAY_MODE||presentationOpen)&&reaction&&reaction.id!==lastBroadcastReactionId){lastBroadcastReactionId=reaction.id;showBroadcastToast("Reaction",reaction.label,"reaction")}const entrance=state.broadcast?.entranceEvent;if((IS_DISPLAY_MODE||presentationOpen)&&entrance&&entrance.id!==lastBroadcastEntranceId){lastBroadcastEntranceId=entrance.id;showManagerEntrances()}}
