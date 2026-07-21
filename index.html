@@ -1975,6 +1975,39 @@ body.display-mode.between-lot-mode .market-desk-next .market-desk-copy strong{
     text-align:left!important;
   }
 }
+
+/* Market Desk portrait parity: every card uses the same bounded media rail. */
+.auction-card.is-between-lots .market-desk-body,
+body.display-mode.between-lot-mode .market-desk-body,
+body.display-mode.between-lot-mode .market-desk-next .market-desk-body{
+  grid-template-rows:minmax(0,1fr) 50px!important;
+}
+.auction-card.is-between-lots .market-desk-portrait,
+.auction-card.is-between-lots .market-player-portrait,
+body.display-mode.between-lot-mode .market-desk-next .market-desk-portrait{
+  box-sizing:border-box!important;
+  width:100%!important;
+  height:100%!important;
+  max-width:none!important;
+  max-height:none!important;
+  aspect-ratio:auto!important;
+  align-self:stretch!important;
+  justify-self:stretch!important;
+  border-radius:22px!important;
+}
+.auction-card.is-between-lots .market-desk-portrait img,
+.auction-card.is-between-lots .market-player-portrait img{
+  width:100%!important;
+  height:100%!important;
+  object-fit:cover!important;
+  object-position:center top!important;
+  image-rendering:auto;
+}
+@container (max-height:175px){
+  .auction-card.is-between-lots .market-desk-portrait,
+  .auction-card.is-between-lots .market-player-portrait,
+  body.display-mode.between-lot-mode .market-desk-next .market-desk-portrait{border-radius:16px!important}
+}
 </style>
 </head>
 <body>
@@ -2714,13 +2747,13 @@ function renderManagerProfiles(){
   els.managerProfileGrid.innerHTML=displayTeams.map((team,i)=>{
     const hasAvatar=!!team.avatarUrl;
     const currentRank=Math.max(1,(order.indexOf(team.id)>=0?order.indexOf(team.id):i)+1);
-    return `<div class="manager-profile-row combined-team-card" data-team-id="${escapeHtml(team.id)}" data-team-name="${escapeHtml(team.name)}" data-nomination-rank="${currentRank}"><div class="team-identity">${managerAvatarHtml(team)}<div><strong>${escapeHtml(team.name||`Team ${currentRank}`)}</strong><span class="manager-line">${escapeHtml(team.managerName||`Nomination ${currentRank}`)}</span></div></div><div class="team-manager-card-fields"><label>Team name<input class="team-name-input" data-team-id="${escapeHtml(team.id)}" value="${escapeHtml(team.name||`Team ${currentRank}`)}" placeholder="e.g. Kev's Kestrels"></label><label>Manager name<input class="manager-name-input" data-team-id="${escapeHtml(team.id)}" value="${escapeHtml(team.managerName||"")}" placeholder="e.g. Kev"></label><label class="nomination-field">Nomination slot<select class="nomination-rank-select" data-team-id="${escapeHtml(team.id)}">${rankOptions(currentRank)}</select></label></div><div class="avatar-actions"><button type="button" class="secondary-btn tiny-btn nomination-move-btn" data-nomination-move="up" data-team-id="${escapeHtml(team.id)}" ${currentRank<=1?"disabled":""}>Move up</button><button type="button" class="secondary-btn tiny-btn nomination-move-btn" data-nomination-move="down" data-team-id="${escapeHtml(team.id)}" ${currentRank>=desired?"disabled":""}>Move down</button><label class="upload-avatar-btn">Upload headshot<input class="manager-avatar-input" data-team-id="${escapeHtml(team.id)}" type="file" accept="image/*"></label><button type="button" class="secondary-btn tiny-btn remove-avatar-btn" data-team-id="${escapeHtml(team.id)}" ${hasAvatar?"":"disabled"}>Remove</button><span class="avatar-status">${hasAvatar?"Custom headshot active":"Using initials avatar"}</span></div></div>`
+    return `<div class="manager-profile-row combined-team-card" data-team-id="${escapeHtml(team.id)}" data-team-name="${escapeHtml(team.name)}" data-nomination-rank="${currentRank}"><div class="team-identity">${managerAvatarHtml(team)}<div><strong>${escapeHtml(team.name||`Team ${currentRank}`)}</strong><span class="manager-line">${escapeHtml(team.managerName||`Nomination ${currentRank}`)}</span></div></div><div class="team-manager-card-fields"><label>Team name<input class="team-name-input" data-team-id="${escapeHtml(team.id)}" value="${escapeHtml(team.name||`Team ${currentRank}`)}" placeholder="e.g. Kev's Kestrels"></label><label>Manager name<input class="manager-name-input" data-team-id="${escapeHtml(team.id)}" value="${escapeHtml(team.managerName||"")}" placeholder="e.g. Kev"></label><label class="nomination-field">Nomination slot<select class="nomination-rank-select" data-team-id="${escapeHtml(team.id)}">${rankOptions(currentRank)}</select></label></div><div class="avatar-actions"><button type="button" class="secondary-btn tiny-btn nomination-move-btn" data-nomination-move="up" data-team-id="${escapeHtml(team.id)}" ${currentRank<=1?"disabled":""}>Move up</button><button type="button" class="secondary-btn tiny-btn nomination-move-btn" data-nomination-move="down" data-team-id="${escapeHtml(team.id)}" ${currentRank>=desired?"disabled":""}>Move down</button><label class="upload-avatar-btn">Upload headshot<input class="manager-avatar-input" data-team-id="${escapeHtml(team.id)}" type="file" accept="image/*"></label><button type="button" class="secondary-btn tiny-btn remove-avatar-btn" data-team-id="${escapeHtml(team.id)}" ${hasAvatar?"":"disabled"}>Remove</button><span class="avatar-status">${hasAvatar?"Headshot active · re-upload older images for HD":"Using initials avatar"}</span></div></div>`
   }).join("");
 }
 function handleManagerProfileInput(e){if(!e.target.classList.contains("manager-name-input")&&!e.target.classList.contains("team-name-input"))return;const team=state.teams.find(t=>t.id===e.target.dataset.teamId);if(team){if(e.target.classList.contains("manager-name-input"))team.managerName=e.target.value.trim();if(e.target.classList.contains("team-name-input")){team.name=e.target.value.trim()||team.name;e.target.closest(".manager-profile-row")?.setAttribute("data-team-name",team.name)}saveState()}}
 function handleManagerAvatarUpload(e){if(!e.target.classList.contains("manager-avatar-input")||!e.target.files?.[0])return;const teamId=e.target.dataset.teamId;resizeAvatar(e.target.files[0]).then(dataUrl=>{const team=state.teams.find(t=>t.id===teamId);if(team){team.avatarUrl=dataUrl;saveState();renderAll();}}).catch(()=>setValidation("Avatar upload failed. Try a smaller image.","error"))}
 function handleManagerAvatarRemove(e){if(!e.target.classList.contains("remove-avatar-btn"))return;const team=state.teams.find(t=>t.id===e.target.dataset.teamId);if(team){team.avatarUrl="";saveState();renderAll();}}
-function resizeAvatar(file){return new Promise((resolve,reject)=>{const reader=new FileReader();reader.onerror=reject;reader.onload=()=>{const img=new Image();img.onerror=reject;img.onload=()=>{const size=220;const canvas=document.createElement("canvas");canvas.width=size;canvas.height=size;const ctx=canvas.getContext("2d");const min=Math.min(img.width,img.height);const sx=(img.width-min)/2;const sy=(img.height-min)/2;ctx.drawImage(img,sx,sy,min,min,0,0,size,size);resolve(canvas.toDataURL("image/jpeg",.82))};img.src=reader.result};reader.readAsDataURL(file)})}
+function resizeAvatar(file){return new Promise((resolve,reject)=>{const reader=new FileReader();reader.onerror=reject;reader.onload=()=>{const img=new Image();img.onerror=reject;img.onload=()=>{const size=640;const canvas=document.createElement("canvas");canvas.width=size;canvas.height=size;const ctx=canvas.getContext("2d");ctx.imageSmoothingEnabled=true;ctx.imageSmoothingQuality="high";const min=Math.min(img.width,img.height);const sx=(img.width-min)/2;const sy=(img.height-min)/2;ctx.drawImage(img,sx,sy,min,min,0,0,size,size);resolve(canvas.toDataURL("image/jpeg",.9))};img.src=reader.result};reader.readAsDataURL(file)})}
 function premierLeaguePhotoUrl(code){return code?`https://resources.premierleague.com/premierleague/photos/players/110x140/p${String(code).replace(/\.(png|jpg|jpeg)$/i,"")}.png`:""}
 function premierLeagueBadgeUrl(teamCode){const clean=String(teamCode||"").replace(/\D/g,"");return clean?`https://resources.premierleague.com/premierleague/badges/100/t${clean}.png`:""}
 function playerPhotoUrl(player){return player?.photoUrl||player?.photo_url||player?.imageUrl||player?.image_url||player?.headshotUrl||player?.pictureUrl||(player?.code?premierLeaguePhotoUrl(player.code):"")}
