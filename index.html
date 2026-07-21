@@ -1889,6 +1889,92 @@ body.display-mode.between-lot-mode .market-desk-copy{height:58px}
   .auction-card.is-between-lots .market-desk-body{grid-template-rows:1fr!important;align-items:center!important}
   .auction-card.is-between-lots .market-desk-copy{height:auto;align-self:center!important}
 }
+
+/* Market Desk visual QA baseline: bounded media and copy rails prevent overlap. */
+.auction-card.is-between-lots .between-lot-panel{
+  container-type:size;
+}
+.auction-card.is-between-lots .market-desk-card{
+  min-height:0!important;
+  grid-template-rows:22px minmax(0,1fr)!important;
+}
+.auction-card.is-between-lots .market-desk-body,
+body.display-mode.between-lot-mode .market-desk-body,
+body.display-mode.between-lot-mode .market-desk-next .market-desk-body{
+  min-height:0!important;
+  display:grid!important;
+  grid-template-columns:minmax(0,1fr)!important;
+  grid-template-rows:minmax(0,1fr) 50px!important;
+  gap:6px!important;
+  align-items:stretch!important;
+}
+.auction-card.is-between-lots .market-desk-portrait,
+.auction-card.is-between-lots .market-player-portrait,
+body.display-mode.between-lot-mode .market-desk-next .market-desk-portrait{
+  width:auto!important;
+  height:100%!important;
+  max-width:100%!important;
+  max-height:100%!important;
+  min-width:0!important;
+  min-height:0!important;
+  aspect-ratio:1!important;
+  align-self:stretch!important;
+  justify-self:center!important;
+}
+.auction-card.is-between-lots .market-desk-copy,
+body.display-mode.between-lot-mode .market-desk-copy{
+  min-height:0!important;
+  height:50px!important;
+  align-self:stretch!important;
+  align-content:start!important;
+  justify-items:center!important;
+  text-align:center!important;
+  gap:3px!important;
+  overflow:hidden!important;
+}
+.auction-card.is-between-lots .market-desk-copy strong,
+body.display-mode.between-lot-mode .market-desk-copy strong,
+body.display-mode.between-lot-mode .market-desk-next .market-desk-copy strong{
+  max-width:100%;
+  font-size:clamp(1rem,1.3vw,1.45rem)!important;
+  line-height:1!important;
+  white-space:nowrap;
+  overflow:hidden;
+  text-overflow:ellipsis;
+}
+.auction-card.is-between-lots .market-desk-copy small{
+  max-width:100%;
+  font-size:clamp(.62rem,.72vw,.78rem)!important;
+  line-height:1.12!important;
+  -webkit-line-clamp:2;
+}
+@container (max-height:175px){
+  .auction-card.is-between-lots .market-desk-card{padding:10px 12px 8px!important;gap:4px!important}
+  .auction-card.is-between-lots .market-desk-body,
+  body.display-mode.between-lot-mode .market-desk-body,
+  body.display-mode.between-lot-mode .market-desk-next .market-desk-body{
+    grid-template-rows:minmax(0,1fr) 43px!important;
+    gap:4px!important;
+  }
+  .auction-card.is-between-lots .market-desk-copy,
+  body.display-mode.between-lot-mode .market-desk-copy{height:43px!important}
+}
+@media(max-width:900px){
+  .auction-card.is-between-lots .market-desk-body,
+  body.display-mode.between-lot-mode .market-desk-body,
+  body.display-mode.between-lot-mode .market-desk-next .market-desk-body{
+    grid-template-columns:58px minmax(0,1fr)!important;
+    grid-template-rows:minmax(0,1fr)!important;
+    gap:8px!important;
+  }
+  .auction-card.is-between-lots .market-desk-copy,
+  body.display-mode.between-lot-mode .market-desk-copy{
+    height:auto!important;
+    align-self:center!important;
+    justify-items:start!important;
+    text-align:left!important;
+  }
+}
 </style>
 </head>
 <body>
