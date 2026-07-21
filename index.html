@@ -1687,6 +1687,105 @@ body.display-mode .live-bidder-identity{align-self:center!important}
   .market-desk-body{grid-template-columns:48px minmax(0,1fr)}
 }
 @media(prefers-reduced-motion:reduce){.market-live-dot{animation:none}}
+
+/* Display UX audit: adaptive between-lot composition and denser squad chrome */
+body.display-mode.between-lot-mode .live-main-column{
+  grid-template-rows:clamp(164px,18vh,194px) minmax(0,1fr)!important;
+}
+body.display-mode.between-lot-mode .auction-card{
+  padding:0!important;
+  border-radius:22px!important;
+  background:linear-gradient(120deg,#250029 0%,#430049 52%,#611050 100%)!important;
+  box-shadow:0 16px 42px rgba(31,0,35,.24)!important;
+}
+body.display-mode.between-lot-mode .auction-card.is-between-lots .between-lot-panel{
+  inset:0;
+  grid-template-columns:minmax(330px,1.35fr) repeat(3,minmax(190px,1fr));
+  gap:0;
+  padding:0;
+  border-radius:22px;
+  overflow:hidden;
+  background:transparent;
+}
+body.display-mode.between-lot-mode .market-desk-card{
+  border:0;
+  border-left:1px solid rgba(255,255,255,.14);
+  border-radius:0;
+  padding:17px 18px 15px;
+  gap:10px;
+  background:rgba(255,255,255,.96);
+  box-shadow:none;
+}
+body.display-mode.between-lot-mode .market-desk-card::after{height:5px}
+body.display-mode.between-lot-mode .market-desk-next{
+  border-left:0;
+  padding:18px 22px;
+  color:#fff;
+  background:linear-gradient(135deg,rgba(55,0,60,.08),rgba(55,0,60,.42));
+}
+body.display-mode.between-lot-mode .market-desk-next .market-desk-label{color:var(--pl-mint)}
+body.display-mode.between-lot-mode .market-desk-next .market-desk-copy strong{color:#fff}
+body.display-mode.between-lot-mode .market-desk-next .market-desk-copy small{color:rgba(255,255,255,.76)}
+body.display-mode.between-lot-mode .market-desk-label{font-size:.67rem;letter-spacing:.16em}
+body.display-mode.between-lot-mode .market-desk-body{
+  grid-template-columns:clamp(78px,7.2vw,112px) minmax(0,1fr);
+  gap:14px;
+}
+body.display-mode.between-lot-mode .market-desk-portrait,
+body.display-mode.between-lot-mode .market-player-portrait{
+  width:clamp(78px,7.2vw,112px);
+  height:clamp(78px,7.2vw,112px);
+  border-radius:22px;
+}
+body.display-mode.between-lot-mode .market-desk-next .market-desk-portrait{
+  width:clamp(92px,8.5vw,126px);
+  height:clamp(92px,8.5vw,126px);
+  border-color:rgba(255,255,255,.7);
+  box-shadow:0 12px 28px rgba(0,0,0,.24);
+}
+body.display-mode.between-lot-mode .market-desk-next .market-desk-body{
+  grid-template-columns:clamp(92px,8.5vw,126px) minmax(0,1fr);
+}
+body.display-mode.between-lot-mode .market-desk-copy strong{
+  font-size:clamp(1.15rem,1.55vw,1.75rem);
+  line-height:.98;
+}
+body.display-mode.between-lot-mode .market-desk-next .market-desk-copy strong{
+  font-size:clamp(1.55rem,2.2vw,2.55rem);
+  letter-spacing:-.045em;
+}
+body.display-mode.between-lot-mode .market-desk-copy small{font-size:clamp(.7rem,.84vw,.9rem)}
+body.display-mode .squads-section .section-title-row{
+  min-height:26px!important;
+  margin-bottom:5px!important;
+  align-items:center!important;
+}
+body.display-mode .squads-section .section-title-row>div:first-child{display:flex;align-items:baseline;gap:8px}
+body.display-mode .squads-section .section-title-row .eyebrow{display:none!important}
+body.display-mode .squads-section h2{margin:0!important}
+body.display-mode .display-squad-carousel-status{
+  min-height:22px!important;
+  height:22px!important;
+  margin-top:2px!important;
+}
+@media(max-width:1350px){
+  body.display-mode.between-lot-mode .auction-card.is-between-lots .between-lot-panel{
+    grid-template-columns:1.25fr repeat(3,1fr);
+  }
+  body.display-mode.between-lot-mode .market-desk-card{padding:13px 12px}
+  body.display-mode.between-lot-mode .market-desk-body{grid-template-columns:68px minmax(0,1fr);gap:9px}
+  body.display-mode.between-lot-mode .market-desk-portrait,
+  body.display-mode.between-lot-mode .market-player-portrait{width:68px;height:68px;border-radius:16px}
+  body.display-mode.between-lot-mode .market-desk-next .market-desk-body{grid-template-columns:82px minmax(0,1fr)}
+  body.display-mode.between-lot-mode .market-desk-next .market-desk-portrait{width:82px;height:82px}
+}
+@media(max-width:900px){
+  body.display-mode.between-lot-mode .live-main-column{grid-template-rows:280px minmax(0,1fr)!important}
+  body.display-mode.between-lot-mode .auction-card.is-between-lots .between-lot-panel{grid-template-columns:repeat(2,minmax(0,1fr))}
+  body.display-mode.between-lot-mode .market-desk-next{grid-column:1/-1}
+  body.display-mode.between-lot-mode .market-desk-star{display:none}
+}
+@media(prefers-reduced-motion:reduce){body.display-mode.between-lot-mode .market-desk-card{transition:none!important}}
 </style>
 </head>
 <body>
@@ -2781,6 +2880,7 @@ function renderBetweenLotPanel(){
   if(!els.betweenLotPanel||!els.auctionCard)return;
   const between=!currentPlayer();
   els.auctionCard.classList.toggle("is-between-lots",between);
+  document.body.classList.toggle("between-lot-mode",between);
   if(!between)return;
   const m=broadcastMarketSnapshot(),snap=getNominationSnapshot(),next=snap.current;
   const managerVisual=team=>team?managerAvatarHtml(team,"market-desk-portrait"):`<span class="manager-avatar market-desk-portrait market-desk-placeholder">?</span>`;
@@ -2788,7 +2888,7 @@ function renderBetweenLotPanel(){
   els.betweenLotPanel.innerHTML=`
     <article class="market-desk-card market-desk-next">
       <div class="market-desk-label"><span class="market-live-dot"></span>Up next</div>
-      <div class="market-desk-body">${managerVisual(next)}<div class="market-desk-copy"><strong>${escapeHtml(next?.managerName||next?.name||"Awaiting nomination")}</strong><small>${escapeHtml(next?.name||"Select the next player in Admin")}</small></div></div>
+      <div class="market-desk-body">${managerVisual(next)}<div class="market-desk-copy"><strong>${escapeHtml(next?.managerName||next?.name||"Awaiting nomination")}</strong><small>${next?`${escapeHtml(next.name)} · Nomination ${Math.max(1,(state.nominationOrder||[]).indexOf(next.id)+1)} of ${state.teams.length}`:"Select the next player in Admin"}</small></div></div>
     </article>
     <article class="market-desk-card market-desk-record">
       <div class="market-desk-label">Record deal</div>
