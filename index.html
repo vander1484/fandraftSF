@@ -1786,6 +1786,79 @@ body.display-mode .display-squad-carousel-status{
   body.display-mode.between-lot-mode .market-desk-star{display:none}
 }
 @media(prefers-reduced-motion:reduce){body.display-mode.between-lot-mode .market-desk-card{transition:none!important}}
+
+/* Market Desk density pass: use the available height as portrait-led broadcast cards */
+.auction-card.is-between-lots .market-desk-card{
+  grid-template-rows:auto minmax(0,1fr)!important;
+  padding:14px 16px 18px!important;
+  gap:10px!important;
+}
+.auction-card.is-between-lots .market-desk-body{
+  min-height:0;
+  grid-template-columns:minmax(0,1fr)!important;
+  grid-template-rows:minmax(120px,1fr) auto!important;
+  justify-items:center;
+  align-items:center;
+  gap:12px!important;
+}
+.auction-card.is-between-lots .market-desk-portrait,
+.auction-card.is-between-lots .market-player-portrait{
+  width:min(78%,210px)!important;
+  height:min(78%,210px)!important;
+  min-width:118px;
+  min-height:118px;
+  max-width:210px;
+  max-height:210px;
+  border-radius:22px!important;
+  font-size:clamp(1.35rem,2.3vw,2.35rem)!important;
+  align-self:center;
+}
+.auction-card.is-between-lots .market-desk-copy{
+  width:100%;
+  align-content:end;
+  justify-items:center;
+  gap:5px;
+  text-align:center;
+}
+.auction-card.is-between-lots .market-desk-copy strong{
+  font-size:clamp(1.25rem,2vw,2rem);
+  line-height:.98;
+}
+.auction-card.is-between-lots .market-desk-copy small{
+  max-width:28ch;
+  font-size:clamp(.72rem,.95vw,.92rem);
+  line-height:1.2;
+}
+
+body.display-mode.between-lot-mode .market-desk-body,
+body.display-mode.between-lot-mode .market-desk-next .market-desk-body{
+  grid-template-columns:minmax(0,1fr)!important;
+  grid-template-rows:minmax(82px,1fr) auto!important;
+}
+body.display-mode.between-lot-mode .market-desk-portrait,
+body.display-mode.between-lot-mode .market-player-portrait,
+body.display-mode.between-lot-mode .market-desk-next .market-desk-portrait{
+  width:min(72%,88px)!important;
+  height:min(72%,88px)!important;
+  min-width:72px;
+  min-height:72px;
+}
+body.display-mode.between-lot-mode .market-desk-copy strong,
+body.display-mode.between-lot-mode .market-desk-next .market-desk-copy strong{
+  font-size:clamp(1.05rem,1.55vw,1.72rem);
+  letter-spacing:-.025em;
+}
+@media(max-height:760px){
+  .auction-card.is-between-lots .market-desk-portrait,
+  .auction-card.is-between-lots .market-player-portrait{width:min(68%,170px)!important;height:min(68%,170px)!important}
+}
+@media(max-width:900px){
+  .auction-card.is-between-lots .market-desk-card{padding:10px 11px 13px!important}
+  .auction-card.is-between-lots .market-desk-body{grid-template-columns:72px minmax(0,1fr)!important;grid-template-rows:1fr!important;justify-items:stretch;text-align:left}
+  .auction-card.is-between-lots .market-desk-portrait,
+  .auction-card.is-between-lots .market-player-portrait{width:72px!important;height:72px!important;min-width:72px;min-height:72px;border-radius:15px!important}
+  .auction-card.is-between-lots .market-desk-copy{justify-items:start;text-align:left}
+}
 </style>
 </head>
 <body>
