@@ -2184,7 +2184,7 @@ const samplePlayers=[
 const defaultTeams=["Kev's Kestrels","The Gegenpress","No Kane No Gain","Expected Toulouse","Ctrl Alt De Ligt","Tea & Busquets","Team 7","Team 8","Team 9","Team 10","Team 11","Team 12"];
 const defaultManagerNames=["Niki Blair","Richard Combe","Aaron Laird","Adam Bennett","Monkey","Spud","Sean Lightheart","Russell Masterton","Alex McIntyre","Phil Westgarth","Neil McLaughlin","Andy Pollock"];
 let state=loadState();let els={};const IS_DISPLAY_MODE=new URLSearchParams(location.search).get("display")==="live";let insightSlideIndex=0;let insightCarouselTimer=null;let squadCarouselIndex=0;let squadCarouselTimer=null;let insightSpotlightOpen=false;let presentationOpen=false;let endgameSlideIndex=0;let endgameTimer=null;let saleSequenceTimer=null;let auctionSearchDraft="";let auctionBidderDraftId="";let lastDisplaySyncJson="";let lastRenderedLotMotionKey="";let lastRenderedNominationMotionKey="";let nominationReorderMotionPending=false;const liveStatsHydrationInFlight=new Set();
-document.addEventListener("DOMContentLoaded",()=>{bindElements();bindLeagueSetupEvents();bindEvents();bindBroadcastEvents();if(IS_DISPLAY_MODE){applyDisplayMode();startDisplayStateSync();startSquadCarousel()}startInsightCarousel();renderAll();refreshPlayerStatsFromSnapshotIfNeeded(true).catch(()=>false).then(()=>repairHistoricalStatsIntegrity()).then(()=>refreshPlayerStatsFromHistoricalCsvIfNeeded(false)).catch(err=>console.warn("Player-stat integrity refresh failed",err));});
+document.addEventListener("DOMContentLoaded",()=>{bindElements();bindLeagueSetupEvents();bindEvents();bindBroadcastEvents();if(IS_DISPLAY_MODE){applyDisplayMode();startDisplayStateSync();startSquadCarousel()}startInsightCarousel();renderAll();repairHistoricalStatsIntegrity().then(()=>refreshPlayerStatsFromHistoricalCsvIfNeeded(false)).catch(err=>console.warn("Player-stat integrity refresh failed",err));});
 if(channel){channel.onmessage=e=>{if(e.data==="state-update"){syncDisplayStateFromStorage();}else if(e.data&&e.data.type==="state-full"&&e.data.payload){applyDisplaySyncedState(e.data.payload);try{localStorage.setItem(STORAGE_KEY,JSON.stringify(state))}catch(err){}}else if(e.data&&e.data.type==="sold-event"){handleSoldDisplayEvent(e.data.payload)}}}
 window.addEventListener("storage",e=>{if(e.key===STORAGE_KEY||e.key===LIVE_SYNC_KEY){syncDisplayStateFromStorage();}else if(e.key===SOLD_EVENT_KEY&&e.newValue){try{handleSoldDisplayEvent(JSON.parse(e.newValue))}catch(err){}}});
 function applyDisplaySyncedState(nextState,force=false){
@@ -2315,19 +2315,20 @@ function addPlayerStatFields(target,source){
     source?.season_stats,
     mostRecentSeasonRecord(source?.history_past),
     mostRecentSeasonRecord(source?.historyPast),
-    mostRecentSeasonRecord(source?.past),
-    source?.stats,
-    source?.history
+    mostRecentSeasonRecord(source?.past)
   );
-  const merged={...(lastSeason||{}),...(source||{})};
-  target.gamesPlayed=readStatNumber(merged,["gamesPlayed","games_played","appearances","appearance","matches_played","matchesPlayed","apps","played","games","games_played","starts","starts_per_90"]);
-  target.starts=readStatNumber(merged,["starts","lineup_starts","lineupStarts"]);
-  target.minutes=readStatNumber(merged,["minutes","mins"]);
-  target.goals=readStatNumber(merged,["goals","goals_scored","goalsScored"]);
-  target.assists=readStatNumber(merged,["assists"]);
-  target.cleanSheets=readStatNumber(merged,["cleanSheets","clean_sheets","cleanSheetsMade","cleanSheet","clean_sheet","cs"]);
-  target.defCon=readStatNumber(merged,["defCon","def_con","defensive_contribution","defensive_contributions","defensiveContribution","defensiveContributions","defcon","dc"]);
-  if(!statNumber(target.points))target.points=readStatNumber(merged,["points","total_points","totalPoints"]);
+  /* Previous-season figures must come from one bounded season record. Never
+     overlay top-level/current-season FPL fields onto this object. */
+  const historical=lastSeason||{};
+  target.gamesPlayed=readStatNumber(historical,["gamesPlayed","games_played","appearances","appearance","matches_played","matchesPlayed","apps","played","games"]);
+  target.starts=readStatNumber(historical,["starts","lineup_starts","lineupStarts"]);
+  target.minutes=readStatNumber(historical,["minutes","mins"]);
+  target.goals=readStatNumber(historical,["goals","goals_scored","goalsScored"]);
+  target.assists=readStatNumber(historical,["assists"]);
+  target.cleanSheets=readStatNumber(historical,["cleanSheets","clean_sheets","cleanSheetsMade","cleanSheet","clean_sheet","cs"]);
+  target.defCon=readStatNumber(historical,["defCon","def_con","defensive_contribution","defensive_contributions","defensiveContribution","defensiveContributions","defcon","dc"]);
+  const historicalPoints=coalesceStatValue(historical,["points","total_points","totalPoints"]);
+  if(historicalPoints!==undefined)target.points=readStatNumber(historical,["points","total_points","totalPoints"]);
   return target;
 }
 function livePlayerStatsMissing(player){
@@ -2371,16 +2372,8 @@ async function hydrateLivePlayerStatsIfNeeded(player){
         }
       }catch(err){console.warn("Could not load FPL element-summary stats",err)}
     }
-    if((!stats||!statNumber(stats.goals)&&!statNumber(stats.assists)&&!statNumber(stats.cleanSheets)&&!statNumber(stats.gamesPlayed))&&window.fetch){
-      try{
-        const res=await fetch("https://fantasy.premierleague.com/api/bootstrap-static/",{cache:"no-store"});
-        if(res.ok){
-          const data=await res.json();
-          const el=(data.elements||[]).find(x=>String(x.id)===String(player.fplId)||String(x.code)===String(player.code)||normalKey(x.web_name)===normalKey(player.name));
-          if(el)stats=statsFromFplRecord(el);
-        }
-      }catch(err){console.warn("Could not load FPL bootstrap stats",err)}
-    }
+    /* bootstrap-static is current-season data and is deliberately excluded
+       from the previous-season strip. */
     if((!stats||!statNumber(stats.goals)&&!statNumber(stats.assists)&&!statNumber(stats.cleanSheets)&&!statNumber(stats.gamesPlayed))&&window.fetch){
       try{
         stats=await statsFromHistoricalCsv(player);
@@ -2495,7 +2488,8 @@ function verifiedHistoricalRecord(cache,player){
 }
 function statsFromHistoricalRow(row){
   const stats={};
-  stats.gamesPlayed=readStatNumber(row,["gamesPlayed","games_played","appearances","apps","matches_played","matchesPlayed","played","starts"]);
+  stats.points=readStatNumber(row,["points","total_points","totalPoints"]);
+  stats.gamesPlayed=readStatNumber(row,["gamesPlayed","games_played","appearances","apps","matches_played","matchesPlayed","played"]);
   stats.starts=readStatNumber(row,["starts"]);
   stats.minutes=readStatNumber(row,["minutes","mins"]);
   stats.goals=readStatNumber(row,["goals","goals_scored","goalsScored"]);
@@ -2557,10 +2551,10 @@ async function repairHistoricalStatsIntegrity(){
   const cache=await loadHistoricalStatsIndex();
   if(!cache.source)return false;
   let changed=false;
-  const statKeys=["gamesPlayed","starts","minutes","goals","assists","cleanSheets","defCon"];
+  const statKeys=["points","gamesPlayed","starts","minutes","goals","assists","cleanSheets","defCon"];
   state.players=state.players.map(player=>{
-    if(!player||Number(player.statsIntegrityVersion||0)>=2)return player;
-    if(!player.fplId&&!player.code){changed=true;return{...player,statsIntegrityVersion:2,statsSource:player.statsSource||"manual/imported stats"};}
+    if(!player||Number(player.statsIntegrityVersion||0)>=3)return player;
+    if(!player.fplId&&!player.code){changed=true;return{...player,statsIntegrityVersion:3,statsSource:player.statsSource||"manual/imported stats"};}
     const next={...player},verified=verifiedHistoricalRecord(cache,player);
     if(verified){
       statKeys.forEach(key=>{const value=verified.stats[key];if(value!==undefined&&Number(next[key]||0)!==Number(value)){next[key]=value;changed=true;}});
@@ -2577,7 +2571,7 @@ async function repairHistoricalStatsIntegrity(){
       }
       if(next.statsSource!=="no verified previous-season record"){next.statsSource="no verified previous-season record";changed=true;}
     }
-    next.statsIntegrityVersion=2;
+    next.statsIntegrityVersion=3;
     if(next.statsIntegrityVersion!==player.statsIntegrityVersion)changed=true;
     return next;
   });
@@ -2876,7 +2870,7 @@ function renderEditorialTickerPanel(){
 }
 
 function statNumber(value){const n=Number(value);return Number.isFinite(n)?n:0}
-function playerGamesPlayed(player){const explicit=statNumber(player?.gamesPlayed??player?.games_played??player?.appearances??player?.matches_played);if(explicit)return explicit;const starts=statNumber(player?.starts);if(starts)return starts;return 0}
+function playerGamesPlayed(player){return statNumber(player?.gamesPlayed??player?.games_played??player?.appearances??player?.matches_played)}
 function playerStatSummaryHtml(player){
   if(!player)return `<div class="player-stat-card featured"><span>Points</span><strong>0</strong></div><div class="player-stat-card"><span>Games</span><strong>-</strong></div><div class="player-stat-card"><span>Goals</span><strong>-</strong></div><div class="player-stat-card"><span>Assists</span><strong>-</strong></div><div class="player-stat-card"><span>Clean sheets</span><strong>-</strong></div><div class="player-stat-card"><span>Minutes</span><strong>-</strong></div>`;
   const unavailable=player.statsSource==="no verified previous-season record";
