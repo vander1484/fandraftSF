@@ -2267,6 +2267,9 @@ const samplePlayers=[
 ];
 const defaultTeams=["Kev's Kestrels","The Gegenpress","No Kane No Gain","Expected Toulouse","Ctrl Alt De Ligt","Tea & Busquets","Team 7","Team 8","Team 9","Team 10","Team 11","Team 12"];
 const defaultManagerNames=["Niki Blair","Richard Combe","Aaron Laird","Adam Bennett","Monkey","Spud","Sean Lightheart","Russell Masterton","Alex McIntyre","Phil Westgarth","Neil McLaughlin","Andy Pollock"];
+// This cache must exist before loadState() runs: saved and sample players are
+// enriched with the embedded season snapshot during initial state creation.
+let embeddedHistoricalCache=null;
 let state=loadState();let els={};const IS_DISPLAY_MODE=new URLSearchParams(location.search).get("display")==="live";let insightSlideIndex=0;let insightCarouselTimer=null;let squadCarouselIndex=0;let squadCarouselTimer=null;let insightSpotlightOpen=false;let presentationOpen=false;let endgameSlideIndex=0;let endgameTimer=null;let saleSequenceTimer=null;let auctionSearchDraft="";let auctionBidderDraftId="";let lastDisplaySyncJson="";let lastRenderedLotMotionKey="";let lastRenderedNominationMotionKey="";let nominationReorderMotionPending=false;const liveStatsHydrationInFlight=new Set();
 document.addEventListener("DOMContentLoaded",()=>{bindElements();bindLeagueSetupEvents();bindEvents();bindBidDeskEvents();bindBroadcastEvents();if(IS_DISPLAY_MODE){applyDisplayMode();startDisplayStateSync();startSquadCarousel()}startInsightCarousel();renderAll();repairHistoricalStatsIntegrity().then(()=>refreshPlayerStatsFromHistoricalCsvIfNeeded(true)).catch(err=>console.warn("Player-stat integrity refresh failed",err));});
 if(channel){channel.onmessage=e=>{if(e.data==="state-update"){syncDisplayStateFromStorage();}else if(e.data&&e.data.type==="state-full"&&e.data.payload){applyDisplaySyncedState(e.data.payload);try{localStorage.setItem(STORAGE_KEY,JSON.stringify(state))}catch(err){}}else if(e.data&&e.data.type==="sold-event"){handleSoldDisplayEvent(e.data.payload)}}}
@@ -2301,7 +2304,6 @@ function startDisplayStateSync(){
     }
   }catch(e){}
 }
-let embeddedHistoricalCache=null;
 function embeddedHistoricalRows(){if(embeddedHistoricalCache)return embeddedHistoricalCache.rows;try{const rows=JSON.parse(document.getElementById("historicalStats2025_26")?.textContent||"[]"),byCode=new Map(),byName=new Map();rows.forEach(row=>{if(row.code)byCode.set(String(row.code),row);[row.full_name,row.web_name].filter(Boolean).forEach(name=>{const key=normalKey(name);if(key&&!byName.has(key))byName.set(key,row)})});embeddedHistoricalCache={rows,byCode,byName};return rows}catch(err){embeddedHistoricalCache={rows:[],byCode:new Map(),byName:new Map()};return[]}}
 function embeddedHistoricalRowForPlayer(player){embeddedHistoricalRows();const code=String(player?.code||"");if(code&&embeddedHistoricalCache.byCode.has(code))return embeddedHistoricalCache.byCode.get(code);for(const name of [player?.name,player?.fullName].filter(Boolean)){const row=embeddedHistoricalCache.byName.get(normalKey(name));if(row&&strictHistoricalNameMatch(player,row))return row}return null}
 function applyEmbeddedHistoricalStats(player){const row=embeddedHistoricalRowForPlayer(player);if(!row)return player;const stats=statsFromHistoricalRow(row);return{...player,...stats,historicalStats:{...stats},statsSeason:HISTORICAL_SEASON,statsSource:`verified ${HISTORICAL_SEASON} official PL/FPL snapshot`,statsIntegrityVersion:HISTORICAL_STATS_INTEGRITY_VERSION}}
