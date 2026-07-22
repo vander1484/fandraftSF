@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-07-21T13:03:40.854259+00:00",
+  "generatedAt": "2026-07-22T13:10:43.826535+00:00",
   "source": "https://fantasy.premierleague.com/api/bootstrap-static/",
   "playerCount": 841,
   "players": [
@@ -92,10 +92,10 @@
       "points": 149,
       "guidePrice": 6.0,
       "lastSeasonPrice": 0,
-      "note": "Status: D | Lack of match fitness - 25% chance of playing | Chance next round: 25%",
+      "note": "Chance next round: 100%",
       "badgeUrl": "https://resources.premierleague.com/premierleague/badges/100/t3.png",
       "photoUrl": "https://resources.premierleague.com/premierleague/photos/players/110x140/p445122.png",
-      "status": "d",
+      "status": "a",
       "selectedByPercent": 15.2
     },
     {
@@ -244,10 +244,10 @@
       "points": 45,
       "guidePrice": 5.1,
       "lastSeasonPrice": 0,
-      "note": "Status: I | Knee injury - Expected back 24 May | Chance next round: 0%",
+      "note": "Chance next round: 100%",
       "badgeUrl": "https://resources.premierleague.com/premierleague/badges/100/t3.png",
       "photoUrl": "https://resources.premierleague.com/premierleague/photos/players/110x140/p198869.png",
-      "status": "i",
+      "status": "a",
       "selectedByPercent": 0.5
     },
     {
@@ -890,10 +890,10 @@
       "points": 52,
       "guidePrice": 4.3,
       "lastSeasonPrice": 0,
-      "note": "Status: I | Hamstring injury - Expected back 01 Jun | Chance next round: 0%",
+      "note": "Chance next round: 100%",
       "badgeUrl": "https://resources.premierleague.com/premierleague/badges/100/t94.png",
       "photoUrl": "https://resources.premierleague.com/premierleague/photos/players/110x140/p194010.png",
-      "status": "i",
+      "status": "a",
       "selectedByPercent": 0.1
     },
     {
@@ -1384,10 +1384,10 @@
       "points": 0,
       "guidePrice": 4.4,
       "lastSeasonPrice": 0,
-      "note": "Status: I | Knee injury - Unknown return date | Chance next round: 0%",
+      "note": "Chance next round: 100%",
       "badgeUrl": "https://resources.premierleague.com/premierleague/badges/100/t36.png",
       "photoUrl": "https://resources.premierleague.com/premierleague/photos/players/110x140/p110735.png",
-      "status": "i",
+      "status": "a",
       "selectedByPercent": 0.0
     },
     {
@@ -1517,10 +1517,10 @@
       "points": 0,
       "guidePrice": 3.9,
       "lastSeasonPrice": 0,
-      "note": "Status: I | Hamstring injury - Expected back 01 Jun | Chance next round: 0%",
+      "note": "Chance next round: 100%",
       "badgeUrl": "https://resources.premierleague.com/premierleague/badges/100/t90.png",
       "photoUrl": "https://resources.premierleague.com/premierleague/photos/players/110x140/p241231.png",
-      "status": "i",
+      "status": "a",
       "selectedByPercent": 0.1
     },
     {
@@ -1783,7 +1783,7 @@
       "points": 65,
       "guidePrice": 4.4,
       "lastSeasonPrice": 0,
-      "note": "Status: S | Suspended until 05 Sep | Chance next round: 0%",
+      "note": "Status: S | Suspended until 06 Sep | Chance next round: 0%",
       "badgeUrl": "https://resources.premierleague.com/premierleague/badges/100/t8.png",
       "photoUrl": "https://resources.premierleague.com/premierleague/photos/players/110x140/p444463.png",
       "status": "s",
@@ -2106,10 +2106,10 @@
       "points": 128,
       "guidePrice": 4.4,
       "lastSeasonPrice": 0,
-      "note": "Status: I | Ankle injury - Expected back 01 Jun | Chance next round: 0%",
+      "note": "Chance next round: 100%",
       "badgeUrl": "https://resources.premierleague.com/premierleague/badges/100/t31.png",
       "photoUrl": "https://resources.premierleague.com/premierleague/photos/players/110x140/p427623.png",
-      "status": "i",
+      "status": "a",
       "selectedByPercent": 2.2
     },
     {
@@ -2125,10 +2125,10 @@
       "points": 6,
       "guidePrice": 4.8,
       "lastSeasonPrice": 0,
-      "note": "Status: D | Knock - 75% chance of playing | Chance next round: 75%",
+      "note": "Chance next round: 100%",
       "badgeUrl": "https://resources.premierleague.com/premierleague/badges/100/t31.png",
       "photoUrl": "https://resources.premierleague.com/premierleague/photos/players/110x140/p218364.png",
-      "status": "d",
+      "status": "a",
       "selectedByPercent": 0.1
     },
     {
@@ -2163,10 +2163,10 @@
       "points": 32,
       "guidePrice": 5.3,
       "lastSeasonPrice": 0,
-      "note": "Status: I | Hamstring injury - Expected back 01 Jun | Chance next round: 0%",
+      "note": "Chance next round: 100%",
       "badgeUrl": "https://resources.premierleague.com/premierleague/badges/100/t11.png",
       "photoUrl": "https://resources.premierleague.com/premierleague/photos/players/110x140/p480455.png",
-      "status": "i",
+      "status": "a",
       "selectedByPercent": 0.3
     },
     {
@@ -2372,7 +2372,7 @@
       "points": 123,
       "guidePrice": 4.4,
       "lastSeasonPrice": 0,
-      "note": "Status: S | Suspended until 29 Aug | Chance next round: 0%",
+      "note": "Status: S | Suspended until 30 Aug | Chance next round: 0%",
       "badgeUrl": "https://resources.premierleague.com/premierleague/badges/100/t54.png",
       "photoUrl": "https://resources.premierleague.com/premierleague/photos/players/110x140/p174874.png",
       "status": "s",
@@ -2581,10 +2581,10 @@
       "points": 68,
       "guidePrice": 3.8,
       "lastSeasonPrice": 0,
-      "note": "Status: I | Hamstring injury - Expected back 01 Jun | Chance next round: 0%",
+      "note": "Chance next round: 100%",
       "badgeUrl": "https://resources.premierleague.com/premierleague/badges/100/t2.png",
       "photoUrl": "https://resources.premierleague.com/premierleague/photos/players/110x140/p243526.png",
-      "status": "i",
+      "status": "a",
       "selectedByPercent": 2.5
     },
     {
@@ -2695,10 +2695,10 @@
       "points": 42,
       "guidePrice": 4.9,
       "lastSeasonPrice": 0,
-      "note": "Status: I | Knee injury - Expected back 01 Jun | Chance next round: 0%",
+      "note": "Status: D | Knee injury - 25% chance of playing | Chance next round: 25%",
       "badgeUrl": "https://resources.premierleague.com/premierleague/badges/100/t14.png",
       "photoUrl": "https://resources.premierleague.com/premierleague/photos/players/110x140/p492777.png",
-      "status": "i",
+      "status": "d",
       "selectedByPercent": 0.1
     },
     {
@@ -2790,10 +2790,10 @@
       "points": 0,
       "guidePrice": 4.9,
       "lastSeasonPrice": 0,
-      "note": "Status: I | Knee injury - Expected back 01 Sep | Chance next round: 0%",
+      "note": "Status: D | Knee injury - 50% chance of playing | Chance next round: 50%",
       "badgeUrl": "https://resources.premierleague.com/premierleague/badges/100/t14.png",
       "photoUrl": "https://resources.premierleague.com/premierleague/photos/players/110x140/p647681.png",
-      "status": "i",
+      "status": "d",
       "selectedByPercent": 0.0
     },
     {
@@ -3284,7 +3284,7 @@
       "points": 43,
       "guidePrice": 4.9,
       "lastSeasonPrice": 0,
-      "note": "Status: I | Back injury - Expected back 01 Jun | Chance next round: 0%",
+      "note": "Status: I | Back injury - Expected back 10 Oct | Chance next round: 0%",
       "badgeUrl": "https://resources.premierleague.com/premierleague/badges/100/t1.png",
       "photoUrl": "https://resources.premierleague.com/premierleague/photos/players/110x140/p209365.png",
       "status": "i",
@@ -3588,10 +3588,10 @@
       "points": 0,
       "guidePrice": 4.3,
       "lastSeasonPrice": 0,
-      "note": "Status: I | Knee injury - Unknown return date | Chance next round: 0%",
+      "note": "Chance next round: 100%",
       "badgeUrl": "https://resources.premierleague.com/premierleague/badges/100/t4.png",
       "photoUrl": "https://resources.premierleague.com/premierleague/photos/players/110x140/p111773.png",
-      "status": "i",
+      "status": "a",
       "selectedByPercent": 0.0
     },
     {
@@ -3626,10 +3626,10 @@
       "points": 59,
       "guidePrice": 4.9,
       "lastSeasonPrice": 0,
-      "note": "Status: I | Thigh injury - Expected back 01 Jun | Chance next round: 0%",
+      "note": "Chance next round: 100%",
       "badgeUrl": "https://resources.premierleague.com/premierleague/badges/100/t4.png",
       "photoUrl": "https://resources.premierleague.com/premierleague/photos/players/110x140/p441191.png",
-      "status": "i",
+      "status": "a",
       "selectedByPercent": 1.8
     },
     {
@@ -3664,10 +3664,10 @@
       "points": 51,
       "guidePrice": 5.2,
       "lastSeasonPrice": 0,
-      "note": "Status: I | Ankle injury - Expected back 01 Jun | Chance next round: 0%",
+      "note": "Chance next round: 100%",
       "badgeUrl": "https://resources.premierleague.com/premierleague/badges/100/t4.png",
       "photoUrl": "https://resources.premierleague.com/premierleague/photos/players/110x140/p119471.png",
-      "status": "i",
+      "status": "a",
       "selectedByPercent": 1.1
     },
     {
@@ -3778,10 +3778,10 @@
       "points": 67,
       "guidePrice": 4.7,
       "lastSeasonPrice": 0,
-      "note": "Status: D | Lack of match fitness - 75% chance of playing | Chance next round: 75%",
+      "note": "Chance next round: 100%",
       "badgeUrl": "https://resources.premierleague.com/premierleague/badges/100/t17.png",
       "photoUrl": "https://resources.premierleague.com/premierleague/photos/players/110x140/p159506.png",
-      "status": "d",
+      "status": "a",
       "selectedByPercent": 2.1
     },
     {
@@ -3797,10 +3797,10 @@
       "points": 0,
       "guidePrice": 3.8,
       "lastSeasonPrice": 0,
-      "note": "Status: I | Knee injury - Unknown return date | Chance next round: 0%",
+      "note": "Chance next round: 100%",
       "badgeUrl": "https://resources.premierleague.com/premierleague/badges/100/t17.png",
       "photoUrl": "https://resources.premierleague.com/premierleague/photos/players/110x140/p90585.png",
-      "status": "i",
+      "status": "a",
       "selectedByPercent": 0.3
     },
     {
@@ -3911,10 +3911,10 @@
       "points": 83,
       "guidePrice": 5.2,
       "lastSeasonPrice": 0,
-      "note": "Status: I | Muscle injury - Expected back 01 Jun | Chance next round: 0%",
+      "note": "Chance next round: 100%",
       "badgeUrl": "https://resources.premierleague.com/premierleague/badges/100/t17.png",
       "photoUrl": "https://resources.premierleague.com/premierleague/photos/players/110x140/p575476.png",
-      "status": "i",
+      "status": "a",
       "selectedByPercent": 1.8
     },
     {
@@ -3987,10 +3987,10 @@
       "points": 39,
       "guidePrice": 4.5,
       "lastSeasonPrice": 0,
-      "note": "Status: I | Knee injury - Unknown return date | Chance next round: 0%",
+      "note": "Chance next round: 100%",
       "badgeUrl": "https://resources.premierleague.com/premierleague/badges/100/t17.png",
       "photoUrl": "https://resources.premierleague.com/premierleague/photos/players/110x140/p500151.png",
-      "status": "i",
+      "status": "a",
       "selectedByPercent": 0.0
     },
     {
@@ -4063,10 +4063,10 @@
       "points": 10,
       "guidePrice": 4.3,
       "lastSeasonPrice": 0,
-      "note": "Status: I | Ankle injury - Unknown return date | Chance next round: 0%",
+      "note": "Chance next round: 100%",
       "badgeUrl": "https://resources.premierleague.com/premierleague/badges/100/t6.png",
       "photoUrl": "https://resources.premierleague.com/premierleague/photos/players/110x140/p115556.png",
-      "status": "i",
+      "status": "a",
       "selectedByPercent": 0.1
     },
     {
@@ -4139,10 +4139,10 @@
       "points": 91,
       "guidePrice": 5.0,
       "lastSeasonPrice": 0,
-      "note": "Status: I | Knee injury - Expected back 01 Jun | Chance next round: 0%",
+      "note": "Chance next round: 100%",
       "badgeUrl": "https://resources.premierleague.com/premierleague/badges/100/t6.png",
       "photoUrl": "https://resources.premierleague.com/premierleague/photos/players/110x140/p221632.png",
-      "status": "i",
+      "status": "a",
       "selectedByPercent": 2.9
     },
     {
@@ -4291,10 +4291,10 @@
       "points": 125,
       "guidePrice": 4.1,
       "lastSeasonPrice": 0,
-      "note": "Status: D | Knock - 50% chance of playing | Chance next round: 50%",
+      "note": "Chance next round: 100%",
       "badgeUrl": "https://resources.premierleague.com/premierleague/badges/100/t56.png",
       "photoUrl": "https://resources.premierleague.com/premierleague/photos/players/110x140/p201895.png",
-      "status": "d",
+      "status": "a",
       "selectedByPercent": 4.9
     },
     {
@@ -4880,10 +4880,10 @@
       "points": 14,
       "guidePrice": 4.4,
       "lastSeasonPrice": 0,
-      "note": "Status: I | Knock - Expected back 01 Jun | Chance next round: 0%",
+      "note": "Chance next round: 100%",
       "badgeUrl": "https://resources.premierleague.com/premierleague/badges/100/t39.png",
       "photoUrl": "https://resources.premierleague.com/premierleague/photos/players/110x140/p87835.png",
-      "status": "i",
+      "status": "a",
       "selectedByPercent": 0.1
     },
     {
@@ -5431,10 +5431,10 @@
       "points": 16,
       "guidePrice": 5.2,
       "lastSeasonPrice": 0,
-      "note": "Status: I | Knee injury - Expected back 01 Jun | Chance next round: 0%",
+      "note": "Status: D | Knee injury - 25% chance of playing | Chance next round: 25%",
       "badgeUrl": "https://resources.premierleague.com/premierleague/badges/100/t36.png",
       "photoUrl": "https://resources.premierleague.com/premierleague/photos/players/110x140/p608181.png",
-      "status": "i",
+      "status": "d",
       "selectedByPercent": 0.1
     },
     {
@@ -5735,10 +5735,10 @@
       "points": 23,
       "guidePrice": 5.4,
       "lastSeasonPrice": 0,
-      "note": "Status: I | Hamstring injury - Expected back 01 Jun | Chance next round: 0%",
+      "note": "Chance next round: 100%",
       "badgeUrl": "https://resources.premierleague.com/premierleague/badges/100/t31.png",
       "photoUrl": "https://resources.premierleague.com/premierleague/photos/players/110x140/p205533.png",
-      "status": "i",
+      "status": "a",
       "selectedByPercent": 0.3
     },
     {
@@ -5906,10 +5906,10 @@
       "points": 6,
       "guidePrice": 4.5,
       "lastSeasonPrice": 0,
-      "note": "Status: I | Knee injury - Expected back 01 Jun | Chance next round: 0%",
+      "note": "Chance next round: 100%",
       "badgeUrl": "https://resources.premierleague.com/premierleague/badges/100/t54.png",
       "photoUrl": "https://resources.premierleague.com/premierleague/photos/players/110x140/p631786.png",
-      "status": "i",
+      "status": "a",
       "selectedByPercent": 0.1
     },
     {
@@ -6077,10 +6077,10 @@
       "points": 0,
       "guidePrice": 4.3,
       "lastSeasonPrice": 0,
-      "note": "Status: I | Hamstring injury - Unknown return date | Chance next round: 0%",
+      "note": "Chance next round: 100%",
       "badgeUrl": "https://resources.premierleague.com/premierleague/badges/100/t14.png",
       "photoUrl": "https://resources.premierleague.com/premierleague/photos/players/110x140/p500058.png",
-      "status": "i",
+      "status": "a",
       "selectedByPercent": 0.1
     },
     {
@@ -6115,7 +6115,7 @@
       "points": 125,
       "guidePrice": 9.0,
       "lastSeasonPrice": 0,
-      "note": "Status: I | Achilles injury - Expected back 01 Jul | Chance next round: 0%",
+      "note": "Status: I | Achilles injury - Expected back 01 Jan | Chance next round: 0%",
       "badgeUrl": "https://resources.premierleague.com/premierleague/badges/100/t14.png",
       "photoUrl": "https://resources.premierleague.com/premierleague/photos/players/110x140/p510663.png",
       "status": "i",
@@ -6267,10 +6267,10 @@
       "points": 111,
       "guidePrice": 7.2,
       "lastSeasonPrice": 0,
-      "note": "Status: D | Shin injury - 50% chance of playing | Chance next round: 50%",
+      "note": "Chance next round: 100%",
       "badgeUrl": "https://resources.premierleague.com/premierleague/badges/100/t1.png",
       "photoUrl": "https://resources.premierleague.com/premierleague/photos/players/110x140/p485711.png",
-      "status": "d",
+      "status": "a",
       "selectedByPercent": 4.6
     },
     {
@@ -8756,10 +8756,10 @@
       "points": 21,
       "guidePrice": 4.4,
       "lastSeasonPrice": 0,
-      "note": "Status: I | Shoulder injury - Expected back 25 May | Chance next round: 0%",
+      "note": "Chance next round: 100%",
       "badgeUrl": "https://resources.premierleague.com/premierleague/badges/100/t39.png",
       "photoUrl": "https://resources.premierleague.com/premierleague/photos/players/110x140/p101982.png",
-      "status": "i",
+      "status": "a",
       "selectedByPercent": 0.1
     },
     {
@@ -9098,10 +9098,10 @@
       "points": 3,
       "guidePrice": 5.0,
       "lastSeasonPrice": 0,
-      "note": "Status: I | Muscle injury - Unknown return date | Chance next round: 0%",
+      "note": "Chance next round: 100%",
       "badgeUrl": "https://resources.premierleague.com/premierleague/badges/100/t7.png",
       "photoUrl": "https://resources.premierleague.com/premierleague/photos/players/110x140/p653481.png",
-      "status": "i",
+      "status": "a",
       "selectedByPercent": 0.0
     },
     {
@@ -9364,10 +9364,10 @@
       "points": 61,
       "guidePrice": 4.9,
       "lastSeasonPrice": 0,
-      "note": "Status: I | Knee injury - Expected back 01 Jun | Chance next round: 0%",
+      "note": "Chance next round: 100%",
       "badgeUrl": "https://resources.premierleague.com/premierleague/badges/100/t7.png",
       "photoUrl": "https://resources.premierleague.com/premierleague/photos/players/110x140/p226944.png",
-      "status": "i",
+      "status": "a",
       "selectedByPercent": 0.2
     },
     {
@@ -9421,10 +9421,10 @@
       "points": 76,
       "guidePrice": 4.8,
       "lastSeasonPrice": 0,
-      "note": "Chance next round: 100%",
+      "note": "Status: I | Knee injury - Expected back 01 Apr | Chance next round: 0%",
       "badgeUrl": "https://resources.premierleague.com/premierleague/badges/100/t7.png",
       "photoUrl": "https://resources.premierleague.com/premierleague/photos/players/110x140/p449871.png",
-      "status": "a",
+      "status": "i",
       "selectedByPercent": 0.6
     },
     {
@@ -9934,10 +9934,10 @@
       "points": 13,
       "guidePrice": 4.6,
       "lastSeasonPrice": 0,
-      "note": "Status: I | Knee injury - Expected back 01 Jun | Chance next round: 0%",
+      "note": "Status: D | Knee injury - 25% chance of playing | Chance next round: 25%",
       "badgeUrl": "https://resources.premierleague.com/premierleague/badges/100/t94.png",
       "photoUrl": "https://resources.premierleague.com/premierleague/photos/players/110x140/p244858.png",
-      "status": "i",
+      "status": "d",
       "selectedByPercent": 0.1
     },
     {
@@ -10105,10 +10105,10 @@
       "points": 1,
       "guidePrice": 5.2,
       "lastSeasonPrice": 0,
-      "note": "Status: I | Knee injury - Expected back 01 Jun | Chance next round: 0%",
+      "note": "Status: D | Knee injury - 25% chance of playing | Chance next round: 25%",
       "badgeUrl": "https://resources.premierleague.com/premierleague/badges/100/t94.png",
       "photoUrl": "https://resources.premierleague.com/premierleague/photos/players/110x140/p543295.png",
-      "status": "i",
+      "status": "d",
       "selectedByPercent": 0.0
     },
     {
@@ -10561,10 +10561,10 @@
       "points": 62,
       "guidePrice": 6.1,
       "lastSeasonPrice": 0,
-      "note": "Status: I | Hamstring injury - Expected back 01 Jun | Chance next round: 0%",
+      "note": "Status: D | Hamstring injury - 25% chance of playing | Chance next round: 25%",
       "badgeUrl": "https://resources.premierleague.com/premierleague/badges/100/t36.png",
       "photoUrl": "https://resources.premierleague.com/premierleague/photos/players/110x140/p451340.png",
-      "status": "i",
+      "status": "d",
       "selectedByPercent": 1.9
     },
     {
@@ -10903,10 +10903,10 @@
       "points": 70,
       "guidePrice": 4.9,
       "lastSeasonPrice": 0,
-      "note": "Status: I | Knee injury - Expected back 30 Sep | Chance next round: 0%",
+      "note": "Chance next round: 100%",
       "badgeUrl": "https://resources.premierleague.com/premierleague/badges/100/t90.png",
       "photoUrl": "https://resources.premierleague.com/premierleague/photos/players/110x140/p172567.png",
-      "status": "i",
+      "status": "a",
       "selectedByPercent": 0.8
     },
     {
@@ -11264,10 +11264,10 @@
       "points": 58,
       "guidePrice": 6.4,
       "lastSeasonPrice": 0,
-      "note": "Status: I | Hamstring injury - Expected back 01 Jun | Chance next round: 0%",
+      "note": "Chance next round: 100%",
       "badgeUrl": "https://resources.premierleague.com/premierleague/badges/100/t8.png",
       "photoUrl": "https://resources.premierleague.com/premierleague/photos/players/110x140/p624773.png",
-      "status": "i",
+      "status": "a",
       "selectedByPercent": 1.7
     },
     {
@@ -11302,10 +11302,10 @@
       "points": 25,
       "guidePrice": 6.0,
       "lastSeasonPrice": 0,
-      "note": "Status: D | Hamstring injury - 25% chance of playing | Chance next round: 25%",
+      "note": "Chance next round: 100%",
       "badgeUrl": "https://resources.premierleague.com/premierleague/badges/100/t8.png",
       "photoUrl": "https://resources.premierleague.com/premierleague/photos/players/110x140/p463936.png",
-      "status": "d",
+      "status": "a",
       "selectedByPercent": 0.1
     },
     {
@@ -11340,10 +11340,10 @@
       "points": 13,
       "guidePrice": 4.9,
       "lastSeasonPrice": 0,
-      "note": "Status: D | Knock - 75% chance of playing | Chance next round: 75%",
+      "note": "Chance next round: 100%",
       "badgeUrl": "https://resources.premierleague.com/premierleague/badges/100/t8.png",
       "photoUrl": "https://resources.premierleague.com/premierleague/photos/players/110x140/p514356.png",
-      "status": "d",
+      "status": "a",
       "selectedByPercent": 0.0
     },
     {
@@ -11530,10 +11530,10 @@
       "points": 0,
       "guidePrice": 4.9,
       "lastSeasonPrice": 0,
-      "note": "Status: I | Lack of match fitness - Expected back 01 Jun | Chance next round: 0%",
+      "note": "Chance next round: 100%",
       "badgeUrl": "https://resources.premierleague.com/premierleague/badges/100/t31.png",
       "photoUrl": "https://resources.premierleague.com/premierleague/photos/players/110x140/p438464.png",
-      "status": "i",
+      "status": "a",
       "selectedByPercent": 0.0
     },
     {
@@ -11967,10 +11967,10 @@
       "points": 83,
       "guidePrice": 5.4,
       "lastSeasonPrice": 0,
-      "note": "Status: D | Lack of match fitness - 50% chance of playing | Chance next round: 50%",
+      "note": "Chance next round: 100%",
       "badgeUrl": "https://resources.premierleague.com/premierleague/badges/100/t11.png",
       "photoUrl": "https://resources.premierleague.com/premierleague/photos/players/110x140/p80801.png",
-      "status": "d",
+      "status": "a",
       "selectedByPercent": 0.1
     },
     {
@@ -12024,10 +12024,10 @@
       "points": 79,
       "guidePrice": 6.3,
       "lastSeasonPrice": 0,
-      "note": "Status: I | Foot injury - Expected back 01 Jun | Chance next round: 0%",
+      "note": "Chance next round: 100%",
       "badgeUrl": "https://resources.premierleague.com/premierleague/badges/100/t11.png",
       "photoUrl": "https://resources.premierleague.com/premierleague/photos/players/110x140/p114283.png",
-      "status": "i",
+      "status": "a",
       "selectedByPercent": 5.6
     },
     {
@@ -12670,10 +12670,10 @@
       "points": 56,
       "guidePrice": 4.7,
       "lastSeasonPrice": 0,
-      "note": "Status: I | Knee injury - Expected back 01 Jun | Chance next round: 0%",
+      "note": "Chance next round: 100%",
       "badgeUrl": "https://resources.premierleague.com/premierleague/badges/100/t2.png",
       "photoUrl": "https://resources.premierleague.com/premierleague/photos/players/110x140/p486520.png",
-      "status": "i",
+      "status": "a",
       "selectedByPercent": 0.1
     },
     {
@@ -12765,10 +12765,10 @@
       "points": 109,
       "guidePrice": 5.5,
       "lastSeasonPrice": 0,
-      "note": "Status: I | Calf injury - Expected back 01 Jun | Chance next round: 0%",
+      "note": "Chance next round: 100%",
       "badgeUrl": "https://resources.premierleague.com/premierleague/badges/100/t2.png",
       "photoUrl": "https://resources.premierleague.com/premierleague/photos/players/110x140/p435997.png",
-      "status": "i",
+      "status": "a",
       "selectedByPercent": 0.9
     },
     {
@@ -12803,10 +12803,10 @@
       "points": 137,
       "guidePrice": 4.8,
       "lastSeasonPrice": 0,
-      "note": "Status: I | Ankle injury - Expected back 01 Jun | Chance next round: 0%",
+      "note": "Chance next round: 100%",
       "badgeUrl": "https://resources.premierleague.com/premierleague/badges/100/t2.png",
       "photoUrl": "https://resources.premierleague.com/premierleague/photos/players/110x140/p466525.png",
-      "status": "i",
+      "status": "a",
       "selectedByPercent": 1.7
     },
     {
@@ -12841,10 +12841,10 @@
       "points": 0,
       "guidePrice": 4.2,
       "lastSeasonPrice": 0,
-      "note": "Status: I | Hamstring injury - Unknown return date | Chance next round: 0%",
+      "note": "Chance next round: 100%",
       "badgeUrl": "https://resources.premierleague.com/premierleague/badges/100/t14.png",
       "photoUrl": "https://resources.premierleague.com/premierleague/photos/players/110x140/p535928.png",
-      "status": "i",
+      "status": "a",
       "selectedByPercent": 0.2
     },
     {
@@ -12898,10 +12898,10 @@
       "points": 12,
       "guidePrice": 4.9,
       "lastSeasonPrice": 0,
-      "note": "Status: D | Foot injury - 50% chance of playing | Chance next round: 50%",
+      "note": "Chance next round: 100%",
       "badgeUrl": "https://resources.premierleague.com/premierleague/badges/100/t14.png",
       "photoUrl": "https://resources.premierleague.com/premierleague/photos/players/110x140/p158983.png",
-      "status": "d",
+      "status": "a",
       "selectedByPercent": 0.1
     },
     {
@@ -13848,10 +13848,10 @@
       "points": 38,
       "guidePrice": 4.7,
       "lastSeasonPrice": 0,
-      "note": "Chance next round: 100%",
+      "note": "Status: I | Knee injury - Unknown return date | Chance next round: 0%",
       "badgeUrl": "https://resources.premierleague.com/premierleague/badges/100/t1.png",
       "photoUrl": "https://resources.premierleague.com/premierleague/photos/players/110x140/p232112.png",
-      "status": "a",
+      "status": "i",
       "selectedByPercent": 0.1
     },
     {
@@ -14038,10 +14038,10 @@
       "points": 73,
       "guidePrice": 5.9,
       "lastSeasonPrice": 0,
-      "note": "Status: I | Thigh injury - Expected back 01 Jun | Chance next round: 0%",
+      "note": "Chance next round: 100%",
       "badgeUrl": "https://resources.premierleague.com/premierleague/badges/100/t4.png",
       "photoUrl": "https://resources.premierleague.com/premierleague/photos/players/110x140/p180974.png",
-      "status": "i",
+      "status": "a",
       "selectedByPercent": 0.3
     },
     {
@@ -14076,10 +14076,10 @@
       "points": 72,
       "guidePrice": 4.4,
       "lastSeasonPrice": 0,
-      "note": "Status: I | Leg injury - Expected back 01 Jul | Chance next round: 0%",
+      "note": "Chance next round: 100%",
       "badgeUrl": "https://resources.premierleague.com/premierleague/badges/100/t4.png",
       "photoUrl": "https://resources.premierleague.com/premierleague/photos/players/110x140/p547719.png",
-      "status": "i",
+      "status": "a",
       "selectedByPercent": 1.7
     },
     {
@@ -14114,10 +14114,10 @@
       "points": 81,
       "guidePrice": 5.3,
       "lastSeasonPrice": 0,
-      "note": "Status: D | Hamstring injury - 75% chance of playing | Chance next round: 75%",
+      "note": "Chance next round: 100%",
       "badgeUrl": "https://resources.premierleague.com/premierleague/badges/100/t4.png",
       "photoUrl": "https://resources.premierleague.com/premierleague/photos/players/110x140/p432422.png",
-      "status": "d",
+      "status": "a",
       "selectedByPercent": 1.0
     },
     {
@@ -14266,10 +14266,10 @@
       "points": 88,
       "guidePrice": 5.7,
       "lastSeasonPrice": 0,
-      "note": "Status: I | Muscle injury - Expected back 01 Jun | Chance next round: 0%",
+      "note": "Chance next round: 100%",
       "badgeUrl": "https://resources.premierleague.com/premierleague/badges/100/t17.png",
       "photoUrl": "https://resources.premierleague.com/premierleague/photos/players/110x140/p209046.png",
-      "status": "i",
+      "status": "a",
       "selectedByPercent": 0.6
     },
     {
@@ -14627,10 +14627,10 @@
       "points": 75,
       "guidePrice": 6.4,
       "lastSeasonPrice": 0,
-      "note": "Status: I | Thigh injury - Expected back 01 Jun | Chance next round: 0%",
+      "note": "Chance next round: 100%",
       "badgeUrl": "https://resources.premierleague.com/premierleague/badges/100/t6.png",
       "photoUrl": "https://resources.premierleague.com/premierleague/photos/players/110x140/p460842.png",
-      "status": "i",
+      "status": "a",
       "selectedByPercent": 9.1
     },
     {
@@ -14646,10 +14646,10 @@
       "points": 0,
       "guidePrice": 6.4,
       "lastSeasonPrice": 0,
-      "note": "Status: I | Knee injury - Unknown return date | Chance next round: 0%",
+      "note": "Chance next round: 100%",
       "badgeUrl": "https://resources.premierleague.com/premierleague/badges/100/t6.png",
       "photoUrl": "https://resources.premierleague.com/premierleague/photos/players/110x140/p445044.png",
-      "status": "i",
+      "status": "a",
       "selectedByPercent": 0.0
     },
     {
@@ -15121,10 +15121,10 @@
       "points": 14,
       "guidePrice": 4.9,
       "lastSeasonPrice": 0,
-      "note": "Status: I | Hamstring injury - Expected back 01 Jun | Chance next round: 0%",
+      "note": "Chance next round: 100%",
       "badgeUrl": "https://resources.premierleague.com/premierleague/badges/100/t56.png",
       "photoUrl": "https://resources.premierleague.com/premierleague/photos/players/110x140/p461199.png",
-      "status": "i",
+      "status": "a",
       "selectedByPercent": 0.0
     },
     {
@@ -15235,10 +15235,10 @@
       "points": 83,
       "guidePrice": 4.9,
       "lastSeasonPrice": 0,
-      "note": "Status: I | Muscle injury - Expected back 01 Jun | Chance next round: 0%",
+      "note": "Chance next round: 100%",
       "badgeUrl": "https://resources.premierleague.com/premierleague/badges/100/t56.png",
       "photoUrl": "https://resources.premierleague.com/premierleague/photos/players/110x140/p549912.png",
-      "status": "i",
+      "status": "a",
       "selectedByPercent": 0.2
     },
     {
@@ -15349,10 +15349,10 @@
       "points": 25,
       "guidePrice": 5.1,
       "lastSeasonPrice": 0,
-      "note": "Status: D | Muscle injury - 25% chance of playing | Chance next round: 25%",
+      "note": "Chance next round: 100%",
       "badgeUrl": "https://resources.premierleague.com/premierleague/badges/100/t21.png",
       "photoUrl": "https://resources.premierleague.com/premierleague/photos/players/110x140/p159533.png",
-      "status": "d",
+      "status": "a",
       "selectedByPercent": 0.1
     },
     {
