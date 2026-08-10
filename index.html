@@ -1332,10 +1332,29 @@ body.display-mode .display-squad-carousel-status{
   border:1px solid rgba(55,0,60,.12)!important;
   box-shadow:0 8px 22px rgba(55,0,60,.10)!important;
   color:var(--pl-purple)!important;
-  pointer-events:none!important;
+  pointer-events:auto!important;
 }
 body.display-mode .display-squad-carousel-status span:first-child{
   white-space:nowrap!important;
+}
+body.display-mode .display-squad-next-btn{
+  min-height:28px!important;
+  padding:5px 10px!important;
+  border:0!important;
+  border-radius:999px!important;
+  background:var(--pl-purple)!important;
+  color:#fff!important;
+  font:inherit!important;
+  letter-spacing:.08em!important;
+  text-transform:uppercase!important;
+  cursor:pointer!important;
+  box-shadow:none!important;
+}
+body.display-mode .display-squad-next-btn:hover,
+body.display-mode .display-squad-next-btn:focus-visible{
+  background:var(--pl-pink)!important;
+  outline:3px solid rgba(233,0,82,.22)!important;
+  outline-offset:2px!important;
 }
 @media(max-width:900px){
   body.display-mode .display-squad-carousel-page.broadcast-six-team-page{
@@ -2273,7 +2292,7 @@ const defaultManagerNames=["Niki Blair","Richard Combe","Aaron Laird","Adam Benn
 // This cache must exist before loadState() runs: saved and sample players are
 // enriched with the embedded season snapshot during initial state creation.
 let embeddedHistoricalCache=null;
-let state=loadState();let els={};const IS_DISPLAY_MODE=new URLSearchParams(location.search).get("display")==="live";let insightSlideIndex=0;let insightCarouselTimer=null;let squadCarouselIndex=0;let squadCarouselTimer=null;let insightSpotlightOpen=false;let presentationOpen=false;let endgameSlideIndex=0;let endgameTimer=null;let saleSequenceTimer=null;let auctionSearchDraft="";let auctionSelectedPlayerId="";let auctionSelectedPlayerRef=null;let auctionBidderDraftId="";let lastDisplaySyncJson="";let lastRenderedLotMotionKey="";let lastRenderedNominationMotionKey="";let nominationReorderMotionPending=false;const liveStatsHydrationInFlight=new Set();
+let state=loadState();let els={};const IS_DISPLAY_MODE=new URLSearchParams(location.search).get("display")==="live";const SQUAD_CAROUSEL_INTERVAL_MS=30000;let insightSlideIndex=0;let insightCarouselTimer=null;let squadCarouselIndex=0;let squadCarouselTimer=null;let insightSpotlightOpen=false;let presentationOpen=false;let endgameSlideIndex=0;let endgameTimer=null;let saleSequenceTimer=null;let auctionSearchDraft="";let auctionSelectedPlayerId="";let auctionSelectedPlayerRef=null;let auctionBidderDraftId="";let lastDisplaySyncJson="";let lastRenderedLotMotionKey="";let lastRenderedNominationMotionKey="";let nominationReorderMotionPending=false;const liveStatsHydrationInFlight=new Set();
 document.addEventListener("DOMContentLoaded",()=>{bindElements();bindLeagueSetupEvents();bindEvents();bindBidDeskEvents();bindBroadcastEvents();if(IS_DISPLAY_MODE){applyDisplayMode();startDisplayStateSync();startSquadCarousel()}startInsightCarousel();renderAll();autoLoadOfficialRosterSnapshot();repairHistoricalStatsIntegrity().then(()=>refreshPlayerStatsFromHistoricalCsvIfNeeded(true)).catch(err=>console.warn("Player-stat integrity refresh failed",err));});
 if(channel){channel.onmessage=e=>{if(e.data==="state-update"){syncDisplayStateFromStorage();}else if(e.data&&e.data.type==="state-full"&&e.data.payload){applyDisplaySyncedState(e.data.payload);try{localStorage.setItem(STORAGE_KEY,JSON.stringify(state))}catch(err){}}else if(e.data&&e.data.type==="sold-event"){handleSoldDisplayEvent(e.data.payload)}}}
 window.addEventListener("storage",e=>{if(e.key===STORAGE_KEY||e.key===LIVE_SYNC_KEY){syncDisplayStateFromStorage();}else if(e.key===SOLD_EVENT_KEY&&e.newValue){try{handleSoldDisplayEvent(JSON.parse(e.newValue))}catch(err){}}});
@@ -3047,7 +3066,14 @@ function startSquadCarousel(){
       squadCarouselIndex=(squadCarouselIndex+1)%pages.length;
       updateSquadCarouselVisibility();
     }
-  },45000);
+  },SQUAD_CAROUSEL_INTERVAL_MS);
+}
+function moveSquadCarouselNext(){
+  const pages=els.squadGrid?.querySelectorAll?.(".display-squad-carousel-page")||[];
+  if(pages.length<2)return;
+  squadCarouselIndex=(squadCarouselIndex+1)%pages.length;
+  updateSquadCarouselVisibility();
+  startSquadCarousel();
 }
 function updateSquadCarouselVisibility(){
   const pages=Array.from(els.squadGrid?.querySelectorAll?.(".display-squad-carousel-page")||[]);
@@ -3069,6 +3095,8 @@ function updateSquadCarouselVisibility(){
     }
   });
   dots.forEach((dot,i)=>dot.classList.toggle("active",i===next));
+  const counter=els.squadGrid?.querySelector?.("[data-squad-page-counter]");
+  if(counter)counter.textContent=`${next+1}/${total}`;
 }
 function displaySquadCarouselCardHtml(team){
   const signedByPosition=POSITIONS.reduce((acc,pos)=>{acc[pos]=[];return acc;},{});
@@ -3130,8 +3158,9 @@ function renderSquads(){
     for(let i=0;i<displayTeams.length;i+=pageSize)pages.push(displayTeams.slice(i,i+pageSize));
     if(squadCarouselIndex>=pages.length)squadCarouselIndex=0;
     const pageHtml=pages.map((page,pageIndex)=>`<div class="display-squad-carousel-page broadcast-six-team-page ${pageIndex===squadCarouselIndex?"active":""}" data-page="${pageIndex}">${page.map(displaySquadCarouselCardHtml).join("")}</div>`).join("");
-    const dots=pages.length>1?`<div class="display-squad-carousel-status"><span>Squad page</span><span class="display-squad-carousel-dots">${pages.map((_,i)=>`<i class="display-squad-carousel-dot ${i===squadCarouselIndex?"active":""}"></i>`).join("")}</span><span>${squadCarouselIndex+1}/${pages.length}</span></div>`:"";
+    const dots=pages.length>1?`<div class="display-squad-carousel-status"><span>Squad page</span><span class="display-squad-carousel-dots" aria-hidden="true">${pages.map((_,i)=>`<i class="display-squad-carousel-dot ${i===squadCarouselIndex?"active":""}"></i>`).join("")}</span><span data-squad-page-counter>${squadCarouselIndex+1}/${pages.length}</span><button class="display-squad-next-btn" type="button" aria-label="Show next squad page">Next page</button></div>`:"";
     els.squadGrid.innerHTML=`<div class="display-squad-carousel-viewport broadcast-six-team-viewport" aria-label="Current squad line-ups, rotating six teams per page">${pageHtml}</div>${dots}`;
+    els.squadGrid.querySelector(".display-squad-next-btn")?.addEventListener("click",moveSquadCarouselNext);
     startSquadCarousel();
   }else{
     els.squadGrid.innerHTML=teams.map(standardSquadCardHtml).join("");
