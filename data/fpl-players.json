@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-04T15:56:16.549641+00:00",
+  "generatedAt": "2026-11-05T16:04:38.424985+00:00",
   "source": "https://fantasy.premierleague.com/api/bootstrap-static/",
   "playerCount": 670,
   "players": [
@@ -35,11 +35,11 @@
       "points": 58,
       "guidePrice": 8.0,
       "lastSeasonPrice": 0,
-      "note": "Imported from official FPL. Selected by 24.6% of teams.",
+      "note": "Imported from official FPL. Selected by 24.7% of teams.",
       "badgeUrl": "https://resources.premierleague.com/premierleague/badges/100/t3.png",
       "photoUrl": "https://resources.premierleague.com/premierleague/photos/players/110x140/p226597.png",
       "status": "a",
-      "selectedByPercent": 24.6
+      "selectedByPercent": 24.7
     },
     {
       "id": "fpl-9",
@@ -77,7 +77,7 @@
       "badgeUrl": "https://resources.premierleague.com/premierleague/badges/100/t3.png",
       "photoUrl": "https://resources.premierleague.com/premierleague/photos/players/110x140/p445122.png",
       "status": "a",
-      "selectedByPercent": 0.8
+      "selectedByPercent": 0.9
     },
     {
       "id": "fpl-31",
@@ -96,7 +96,7 @@
       "badgeUrl": "https://resources.premierleague.com/premierleague/badges/100/t3.png",
       "photoUrl": "https://resources.premierleague.com/premierleague/photos/players/110x140/p199798.png",
       "status": "a",
-      "selectedByPercent": 23.2
+      "selectedByPercent": 23.3
     },
     {
       "id": "fpl-11",
@@ -130,10 +130,10 @@
       "points": 0,
       "guidePrice": 5.9,
       "lastSeasonPrice": 0,
-      "note": "Status: D | Back injury - 75% chance of playing | Chance next round: 75%",
+      "note": "Chance next round: 100%",
       "badgeUrl": "https://resources.premierleague.com/premierleague/badges/100/t3.png",
       "photoUrl": "https://resources.premierleague.com/premierleague/photos/players/110x140/p462424.png",
-      "status": "d",
+      "status": "a",
       "selectedByPercent": 0.2
     },
     {
@@ -191,7 +191,7 @@
       "badgeUrl": "https://resources.premierleague.com/premierleague/badges/100/t7.png",
       "photoUrl": "https://resources.premierleague.com/premierleague/photos/players/110x140/p199796.png",
       "status": "s",
-      "selectedByPercent": 4.0
+      "selectedByPercent": 3.9
     },
     {
       "id": "fpl-30",
@@ -491,11 +491,11 @@
       "points": 37,
       "guidePrice": 5.1,
       "lastSeasonPrice": 0,
-      "note": "Imported from official FPL. Selected by 2.6% of teams.",
+      "note": "Imported from official FPL. Selected by 2.8% of teams.",
       "badgeUrl": "https://resources.premierleague.com/premierleague/badges/100/t91.png",
       "photoUrl": "https://resources.premierleague.com/premierleague/photos/players/110x140/p483067.png",
       "status": "a",
-      "selectedByPercent": 2.6
+      "selectedByPercent": 2.8
     },
     {
       "id": "fpl-64",
@@ -700,11 +700,11 @@
       "points": 33,
       "guidePrice": 4.5,
       "lastSeasonPrice": 0,
-      "note": "Imported from official FPL. Selected by 6.8% of teams.",
+      "note": "Imported from official FPL. Selected by 6.7% of teams.",
       "badgeUrl": "https://resources.premierleague.com/premierleague/badges/100/t94.png",
       "photoUrl": "https://resources.premierleague.com/premierleague/photos/players/110x140/p607464.png",
       "status": "a",
-      "selectedByPercent": 6.8
+      "selectedByPercent": 6.7
     },
     {
       "id": "fpl-93",
@@ -814,11 +814,11 @@
       "points": 69,
       "guidePrice": 5.4,
       "lastSeasonPrice": 0,
-      "note": "Imported from official FPL. Selected by 45.1% of teams.",
+      "note": "Imported from official FPL. Selected by 45.3% of teams.",
       "badgeUrl": "https://resources.premierleague.com/premierleague/badges/100/t36.png",
       "photoUrl": "https://resources.premierleague.com/premierleague/photos/players/110x140/p465730.png",
       "status": "a",
-      "selectedByPercent": 45.1
+      "selectedByPercent": 45.3
     },
     {
       "id": "fpl-116",
@@ -837,7 +837,7 @@
       "badgeUrl": "https://resources.premierleague.com/premierleague/badges/100/t36.png",
       "photoUrl": "https://resources.premierleague.com/premierleague/photos/players/110x140/p83299.png",
       "status": "a",
-      "selectedByPercent": 1.4
+      "selectedByPercent": 1.5
     },
     {
       "id": "fpl-113",
@@ -947,11 +947,11 @@
       "points": 58,
       "guidePrice": 5.2,
       "lastSeasonPrice": 0,
-      "note": "Imported from official FPL. Selected by 7.4% of teams.",
+      "note": "Imported from official FPL. Selected by 7.5% of teams.",
       "badgeUrl": "https://resources.premierleague.com/premierleague/badges/100/t36.png",
       "photoUrl": "https://resources.premierleague.com/premierleague/photos/players/110x140/p610799.png",
       "status": "a",
-      "selectedByPercent": 7.4
+      "selectedByPercent": 7.5
     },
     {
       "id": "fpl-130",
@@ -1141,7 +1141,7 @@
       "badgeUrl": "https://resources.premierleague.com/premierleague/badges/100/t8.png",
       "photoUrl": "https://resources.premierleague.com/premierleague/photos/players/110x140/p551210.png",
       "status": "i",
-      "selectedByPercent": 0.7
+      "selectedByPercent": 0.6
     },
     {
       "id": "fpl-142",
@@ -1160,7 +1160,7 @@
       "badgeUrl": "https://resources.premierleague.com/premierleague/badges/100/t8.png",
       "photoUrl": "https://resources.premierleague.com/premierleague/photos/players/110x140/p225796.png",
       "status": "i",
-      "selectedByPercent": 3.4
+      "selectedByPercent": 3.3
     },
     {
       "id": "fpl-200",
@@ -1179,7 +1179,7 @@
       "badgeUrl": "https://resources.premierleague.com/premierleague/badges/100/t8.png",
       "photoUrl": "https://resources.premierleague.com/premierleague/photos/players/110x140/p437499.png",
       "status": "i",
-      "selectedByPercent": 5.1
+      "selectedByPercent": 5.0
     },
     {
       "id": "fpl-150",
@@ -1426,7 +1426,7 @@
       "badgeUrl": "https://resources.premierleague.com/premierleague/badges/100/t9.png",
       "photoUrl": "https://resources.premierleague.com/premierleague/photos/players/110x140/p461102.png",
       "status": "d",
-      "selectedByPercent": 8.1
+      "selectedByPercent": 8.0
     },
     {
       "id": "fpl-180",
@@ -1840,11 +1840,11 @@
       "points": 54,
       "guidePrice": 6.2,
       "lastSeasonPrice": 0,
-      "note": "Imported from official FPL. Selected by 19.0% of teams.",
+      "note": "Imported from official FPL. Selected by 19.1% of teams.",
       "badgeUrl": "https://resources.premierleague.com/premierleague/badges/100/t11.png",
       "photoUrl": "https://resources.premierleague.com/premierleague/photos/players/110x140/p17761.png",
       "status": "a",
-      "selectedByPercent": 19.0
+      "selectedByPercent": 19.1
     },
     {
       "id": "fpl-650",
@@ -2034,7 +2034,7 @@
       "badgeUrl": "https://resources.premierleague.com/premierleague/badges/100/t88.png",
       "photoUrl": "https://resources.premierleague.com/premierleague/photos/players/110x140/p146426.png",
       "status": "a",
-      "selectedByPercent": 12.4
+      "selectedByPercent": 12.3
     },
     {
       "id": "fpl-280",
@@ -2598,12 +2598,12 @@
       "teamCode": 2,
       "position": "DEF",
       "points": 7,
-      "guidePrice": 4.3,
+      "guidePrice": 4.2,
       "lastSeasonPrice": 0,
-      "note": "Status: I | Hamstring injury - Expected back 21 Nov | Chance next round: 0%",
+      "note": "Chance next round: 100%",
       "badgeUrl": "https://resources.premierleague.com/premierleague/badges/100/t2.png",
       "photoUrl": "https://resources.premierleague.com/premierleague/photos/players/110x140/p214225.png",
-      "status": "i",
+      "status": "a",
       "selectedByPercent": 0.4
     },
     {
@@ -2885,11 +2885,11 @@
       "points": 37,
       "guidePrice": 6.0,
       "lastSeasonPrice": 0,
-      "note": "Imported from official FPL. Selected by 15.9% of teams.",
+      "note": "Imported from official FPL. Selected by 15.8% of teams.",
       "badgeUrl": "https://resources.premierleague.com/premierleague/badges/100/t43.png",
       "photoUrl": "https://resources.premierleague.com/premierleague/photos/players/110x140/p209036.png",
       "status": "a",
-      "selectedByPercent": 15.9
+      "selectedByPercent": 15.8
     },
     {
       "id": "fpl-391",
@@ -2904,11 +2904,11 @@
       "points": 44,
       "guidePrice": 5.7,
       "lastSeasonPrice": 0,
-      "note": "Imported from official FPL. Selected by 25.9% of teams.",
+      "note": "Imported from official FPL. Selected by 25.8% of teams.",
       "badgeUrl": "https://resources.premierleague.com/premierleague/badges/100/t43.png",
       "photoUrl": "https://resources.premierleague.com/premierleague/photos/players/110x140/p477424.png",
       "status": "a",
-      "selectedByPercent": 25.9
+      "selectedByPercent": 25.8
     },
     {
       "id": "fpl-393",
@@ -3130,13 +3130,13 @@
       "teamCode": 1,
       "position": "DEF",
       "points": 16,
-      "guidePrice": 4.7,
+      "guidePrice": 4.6,
       "lastSeasonPrice": 0,
-      "note": "Imported from official FPL. Selected by 5.5% of teams.",
+      "note": "Imported from official FPL. Selected by 5.4% of teams.",
       "badgeUrl": "https://resources.premierleague.com/premierleague/badges/100/t1.png",
       "photoUrl": "https://resources.premierleague.com/premierleague/photos/players/110x140/p95658.png",
       "status": "a",
-      "selectedByPercent": 5.5
+      "selectedByPercent": 5.4
     },
     {
       "id": "fpl-419",
@@ -3303,11 +3303,11 @@
       "points": 42,
       "guidePrice": 5.3,
       "lastSeasonPrice": 0,
-      "note": "Imported from official FPL. Selected by 19.8% of teams.",
+      "note": "Imported from official FPL. Selected by 19.6% of teams.",
       "badgeUrl": "https://resources.premierleague.com/premierleague/badges/100/t4.png",
       "photoUrl": "https://resources.premierleague.com/premierleague/photos/players/110x140/p487838.png",
       "status": "a",
-      "selectedByPercent": 19.8
+      "selectedByPercent": 19.6
     },
     {
       "id": "fpl-450",
@@ -3592,7 +3592,7 @@
       "badgeUrl": "https://resources.premierleague.com/premierleague/badges/100/t17.png",
       "photoUrl": "https://resources.premierleague.com/premierleague/photos/players/110x140/p215136.png",
       "status": "a",
-      "selectedByPercent": 5.7
+      "selectedByPercent": 5.6
     },
     {
       "id": "fpl-478",
@@ -3744,7 +3744,7 @@
       "badgeUrl": "https://resources.premierleague.com/premierleague/badges/100/t6.png",
       "photoUrl": "https://resources.premierleague.com/premierleague/photos/players/110x140/p122798.png",
       "status": "a",
-      "selectedByPercent": 2.4
+      "selectedByPercent": 2.5
     },
     {
       "id": "fpl-500",
@@ -3896,7 +3896,7 @@
       "badgeUrl": "https://resources.premierleague.com/premierleague/badges/100/t6.png",
       "photoUrl": "https://resources.premierleague.com/premierleague/photos/players/110x140/p469142.png",
       "status": "a",
-      "selectedByPercent": 11.4
+      "selectedByPercent": 11.7
     },
     {
       "id": "fpl-503",
@@ -4124,7 +4124,7 @@
       "badgeUrl": "https://resources.premierleague.com/premierleague/badges/100/t56.png",
       "photoUrl": "https://resources.premierleague.com/premierleague/photos/players/110x140/p434399.png",
       "status": "a",
-      "selectedByPercent": 0.3
+      "selectedByPercent": 0.2
     },
     {
       "id": "fpl-537",
@@ -4200,7 +4200,7 @@
       "badgeUrl": "https://resources.premierleague.com/premierleague/badges/100/t3.png",
       "photoUrl": "https://resources.premierleague.com/premierleague/photos/players/110x140/p219847.png",
       "status": "a",
-      "selectedByPercent": 5.7
+      "selectedByPercent": 5.8
     },
     {
       "id": "fpl-56",
@@ -4253,11 +4253,11 @@
       "points": 43,
       "guidePrice": 7.0,
       "lastSeasonPrice": 0,
-      "note": "Imported from official FPL. Selected by 26.2% of teams.",
+      "note": "Imported from official FPL. Selected by 26.5% of teams.",
       "badgeUrl": "https://resources.premierleague.com/premierleague/badges/100/t7.png",
       "photoUrl": "https://resources.premierleague.com/premierleague/photos/players/110x140/p517052.png",
       "status": "a",
-      "selectedByPercent": 26.2
+      "selectedByPercent": 26.5
     },
     {
       "id": "fpl-55",
@@ -4310,11 +4310,11 @@
       "points": 52,
       "guidePrice": 6.4,
       "lastSeasonPrice": 0,
-      "note": "Imported from official FPL. Selected by 18.3% of teams.",
+      "note": "Imported from official FPL. Selected by 18.8% of teams.",
       "badgeUrl": "https://resources.premierleague.com/premierleague/badges/100/t91.png",
       "photoUrl": "https://resources.premierleague.com/premierleague/photos/players/110x140/p444102.png",
       "status": "a",
-      "selectedByPercent": 18.3
+      "selectedByPercent": 18.8
     },
     {
       "id": "fpl-608",
@@ -4542,7 +4542,7 @@
       "badgeUrl": "https://resources.premierleague.com/premierleague/badges/100/t8.png",
       "photoUrl": "https://resources.premierleague.com/premierleague/photos/players/110x140/p475168.png",
       "status": "i",
-      "selectedByPercent": 39.5
+      "selectedByPercent": 38.7
     },
     {
       "id": "fpl-168",
@@ -4823,11 +4823,11 @@
       "points": 39,
       "guidePrice": 5.6,
       "lastSeasonPrice": 0,
-      "note": "Imported from official FPL. Selected by 7.7% of teams.",
+      "note": "Imported from official FPL. Selected by 7.8% of teams.",
       "badgeUrl": "https://resources.premierleague.com/premierleague/badges/100/t11.png",
       "photoUrl": "https://resources.premierleague.com/premierleague/photos/players/110x140/p586309.png",
       "status": "a",
-      "selectedByPercent": 7.7
+      "selectedByPercent": 7.8
     },
     {
       "id": "fpl-248",
@@ -4861,11 +4861,11 @@
       "points": 22,
       "guidePrice": 5.9,
       "lastSeasonPrice": 0,
-      "note": "Imported from official FPL. Selected by 4.4% of teams.",
+      "note": "Imported from official FPL. Selected by 4.3% of teams.",
       "badgeUrl": "https://resources.premierleague.com/premierleague/badges/100/t54.png",
       "photoUrl": "https://resources.premierleague.com/premierleague/photos/players/110x140/p551466.png",
       "status": "a",
-      "selectedByPercent": 4.4
+      "selectedByPercent": 4.3
     },
     {
       "id": "fpl-272",
@@ -5131,7 +5131,7 @@
       "badgeUrl": "https://resources.premierleague.com/premierleague/badges/100/t2.png",
       "photoUrl": "https://resources.premierleague.com/premierleague/photos/players/110x140/p177815.png",
       "status": "a",
-      "selectedByPercent": 20.7
+      "selectedByPercent": 20.6
     },
     {
       "id": "fpl-349",
@@ -5245,7 +5245,7 @@
       "badgeUrl": "https://resources.premierleague.com/premierleague/badges/100/t14.png",
       "photoUrl": "https://resources.premierleague.com/premierleague/photos/players/110x140/p219168.png",
       "status": "a",
-      "selectedByPercent": 21.9
+      "selectedByPercent": 22.2
     },
     {
       "id": "fpl-411",
@@ -5378,7 +5378,7 @@
       "badgeUrl": "https://resources.premierleague.com/premierleague/badges/100/t4.png",
       "photoUrl": "https://resources.premierleague.com/premierleague/photos/players/110x140/p538207.png",
       "status": "a",
-      "selectedByPercent": 0.3
+      "selectedByPercent": 0.4
     },
     {
       "id": "fpl-664",
@@ -5412,11 +5412,11 @@
       "points": 20,
       "guidePrice": 6.0,
       "lastSeasonPrice": 0,
-      "note": "Imported from official FPL. Selected by 9.7% of teams.",
+      "note": "Imported from official FPL. Selected by 9.6% of teams.",
       "badgeUrl": "https://resources.premierleague.com/premierleague/badges/100/t4.png",
       "photoUrl": "https://resources.premierleague.com/premierleague/photos/players/110x140/p216646.png",
       "status": "a",
-      "selectedByPercent": 9.7
+      "selectedByPercent": 9.6
     },
     {
       "id": "fpl-463",
@@ -5469,10 +5469,10 @@
       "points": 12,
       "guidePrice": 5.6,
       "lastSeasonPrice": 0,
-      "note": "Status: I | Calf injury - Unknown return date | Chance next round: 0%",
+      "note": "Status: D | Calf injury - 75% chance of playing | Chance next round: 75%",
       "badgeUrl": "https://resources.premierleague.com/premierleague/badges/100/t17.png",
       "photoUrl": "https://resources.premierleague.com/premierleague/photos/players/110x140/p482973.png",
-      "status": "i",
+      "status": "d",
       "selectedByPercent": 1.1
     },
     {
@@ -5606,7 +5606,7 @@
       "badgeUrl": "https://resources.premierleague.com/premierleague/badges/100/t56.png",
       "photoUrl": "https://resources.premierleague.com/premierleague/photos/players/110x140/p441264.png",
       "status": "a",
-      "selectedByPercent": 5.1
+      "selectedByPercent": 5.0
     },
     {
       "id": "fpl-553",
@@ -5697,11 +5697,11 @@
       "points": 54,
       "guidePrice": 6.2,
       "lastSeasonPrice": 0,
-      "note": "Imported from official FPL. Selected by 46.7% of teams.",
+      "note": "Imported from official FPL. Selected by 46.8% of teams.",
       "badgeUrl": "https://resources.premierleague.com/premierleague/badges/100/t3.png",
       "photoUrl": "https://resources.premierleague.com/premierleague/photos/players/110x140/p154561.png",
       "status": "a",
-      "selectedByPercent": 46.7
+      "selectedByPercent": 46.8
     },
     {
       "id": "fpl-29",
@@ -7046,11 +7046,11 @@
       "points": 24,
       "guidePrice": 4.9,
       "lastSeasonPrice": 0,
-      "note": "Imported from official FPL. Selected by 2.1% of teams.",
+      "note": "Imported from official FPL. Selected by 2.0% of teams.",
       "badgeUrl": "https://resources.premierleague.com/premierleague/badges/100/t56.png",
       "photoUrl": "https://resources.premierleague.com/premierleague/photos/players/110x140/p498016.png",
       "status": "a",
-      "selectedByPercent": 2.1
+      "selectedByPercent": 2.0
     },
     {
       "id": "fpl-452",
@@ -7259,7 +7259,7 @@
       "badgeUrl": "https://resources.premierleague.com/premierleague/badges/100/t3.png",
       "photoUrl": "https://resources.premierleague.com/premierleague/photos/players/110x140/p204480.png",
       "status": "a",
-      "selectedByPercent": 12.5
+      "selectedByPercent": 12.7
     },
     {
       "id": "fpl-12",
@@ -7278,7 +7278,7 @@
       "badgeUrl": "https://resources.premierleague.com/premierleague/badges/100/t3.png",
       "photoUrl": "https://resources.premierleague.com/premierleague/photos/players/110x140/p223340.png",
       "status": "i",
-      "selectedByPercent": 6.2
+      "selectedByPercent": 6.1
     },
     {
       "id": "fpl-557",
@@ -7426,11 +7426,11 @@
       "points": 29,
       "guidePrice": 5.9,
       "lastSeasonPrice": 0,
-      "note": "Imported from official FPL. Selected by 1.2% of teams.",
+      "note": "Imported from official FPL. Selected by 1.1% of teams.",
       "badgeUrl": "https://resources.premierleague.com/premierleague/badges/100/t7.png",
       "photoUrl": "https://resources.premierleague.com/premierleague/photos/players/110x140/p195546.png",
       "status": "a",
-      "selectedByPercent": 1.2
+      "selectedByPercent": 1.1
     },
     {
       "id": "fpl-50",
@@ -7601,7 +7601,7 @@
       "badgeUrl": "https://resources.premierleague.com/premierleague/badges/100/t7.png",
       "photoUrl": "https://resources.premierleague.com/premierleague/photos/players/110x140/p614071.png",
       "status": "a",
-      "selectedByPercent": 7.2
+      "selectedByPercent": 7.3
     },
     {
       "id": "fpl-631",
@@ -7863,11 +7863,11 @@
       "points": 55,
       "guidePrice": 6.6,
       "lastSeasonPrice": 0,
-      "note": "Imported from official FPL. Selected by 27.8% of teams.",
+      "note": "Imported from official FPL. Selected by 28.2% of teams.",
       "badgeUrl": "https://resources.premierleague.com/premierleague/badges/100/t91.png",
       "photoUrl": "https://resources.premierleague.com/premierleague/photos/players/110x140/p201658.png",
       "status": "a",
-      "selectedByPercent": 27.8
+      "selectedByPercent": 28.2
     },
     {
       "id": "fpl-76",
@@ -8034,11 +8034,11 @@
       "points": 31,
       "guidePrice": 5.4,
       "lastSeasonPrice": 0,
-      "note": "Imported from official FPL. Selected by 6.2% of teams.",
+      "note": "Imported from official FPL. Selected by 6.1% of teams.",
       "badgeUrl": "https://resources.premierleague.com/premierleague/badges/100/t94.png",
       "photoUrl": "https://resources.premierleague.com/premierleague/photos/players/110x140/p513545.png",
       "status": "a",
-      "selectedByPercent": 6.2
+      "selectedByPercent": 6.1
     },
     {
       "id": "fpl-99",
@@ -8114,7 +8114,7 @@
       "badgeUrl": "https://resources.premierleague.com/premierleague/badges/100/t94.png",
       "photoUrl": "https://resources.premierleague.com/premierleague/photos/players/110x140/p513418.png",
       "status": "a",
-      "selectedByPercent": 14.2
+      "selectedByPercent": 14.1
     },
     {
       "id": "fpl-102",
@@ -8171,7 +8171,7 @@
       "badgeUrl": "https://resources.premierleague.com/premierleague/badges/100/t36.png",
       "photoUrl": "https://resources.premierleague.com/premierleague/photos/players/110x140/p509416.png",
       "status": "a",
-      "selectedByPercent": 1.5
+      "selectedByPercent": 1.6
     },
     {
       "id": "fpl-652",
@@ -8665,7 +8665,7 @@
       "badgeUrl": "https://resources.premierleague.com/premierleague/badges/100/t8.png",
       "photoUrl": "https://resources.premierleague.com/premierleague/photos/players/110x140/p244851.png",
       "status": "a",
-      "selectedByPercent": 28.1
+      "selectedByPercent": 28.2
     },
     {
       "id": "fpl-164",
@@ -8699,11 +8699,11 @@
       "points": 50,
       "guidePrice": 8.2,
       "lastSeasonPrice": 0,
-      "note": "Imported from official FPL. Selected by 52.6% of teams.",
+      "note": "Imported from official FPL. Selected by 52.8% of teams.",
       "badgeUrl": "https://resources.premierleague.com/premierleague/badges/100/t8.png",
       "photoUrl": "https://resources.premierleague.com/premierleague/photos/players/110x140/p244850.png",
       "status": "a",
-      "selectedByPercent": 52.6
+      "selectedByPercent": 52.8
     },
     {
       "id": "fpl-192",
@@ -8851,10 +8851,10 @@
       "points": 12,
       "guidePrice": 4.8,
       "lastSeasonPrice": 0,
-      "note": "Chance next round: 100%",
+      "note": "Status: D | Groin injury - 50% chance of playing | Chance next round: 50%",
       "badgeUrl": "https://resources.premierleague.com/premierleague/badges/100/t9.png",
       "photoUrl": "https://resources.premierleague.com/premierleague/photos/players/110x140/p428580.png",
-      "status": "a",
+      "status": "d",
       "selectedByPercent": 0.1
     },
     {
@@ -9345,11 +9345,11 @@
       "points": 41,
       "guidePrice": 6.6,
       "lastSeasonPrice": 0,
-      "note": "Imported from official FPL. Selected by 6.2% of teams.",
+      "note": "Imported from official FPL. Selected by 6.3% of teams.",
       "badgeUrl": "https://resources.premierleague.com/premierleague/badges/100/t11.png",
       "photoUrl": "https://resources.premierleague.com/premierleague/photos/players/110x140/p215413.png",
       "status": "a",
-      "selectedByPercent": 6.2
+      "selectedByPercent": 6.3
     },
     {
       "id": "fpl-245",
@@ -9611,11 +9611,11 @@
       "points": 38,
       "guidePrice": 5.4,
       "lastSeasonPrice": 0,
-      "note": "Imported from official FPL. Selected by 1.4% of teams.",
+      "note": "Imported from official FPL. Selected by 1.5% of teams.",
       "badgeUrl": "https://resources.premierleague.com/premierleague/badges/100/t54.png",
       "photoUrl": "https://resources.premierleague.com/premierleague/photos/players/110x140/p153133.png",
       "status": "a",
-      "selectedByPercent": 1.4
+      "selectedByPercent": 1.5
     },
     {
       "id": "fpl-263",
@@ -9801,11 +9801,11 @@
       "points": 48,
       "guidePrice": 5.3,
       "lastSeasonPrice": 0,
-      "note": "Imported from official FPL. Selected by 10.2% of teams.",
+      "note": "Imported from official FPL. Selected by 10.1% of teams.",
       "badgeUrl": "https://resources.premierleague.com/premierleague/badges/100/t88.png",
       "photoUrl": "https://resources.premierleague.com/premierleague/photos/players/110x140/p540324.png",
       "status": "a",
-      "selectedByPercent": 10.2
+      "selectedByPercent": 10.1
     },
     {
       "id": "fpl-617",
@@ -10850,7 +10850,7 @@
       "badgeUrl": "https://resources.premierleague.com/premierleague/badges/100/t14.png",
       "photoUrl": "https://resources.premierleague.com/premierleague/photos/players/110x140/p243298.png",
       "status": "a",
-      "selectedByPercent": 6.9
+      "selectedByPercent": 7.0
     },
     {
       "id": "fpl-371",
@@ -11093,11 +11093,11 @@
       "points": 45,
       "guidePrice": 7.9,
       "lastSeasonPrice": 0,
-      "note": "Imported from official FPL. Selected by 35.3% of teams.",
+      "note": "Imported from official FPL. Selected by 35.0% of teams.",
       "badgeUrl": "https://resources.premierleague.com/premierleague/badges/100/t43.png",
       "photoUrl": "https://resources.premierleague.com/premierleague/photos/players/110x140/p466052.png",
       "status": "a",
-      "selectedByPercent": 35.3
+      "selectedByPercent": 35.0
     },
     {
       "id": "fpl-400",
@@ -11416,11 +11416,11 @@
       "points": 35,
       "guidePrice": 11.7,
       "lastSeasonPrice": 0,
-      "note": "Imported from official FPL. Selected by 21.5% of teams.",
+      "note": "Imported from official FPL. Selected by 21.4% of teams.",
       "badgeUrl": "https://resources.premierleague.com/premierleague/badges/100/t1.png",
       "photoUrl": "https://resources.premierleague.com/premierleague/photos/players/110x140/p141746.png",
       "status": "a",
-      "selectedByPercent": 21.5
+      "selectedByPercent": 21.4
     },
     {
       "id": "fpl-131",
@@ -11492,11 +11492,11 @@
       "points": 40,
       "guidePrice": 7.8,
       "lastSeasonPrice": 0,
-      "note": "Imported from official FPL. Selected by 5.5% of teams.",
+      "note": "Imported from official FPL. Selected by 5.6% of teams.",
       "badgeUrl": "https://resources.premierleague.com/premierleague/badges/100/t1.png",
       "photoUrl": "https://resources.premierleague.com/premierleague/photos/players/110x140/p430871.png",
       "status": "a",
-      "selectedByPercent": 5.5
+      "selectedByPercent": 5.6
     },
     {
       "id": "fpl-415",
@@ -11720,11 +11720,11 @@
       "points": 42,
       "guidePrice": 6.1,
       "lastSeasonPrice": 0,
-      "note": "Imported from official FPL. Selected by 7.4% of teams.",
+      "note": "Imported from official FPL. Selected by 7.3% of teams.",
       "badgeUrl": "https://resources.premierleague.com/premierleague/badges/100/t4.png",
       "photoUrl": "https://resources.premierleague.com/premierleague/photos/players/110x140/p201666.png",
       "status": "a",
-      "selectedByPercent": 7.4
+      "selectedByPercent": 7.3
     },
     {
       "id": "fpl-454",
@@ -11986,10 +11986,10 @@
       "points": 4,
       "guidePrice": 4.8,
       "lastSeasonPrice": 0,
-      "note": "Status: D | Muscular injury - 75% chance of playing | Chance next round: 75%",
+      "note": "Status: I | Muscular injury - Expected back 30 Dec | Chance next round: 0%",
       "badgeUrl": "https://resources.premierleague.com/premierleague/badges/100/t17.png",
       "photoUrl": "https://resources.premierleague.com/premierleague/photos/players/110x140/p250199.png",
-      "status": "d",
+      "status": "i",
       "selectedByPercent": 0.0
     },
     {
@@ -12003,13 +12003,13 @@
       "teamCode": 17,
       "position": "MID",
       "points": 34,
-      "guidePrice": 7.9,
+      "guidePrice": 7.8,
       "lastSeasonPrice": 0,
       "note": "Chance next round: 100%",
       "badgeUrl": "https://resources.premierleague.com/premierleague/badges/100/t17.png",
       "photoUrl": "https://resources.premierleague.com/premierleague/photos/players/110x140/p222531.png",
       "status": "a",
-      "selectedByPercent": 10.6
+      "selectedByPercent": 10.4
     },
     {
       "id": "fpl-482",
@@ -12706,7 +12706,7 @@
       "teamCode": 56,
       "position": "MID",
       "points": 2,
-      "guidePrice": 5.0,
+      "guidePrice": 4.9,
       "lastSeasonPrice": 0,
       "note": "Imported from official FPL. Selected by 0.0% of teams.",
       "badgeUrl": "https://resources.premierleague.com/premierleague/badges/100/t56.png",
